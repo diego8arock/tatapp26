@@ -1,0 +1,151 @@
+<h1>Nuevo mapa</h1>
+
+<%= stylesheet_link_tag "jquery.seat-charts" %>
+<%= stylesheet_link_tag "style" %>
+
+<%= form_with(model: @map, local: true) do |form| %>
+<% if @map.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(user.errors.count, "error") %>
+      prohibited this user from being saved:</h2>
+
+    <ul>
+      <% @map.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<table>
+  <tr>
+    <td>
+      <label for="txtMapName">Nombre</label>
+    </td>
+    <td><input type="text" id="txtMapName" value="MAPA"></td>
+  </tr>
+  <tr>
+    <td>
+      <label for="txtMapX">Ancho</label>
+    </td>
+    <td><input type="text" id="txtMapX" value="2"></td>
+  </tr>
+  <tr>
+    <td>
+      <label for="txtMapY">Alto</label>
+    </td>
+    <td><input type="text" id="txtMapY" value="2"></td>
+  </tr>
+  <tr>
+    <td><input type="button" id="bttnCreateMap" value="Generar Mapa"></td>
+    <td><input type="button" id="bttnResetMap" value="Borrar Mapa"></td>
+    <td><%= form.submit "Guardar Mapa", id:"bttnSaveMap" %></td>
+  </tr>
+</table>
+<br/>
+<div id="wrapper">
+  <div id="seat-map">
+    <h3 style="visibility: hidden" id="hdrCounter">
+      Cantidad de asientos (<span id="counter">0</span>):</h3>
+  </div>
+</div>
+
+<%= form.hidden_field :seats, id:"hddnMapToSave"%>
+<%= form.hidden_field :height, id:"hddnMapY"%>
+<%= form.hidden_field :width, id:"hddnMapX"%>
+<%= form.hidden_field :seats_total, id:"hddnCounter", value:0%>
+<% end %>
+
+<script type="text/javascript">
+
+var firstSeatLabel = 1;
+var mapFinal;
+
+function remove(array, element) {
+  const index = array.indexOf(element);
+  array.splice(index, 1);
+}
+
+$(document).ready(function () {
+  $('#bttnCreateMap').prop('disabled', false);
+  $('#bttnResetMap').prop('disabled', true);
+  $('#bttnSaveMap').prop('disabled', true);
+  $('#counter').val(0);
+  $('#hddnCounter').val(0);
+  $('#hddnMapToSave').val(null);
+  $('#hddnMapY').val(null);
+  $('#hddnCounter').val(null);
+})
+
+$('#bttnResetMap').click(function () {
+
+  $('#bttnCreateMap').prop('disabled', false);
+  $('#bttnResetMap').prop('disabled', true);
+  $('#bttnSaveMap').prop('disabled', true);
+  $('#wrapper').empty();
+  $('#wrapper').html('<div id="seat-map"><h3 style="visibility: hidden" id="hdrCounter"> Cantidad de asientos (<span id="counter">0</span>):</h3></div>');
+  $('#counter').val(0);
+  $('#hddnCounter').val(0);
+  firstSeatLabel = 1;
+
+})
+
+$('#bttnCreateMap').click(function () {
+
+  $('#bttnCreateMap').prop('disabled', true);
+  $('#bttnResetMap').prop('disabled', false);
+  $('#bttnSaveMap').prop('disabled', false);
+  $('#hdrCounter').css("visibility", "visible");
+
+  var x = $('#txtMapX').val();
+  var y = $('#txtMapY').val();
+
+  mapFinal = [y];
+  var mapTemplate = [y];
+  for (i = 0; i < y; i++) {
+    mapTemplate[i] = 'f'.repeat(x);
+  }
+
+  $('#hddnMapX').val(x);
+  $('#hddnMapY').val(y);
+
+  var $hddnMapToSave = $('#hddnMapToSave');
+  var seatsId = [];
+  var $hddCounter = $('#hddnCounter');
+  var $counter = $('#counter');
+  var sc = $('#seat-map').seatCharts({
+    map: mapTemplate,
+    seats: {
+      f: {
+        classes: 'first-class'
+      }
+    },
+    naming: {
+      top: false,
+      getLabel: function (character, row, column) {
+        return firstSeatLabel++;
+      }
+    },
+    click: function () {
+      if (this.status() == 'available') {
+        $hddCounter.val(sc.find('selected').length + 1);
+        $counter.text($hddCounter.val());
+        seatsId.push(this.settings.id);
+        $hddnMapToSave.val(seatsId.toString());
+        return 'selected';
+      } else if (this.status() == 'selected') {
+        $hddCounter.val(sc.find('selected').length - 1);
+        $counter.text($hddCounter.val());
+        remove(seatsId, this.settings.id)
+        $hddnMapToSave.val(seatsId.toString());
+        return 'available';
+      } else if (this.status() == 'unavailable') {
+        return 'unavailable';
+      } else {
+        return this.style();
+      }
+    }
+  });
+
+});
+</script>
