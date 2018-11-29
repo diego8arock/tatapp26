@@ -3,8 +3,8 @@
 <% end %>
 <h2>Select your seat</h2>
 
-<img src="/assets/images/plano-oficina.jpg" class="rounded mx-auto d-block" alt="Map">
-
+<%= image_tag "plano-oficina.jpg" %>
+<br/>
 <% if @assigned %>
   You have the seat <%= @seat.code %> assigned
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
