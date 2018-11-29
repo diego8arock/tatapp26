@@ -35,13 +35,13 @@
     }
 
     var firstSeatLabel = 1;
-
-    $('#cmbbxMaps').change(function () {
+    
+    function loadMap() {
       firstSeatLabel = 1;
       $('#wrapper').html('<div id="seat-map"></div>');
       var $map = $('#cmbbxMaps');
       var values = $map.val().split("|");
-      var rawMap = getRawMap(values[0], parseInt(values[1],10), parseInt(values[2],10));
+      var rawMap = getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
       var sc = $('#seat-map').seatCharts({
         map: rawMap,
         seats: {
@@ -56,6 +56,14 @@
           }
         }
       });
+    };
+
+    $(document).ready(function () {
+      loadMap();
+    });
+
+    $('#cmbbxMaps').change(function () {
+      loadMap();
     });
 </script>
 
