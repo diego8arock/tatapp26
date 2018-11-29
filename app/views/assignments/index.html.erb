@@ -1,0 +1,25 @@
+<% content_for :title do %>
+  <%= t 'title' %>
+<% end %>
+<h2>Select your seat</h2>
+
+<img src="/assets/images/plano-oficina.jpg" class="rounded mx-auto d-block" alt="Map">
+
+<% if @assigned %>
+  You have the seat <%= @seat.code %> assigned
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Cancel assignment
+  </button>
+<% else %>
+  <select name="seat[id]">
+    <option value="" >Please select</option>
+    <% @seats.each do |seat| %>
+      <option value="<%= seat.id %>"><%= seat.code %></option>
+    <% end %>
+  </select>
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Accept
+    </button>
+  </div>
+<% end %>

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  code: MyString
+  status: 1
+  assignmentDate: 2018-11-28
+  project: one
+
+two:
+  id: 1
+  code: MyString
+  status: 1
+  assignmentDate: 2018-11-28
+  project: two

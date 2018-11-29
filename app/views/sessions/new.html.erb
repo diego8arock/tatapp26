@@ -1,19 +1,14 @@
 <p id="alert"><%= alert %></p>
 
-<h1>Login</h1>
+<h1><%= t 'login' %></h1>
 
 <%= form_tag sessions_path do |form| %>
   <div class="field">
-    <%= label_tag :employee_number, 'Id Empleado' %>
-    <%= text_field_tag :employee_number  %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :password, 'Fecha Ingreso (yyyymmddd)' %>
-    <%= password_field_tag :password %>
+    <%=  t 'employee.number' %>
+    <%= text_field_tag :number  %>
   </div>
 
   <div class="actions">
-    <%= submit_tag "Login" %>
+    <%= submit_tag t 'login' %>
   </div>
 <% end %>

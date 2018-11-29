@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  Continue to select your seat:
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @employee.name %>
+</p>
+
+<p>
+  <strong>Idnumber:</strong>
+  <%= @employee.number %>
+</p>
+
+<p>
+  <strong>admissiondate:</strong>
+  <%= @employee.admission_date %>
+</p>
+
+<p>
+  <strong>Birthdate:</strong>
+  <%= @employee.birthdate %>
+</p>
+
+<%= link_to 'Continue', edit_session_path(@employee.id) %> |
+<%= link_to 'Cancel', logout_path %>

@@ -1,0 +1,26 @@
+/* Colors */
+$main_orange: #c3b0ad;
+$orange_text: #F15A24;
+$orange_headings: #f05a23;
+$orange_alt: #ea522b;
+$warning-red: #DD1144;
+$alpha_white: rgba(255, 255, 255, 1);
+$routes_shadow: rgba(174, 174, 174, 0.2);
+$route_gray: #757575;
+$route_gray_light: lighten($route_gray, 8);
+$btnInfoBackground: #36a8cd;
+$btnInfoBackgroundHighlight: #1e99c5;
+
+
+/* Boxes */
+$topbar-height: 0px;
+$footer-height: 50px;
+$boxes_margin: 8px;
+$boxes_shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+
+
+/* Fonts */
+$header_font:  "museo-sans", sans-serif;
+$script_font: "raleway", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$main_font: "depot-new-web", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$generic_font: "Helvetica Neue", Helvetica, Arial, sans-serif;

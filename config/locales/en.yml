@@ -31,3 +31,10 @@
 
 en:
   hello: "Hello world"
+  title: "Tatapp26 :: Select your seat"
+  login: "Login"
+  employee:
+    number: "Employeee number"
+    date: "Admisssion date"
+  menu:
+    assignment: "Seat assignment"
