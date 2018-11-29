@@ -1,5 +1,6 @@
 class MapsController < ApplicationController
-  before_action :set_map, only: [:show, :edit, :update, :destroy]
+  before_action :set_map, only: [:edit, :update, :destroy]
+  before_action :set_maps, only: [:show]
 
   def new
     @map = Map.new
@@ -31,8 +32,12 @@ class MapsController < ApplicationController
       @map = Map.find(params[:id])
     end
 
+    def set_maps
+      @maps = Map.all
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def map_params
-      params.require(:map).permit(:seats, :height, :width, :seats_total)
+      params.require(:map).permit(:name, :seats, :height, :width, :seats_total)
     end
 end
