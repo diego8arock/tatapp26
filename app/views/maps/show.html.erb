@@ -1,2 +1,62 @@
-<h1>Map#show</h1>
-<p>Find me in app/views/map/show.html.erb</p>
+<%= stylesheet_link_tag "jquery.seat-charts" %>
+<%= stylesheet_link_tag "style" %>
+
+<h1>Mapa</h1>
+
+<%= form_with(model: @map, local: true) do |form| %>
+<p>
+  <%= form.select "cmbbxMaps", @maps.collect { |m| [ m.name, m.seats + "|" + m.height.to_s + "|" + m.width.to_s + "|" + m.seats_total.to_s ] } %>
+</p>
+
+<div id="wrapper">
+  <div id="seat-map"></div>
+</div>
+
+<script type="text/javascript">
+
+  function getRawMap(number, y, x) {
+    var number_arr = number.split(",");
+    var map = [y]
+      var i,
+        j;
+      var row = "";
+      var cell;
+      for (i = 0; i < y; i++) {
+        for (j = 0; j < x; j++) {
+          cell = i + "_" + j;
+          row += number_arr.indexOf(cell) == -1
+            ? "_"
+            : "f";
+        }
+        map[i] = row;
+        row = "";
+      }
+      return map;
+    }
+
+    var firstSeatLabel = 1;
+
+    $('#cmbbxMaps').change(function () {
+      firstSeatLabel = 1;
+      $('#wrapper').html('<div id="seat-map"></div>');
+      var $map = $('#cmbbxMaps');
+      var values = $map.val().split("|");
+      var rawMap = getRawMap(values[0], parseInt(values[1],10), parseInt(values[2],10));
+      var sc = $('#seat-map').seatCharts({
+        map: rawMap,
+        seats: {
+          f: {
+            classes: 'first-class'
+          }
+        },
+        naming: {
+          top: false,
+          getLabel: function (character, row, column) {
+            return firstSeatLabel++;
+          }
+        }
+      });
+    });
+</script>
+
+<% end %>

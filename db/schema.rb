@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2018_11_28_154650) do
 
   create_table "maps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
     t.text "seats"
     t.integer "height"
     t.integer "width"
