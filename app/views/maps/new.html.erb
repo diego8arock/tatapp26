@@ -1,7 +1,8 @@
-<h1>Nuevo mapa</h1>
-
 <%= stylesheet_link_tag "jquery.seat-charts" %>
 <%= stylesheet_link_tag "style" %>
+
+<h1>Nuevo mapa</h1>
+<%= link_to 'Volver', admin_index_path %>
 
 <%= form_with(model: @map, local: true) do |form| %>
 <% if @map.errors.any? %>
@@ -89,6 +90,8 @@ $('#bttnResetMap').click(function () {
   firstSeatLabel = 1;
 
 })
+
+
 
 $('#bttnCreateMap').click(function () {
 

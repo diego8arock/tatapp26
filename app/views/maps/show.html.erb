@@ -2,6 +2,7 @@
 <%= stylesheet_link_tag "style" %>
 
 <h1>Mapa</h1>
+<%= link_to 'Volver', admin_index_path %>
 
 <%= form_with(model: @map, local: true) do |form| %>
 <p>
@@ -12,7 +13,15 @@
   <div id="seat-map"></div>
 </div>
 
+<style>
+  div.seatCharts-seat.focused {
+  	background-color: #E6CAC4 !important;
+  }
+</style>
+
 <script type="text/javascript">
+
+ var total = 0;
 
   function getRawMap(number, y, x) {
     var number_arr = number.split(",");
@@ -35,10 +44,11 @@
     }
 
     var firstSeatLabel = 1;
-    
+
     function loadMap() {
       firstSeatLabel = 1;
       $('#wrapper').html('<div id="seat-map"></div>');
+      console.log(total);
       var $map = $('#cmbbxMaps');
       var values = $map.val().split("|");
       var rawMap = getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
@@ -54,9 +64,21 @@
           getLabel: function (character, row, column) {
             return firstSeatLabel++;
           }
+        },
+        click: function () {
+          if (this.status() == 'available') {
+            // return  sc.find('selected').length == 1 ? 'available' : 'selected';
+            return 'available';
+          } else if (this.status() == 'selected') {
+            return 'available';
+          } else if (this.status() == 'unavailable') {
+            return 'unavailable';
+          } else {
+            return this.style();
+          }
         }
       });
-    };
+    }
 
     $(document).ready(function () {
       loadMap();
