@@ -1,5 +1,179 @@
-<h1>New Seat</h1>
+<%= stylesheet_link_tag "jquery.seat-charts" %>
+<%= stylesheet_link_tag "style" %>
+<%= stylesheet_link_tag "jquery.modal.min" %>
 
-<%= render 'form', seat: @seat %>
+<h1>Marcar Asientos</h1>
+<%= link_to 'Volver', admin_index_path %>
 
-<%= link_to 'Back', seats_path %>
+<%= form_with(model: @map, local: true) do |form| %>
+<table>
+  <tr>
+    <td>Projecto</td>
+    <td><%= form.select "cmbbxProjects", Project.all.collect { |p| [ p.name, p.id.to_s + "|" + p.tag ] } %></td>
+  </tr>
+  <tr>
+    <td>Mapa</td>
+    <td>
+      <%= form.select "cmbbxMaps", Map.where(project_id: Project.first(1)).collect { |m| [ m.name, m.seats + "|" + m.height.to_s + "|" + m.width.to_s + "|" + m.seats_total.to_s ] } %>
+    </td>
+  </tr>
+</table>
+
+<%= form.hidden_field "hddnProjectTag"%>
+<input type="hidden" id="hddnSelectedSeat">
+
+<!-- Show Model -->
+<div id="ex1" class="modal">
+
+  <table>
+    <tr>
+      <th>Acrónimo</th>
+      <th>Número</th>
+    </tr>
+    <tr>
+      <td><input type="text" id="txtfldTag" disabled="disabled"></td>
+      <td><input type="text" id="txtflNumber"></td>
+      <td>
+        <label for="chckbxFixed">Fijo</label><input type="checkbox" id="chckbxFixed" title="Fijo"></td>
+    </tr>
+    <tr>
+      <td><input type="button" id="bttnAcceptModal" value="Aceptar"></td>
+      <td><input type="button" id="bttnCancelModal" value="Cancelar"></td>
+    </tr>
+  </table>
+
+  <a style="display: none;" id="aCloseModal" href="#ex1" rel="modal:close"></a>
+</div>
+<a style="display: none;" id="aShowModal" href="#ex1" rel="modal:open"></a>
+
+<div id="wrapper">
+  <div id="seat-map"></div>
+</div>
+<% end %>
+
+<style>
+div.seatCharts-seat.focused {
+  background-color: #E6CAC4 !important;
+}
+</style>
+
+<script type="text/javascript">
+// jQUery calls
+$(document).ready(function () {
+  var project_tag = $('#cmbbxProjects').val().split("|")[1];
+  $('#hddnProjectTag').val(project_tag);
+  $("#txtflNumber").keydown(function (e) {
+    textFieldOnlyNumbers(e);
+  });
+  loadMap();
+});
+
+$('#cmbbxMaps').change(function () {
+  loadMap();
+});
+
+$('#cmbbxProjects').change(function () {
+  var project_id = $(this).val().split("|")[0];
+  $('#hddnProjectTag').val($(this).val().split("|")[1]);
+  $.ajax({
+    url: "/maps/show",
+    method: "GET",
+    dataType: "json",
+    data: {
+      project_id: project_id
+    },
+    error: function (xhr, status, error) {
+      console.error('AJAX Esrror: ' + status + error);
+    },
+    success: function (response) {
+      var maps = response["maps"];
+      $('#cmbbxMaps').find('option').remove().end();
+      for (var i = 0; i < maps.length; i++) {
+        $('#cmbbxMaps').append('<option value="' + maps[i]["seats"] + "|" + maps[i]["height"] + "|" + maps[i]["width"] + "|" + maps[i]["seats_total"] + '">' + maps[i]["name"] + '</option>');
+      }
+      loadMap();
+    }
+  });
+});
+
+//JS functions and variables
+var total = 0;
+
+function getRawMap(number, y, x) {
+  var number_arr = number.split(",");
+  var map = [y]
+    var i,
+      j;
+    var row = "";
+    var cell;
+    for (i = 0; i < y; i++) {
+      for (j = 0; j < x; j++) {
+        cell = i + "_" + j;
+        row += number_arr.indexOf(cell) == -1
+          ? "_"
+          : "f";
+      }
+      map[i] = row;
+      row = "";
+    }
+    return map;
+  }
+
+  var firstSeatLabel = 1;
+
+  function loadMap() {
+    firstSeatLabel = 1;
+    $('#wrapper').html('<div id="seat-map"></div>');
+    var $map = $('#cmbbxMaps');
+    var values = $map.val().split("|");
+    var rawMap = getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
+    var sc = $('#seat-map').seatCharts({
+      showLabel: false,
+      map: rawMap,
+      seats: {
+        f: {
+          classes: 'first-class'
+        }
+      },
+      naming: {
+        top: false,
+        getLabel: function (character, row, column) {
+          return firstSeatLabel++;
+        }
+      },
+      click: function () {
+        $('#txtfldTag').val($('#hddnProjectTag').val());
+        $('#hddnSelectedSeat').val(this.settings.id);
+        $('#aShowModal').trigger("click");
+        return this.style();
+      },
+      focus: function () {
+        return this.style();
+      }
+    });
+  }
+
+  $('#bttnAcceptModal').click(function () {
+    var number = $('#txtflNumber').val();
+    if (number === '') {
+      alert("El valor del asiento no puede ser vacío.")
+      return;
+    }
+    var fijo = $('#chckbxFixed').prop('checked');
+    var seat_id = '#' + $('#hddnSelectedSeat').val();
+    var tag = $('#txtfldTag').val();
+    var seat_name = tag + number;
+    $(seat_id).html(seat_name).css("width", "50px").removeClass('available');
+    if (fijo) {
+      $(seat_id).addClass('unavailable');
+    } else {
+      $(seat_id).addClass('selected');
+    }
+    $('#txtflNumber').val("");
+    $('#aCloseModal').trigger("click");
+  });
+
+  $('#bttnCancelModal').click(function () {
+    $('#aCloseModal').trigger("click");
+  });
+</script>
