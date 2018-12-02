@@ -1,7 +1,26 @@
 <h1>Administrador</h1>
 
-<ul>
-  <li><%= link_to "Ver Mapas", show_map_path %></li>
-  <li><%= link_to "Crear Mapas", create_map_path %></li>
-  <li><%= link_to "Editar Mapas", edits_map_path %></li>
-</ul>
+<section>
+  <h3 style="font-weight: normal;">Projectos</h3>
+  <ul>
+    <li><%= link_to "Ver Projectos", showproject_path %></li>
+    <li><%= link_to "Crear Projectos", createproject_path %></li>
+    <li><%= link_to "Editar Projectos", editproject_path %></li>
+  </ul>
+</section>
+
+<section>
+  <h3 style="font-weight: normal;">Mapas</h3>
+  <ul>
+    <li><%= link_to "Ver Mapas", showmap_path %></li>
+    <li><%= link_to "Crear Mapas", createmap_path %></li>
+    <li><%= link_to "Editar Mapas", editmap_path %></li>
+  </ul>
+</section>
+
+<section>
+  <h3 style="font-weight: normal;">Puestos</h3>
+  <ul>
+    <li><%= link_to "Marcar Puestos", markseats_path %></li>
+  </ul>
+</section>
