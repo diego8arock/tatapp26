@@ -5,88 +5,119 @@
 <%= link_to 'Volver', admin_index_path %>
 
 <%= form_with(model: @map, local: true) do |form| %>
-<p>
-  <%= form.select "cmbbxMaps", @maps.collect { |m| [ m.name, m.seats + "|" + m.height.to_s + "|" + m.width.to_s + "|" + m.seats_total.to_s ] } %>
-</p>
+<table>
+  <tr>
+    <td>Projecto</td>
+    <td><%= form.select "cmbbxProjects", Project.all.collect { |p| [ p.name, p.id ] } %></td>
+  </tr>
+  <tr>
+    <td>Mapa</td>
+    <td>
+      <%= form.select "cmbbxMaps", Map.where(project_id: Project.first(1)).collect { |m| [ m.name, m.seats + "|" + m.height.to_s + "|" + m.width.to_s + "|" + m.seats_total.to_s ] } %>
+    </td>
+  </tr>
+</table>
 
 <div id="wrapper">
   <div id="seat-map"></div>
 </div>
+<% end %>
 
 <style>
-  div.seatCharts-seat.focused {
-  	background-color: #E6CAC4 !important;
-  }
+div.seatCharts-seat.focused {
+  background-color: #E6CAC4 !important;
+}
 </style>
 
 <script type="text/javascript">
+// jQUery calls
+$(document).ready(function () {
+  loadMap();
+});
 
- var total = 0;
+$('#cmbbxMaps').change(function () {
+  loadMap();
+});
 
-  function getRawMap(number, y, x) {
-    var number_arr = number.split(",");
-    var map = [y]
-      var i,
-        j;
-      var row = "";
-      var cell;
-      for (i = 0; i < y; i++) {
-        for (j = 0; j < x; j++) {
-          cell = i + "_" + j;
-          row += number_arr.indexOf(cell) == -1
-            ? "_"
-            : "f";
-        }
-        map[i] = row;
-        row = "";
+$('#cmbbxProjects').change(function () {
+  var project_id = $(this).val();
+  $.ajax({
+    url: "/maps/show",
+    method: "GET",
+    dataType: "json",
+    data: {
+      project_id: project_id
+    },
+    error: function (xhr, status, error) {
+      console.error('AJAX Esrror: ' + status + error);
+    },
+    success: function (response) {
+      var maps = response["maps"];
+      $('#cmbbxMaps').find('option').remove().end();
+      for (var i = 0; i < maps.length; i++) {
+        $('#cmbbxMaps').append('<option value="' + maps[i]["seats"] + "|" + maps[i]["height"] + "|" + maps[i]["width"] + "|" + maps[i]["seats_total"] + '">' + maps[i]["name"] + '</option>');
       }
-      return map;
+      loadMap();
     }
+  });
+});
 
-    var firstSeatLabel = 1;
+//JS functions and variables
+var total = 0;
 
-    function loadMap() {
-      firstSeatLabel = 1;
-      $('#wrapper').html('<div id="seat-map"></div>');
-      console.log(total);
-      var $map = $('#cmbbxMaps');
-      var values = $map.val().split("|");
-      var rawMap = getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
-      var sc = $('#seat-map').seatCharts({
-        map: rawMap,
-        seats: {
-          f: {
-            classes: 'first-class'
-          }
-        },
-        naming: {
-          top: false,
-          getLabel: function (character, row, column) {
-            return firstSeatLabel++;
-          }
-        },
-        click: function () {
-          if (this.status() == 'available') {
-            // return  sc.find('selected').length == 1 ? 'available' : 'selected';
-            return 'available';
-          } else if (this.status() == 'selected') {
-            return 'available';
-          } else if (this.status() == 'unavailable') {
-            return 'unavailable';
-          } else {
-            return this.style();
-          }
+function getRawMap(number, y, x) {
+  var number_arr = number.split(",");
+  var map = [y]
+    var i,
+      j;
+    var row = "";
+    var cell;
+    for (i = 0; i < y; i++) {
+      for (j = 0; j < x; j++) {
+        cell = i + "_" + j;
+        row += number_arr.indexOf(cell) == -1
+          ? "_"
+          : "f";
+      }
+      map[i] = row;
+      row = "";
+    }
+    return map;
+  }
+
+  var firstSeatLabel = 1;
+
+  function loadMap() {
+    firstSeatLabel = 1;
+    $('#wrapper').html('<div id="seat-map"></div>');
+    var $map = $('#cmbbxMaps');
+    var values = $map.val().split("|");
+    var rawMap = getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
+    var sc = $('#seat-map').seatCharts({
+      map: rawMap,
+      seats: {
+        f: {
+          classes: 'first-class'
         }
-      });
-    }
-
-    $(document).ready(function () {
-      loadMap();
+      },
+      naming: {
+        top: false,
+        getLabel: function (character, row, column) {
+          return firstSeatLabel++;
+        }
+      },
+      click: function () {
+        if (this.status() == 'available') {
+          // return  sc.find('selected').length == 1 ? 'available' : 'selected';
+          return 'available';
+        } else if (this.status() == 'selected') {
+          return 'available';
+        } else if (this.status() == 'unavailable') {
+          return 'unavailable';
+        } else {
+          return this.style();
+        }
+      }
     });
-
-    $('#cmbbxMaps').change(function () {
-      loadMap();
-    });
+  }
 </script>
-
-<% end %>
