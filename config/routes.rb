@@ -9,18 +9,21 @@ Rails.application.routes.draw do
     resources :seats
   end
   resources :admin
+  resources :assignments
+  resources :employees
 
   # @view/home/index.html.erb
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
 
-  resources :assignments
-
-  resources :employees
-
   #@view/admin/index.html.erb
-  get 'show_map', to: 'maps#show', as: 'show_map'
-  get 'create_map', to: 'maps#new', as: 'create_map'
-  get 'edits_map', to: 'maps#edit', as: 'edits_map'
+  get 'showmap', to: 'maps#show', as: 'showmap'
+  get 'createmap', to: 'maps#new', as: 'createmap'
+  get 'editmap', to: 'maps#edit', as: 'editmap'
+  get 'showproject', to: 'projects#show', as: 'showproject'
+  get 'createproject', to: 'projects#new', as: 'createproject'
+  get 'editproject', to: 'projects#edit', as: 'editproject'
+  get 'markseats', to: 'seats#new', as: 'markseats'
+
 end
