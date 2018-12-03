@@ -1,10 +1,8 @@
-<p id="alert"><%= alert %></p>
-
 <h1><%= t 'login' %></h1>
 
 <%= form_tag sessions_path do |form| %>
   <div class="field">
-    <%=  t "Número de Empleado" %>
+    <%=  t 'employee.number' %>
     <%= text_field_tag :number  %>
   </div>
 

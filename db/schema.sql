@@ -61,19 +61,23 @@ CREATE TABLE `assignments` (
 DROP TABLE IF EXISTS `employees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employees` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `number` varchar(30) NOT NULL,
-  `admission_date` date NOT NULL,
-  `birthdate` date NOT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT '1',
-  `assignment_type` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'Fijo:1 o movil:2',
-  `updated_at` datetime NOT NULL,
-  `created_at` datetime NOT NULL,
+CREATE TABLE `employees`(
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `number` VARCHAR(30) NOT NULL,
+  `admission_date` DATE NOT NULL,
+  `birthdate` DATE NOT NULL,
+  `status` TINYINT(4) NOT NULL DEFAULT '1',
+  `assignment_type` TINYINT(4) NOT NULL DEFAULT '1' COMMENT 'Fijo:1 o movil:2',
+  `id_seat` INT(11) DEFAULT NULL,
+  `updated_at` DATETIME NOT NULL,
+  `created_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_number` (`number`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=16384;
+  INDEX FK_employees_seats (seat_id),
+  UNIQUE KEY `id_number` (`number`),
+  CONSTRAINT FK_employees_seats_id FOREIGN KEY (seat_id)
+  REFERENCES seats (id) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = INNODB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8 AVG_ROW_LENGTH = 16384;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

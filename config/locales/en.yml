@@ -33,8 +33,34 @@ en:
   hello: "Hello world"
   title: "Tatapp26 :: Select your seat"
   login: "Login"
+  logout: "Log out"
+  messages:
+    wellcome: "Welcome to the App26!"
+    logged_out: "Logged out!"
+    doesnt_exist: "Employee number doesn't exists"
   employee:
     number: "Employeee number"
-    date: "Admisssion date"
+    date: "Join date"
+    name: "Name"
+    birthdate: "Birthdate"
   menu:
     assignment: "Seat assignment"
+  confirmation:
+    title: "Continue to select your seat:"
+    continue: "Continue"
+    cancel: "Cancel"
+  assignment:
+    title: "Select your seat"
+    cancel: "Cancel assignment"
+    select: "Please select your seat"
+    assigned_seat: "You have the seat %{seat} assigned"
+    fixed_seat: "You have a fixed seat %{seat} assigned"
+    time_to_select: "Seconds to select seat: "
+    confirm_modal: "Confirmation"
+    assignment_canceled: "Assignment was successfully canceled. Seat : "
+    assignment_created: "Assignment was successfully created. Seat : "
+    continue: "Continue"
+    cancel: "Cancel"
+    exit: "Leave"
+  errors:
+    cancel: "Error in cancel assignment"
