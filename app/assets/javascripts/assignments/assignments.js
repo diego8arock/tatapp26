@@ -48,7 +48,14 @@ App26.AssignmentController.prototype.init = function() {
  * TODO: Ejecucion cuando se acaba el tiempo para seleccionar asiento
  */
 App26.AssignmentController.prototype.randomSelect = function() {
-  $('#seat_id').val(1);
+  var $options = $('#seat').find('option');
+  var random = 0;
+  while (random == 0) {
+    random = Math.floor(Math.random() * $options.length);
+  }
+
+  $options.eq(random).prop('selected', true);
+  $('#seat_id').val($('#seat').val());
   App26.assignment.createAssignment(null);
   return false;
 }

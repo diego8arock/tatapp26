@@ -32,9 +32,11 @@ class AssignmentsController < ApplicationController
   end
 
   def create
+    seat = Seat.find(params[:seat_id])
+    seat.update(assignment_date: Date.today)
     @assignment = Assignment.new
     @assignment.project_employee = ProjectEmployee.find(params[:project_employee])
-    @assignment.seat = Seat.find(params[:seat_id])
+    @assignment.seat = seat
     @assignment.assignment_date = Date.today
     @assignment.status = Assignment::ACTIVE
 

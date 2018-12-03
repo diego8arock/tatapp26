@@ -19,7 +19,7 @@
     <% else %>
       <span><%= t 'assignment.time_to_select' %><span id="countdownSelect"></span></span>
       <br/>
-      <select name="seat">
+      <select id="seat" name="seat">
         <option value="" ><%= t 'assignment.select' %></option>
         <% @seats.each do |seat| %>
           <option value="<%= seat.id %>"><%= seat.code %></option>
