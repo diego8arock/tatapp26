@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require app26
+//= require assignments/maps
 /**
  * Controlador del assignment
  */

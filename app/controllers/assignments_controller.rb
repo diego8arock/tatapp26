@@ -12,8 +12,9 @@ class AssignmentsController < ApplicationController
     @mobile = current_user.assignment_type == Employee::MOBILE
 
     if @mobile
-      project_employees = ProjectEmployee.where(:id_employee => current_user.id).where(:status => ProjectEmployee::ACTIVE)
+      project_employees = ProjectEmployee.includes(:project).where(:id_employee => current_user.id).where(:status => ProjectEmployee::ACTIVE)
       @project_employee = project_employees[0]
+      @map = Map.where(project: @project_employee.project).last
       assignments = Assignment.includes(:seat).where("id_project_employee IN (?)",project_employees.map(&:id) )
                                 .where(:status => Assignment::ACTIVE)
                                 .where(:assignment_date => Date.today)
@@ -33,7 +34,8 @@ class AssignmentsController < ApplicationController
 
   def create
     seat = Seat.find(params[:seat_id])
-    seat.update(assignment_date: Date.today)
+    seat.assignment_date = Date.today
+    seat.save!
     @assignment = Assignment.new
     @assignment.project_employee = ProjectEmployee.find(params[:project_employee])
     @assignment.seat = seat
@@ -55,6 +57,9 @@ class AssignmentsController < ApplicationController
     begin
       assignment = Assignment.find(params[:id])
       assignment.update(status: Assignment::INACTIVE)
+      seat = assignment.seat
+      seat.assignment_date = nil
+      seat.save!
       respond_to do |format|
         format.html { render :new }
         format.json { render(json: assignment, :include => {:seat => {:only => :code}}, :except => [:created_at, :updated_at] ) }

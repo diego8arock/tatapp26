@@ -5,12 +5,11 @@ Rails.application.routes.draw do
   resources :users
   resources :maps
   resources :sessions, only: [:show, :edit, :new, :create, :destroy]
-  resources :projects do
-    resources :seats
-  end
+  resources :projects
   resources :admin
   resources :assignments
   resources :employees
+  resources :seats
 
   # @view/home/index.html.erb
   get 'signup', to: 'users#new', as: 'signup'
