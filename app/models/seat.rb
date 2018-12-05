@@ -1,5 +1,5 @@
 class Seat < ApplicationRecord
-  belongs_to :project
+
 
 
     ACTIVE = 1

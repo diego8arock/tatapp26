@@ -14,7 +14,37 @@ class SeatsController < ApplicationController
 
   # GET /seats/new
   def new
-    @seat = Seat.new
+    if params[:actionToDo].present?
+      case params[:actionToDo]
+      when 'search'
+        # Buscar el asiento sin html_id
+        @vacio = Seat.where(id_project: params[:project_id], id_map: params[:map_id], code: params[:code]).empty?
+        if @vacio
+          @seat = Seat.where(id_project: params[:project_id], id_map: params[:map_id], id_html: params[:html_id]).first
+        else
+          @seat = "El asiento ya existe en otra posición con el mismo nombre."
+        end
+      when 'insert'
+        # Insertar nuevo asiento
+        @seat = Seat.new(id_project: params[:project_id], id_map: params[:map_id], id_html: params[:html_id], code: params[:code])
+        @seat.save
+      when 'update'
+        # Actualizar el asiento
+        @seat = Seat.find(params[:id])
+        @seat.update(id_project: params[:project_id], id_map: params[:map_id], id_html: params[:html_id], code: params[:code])
+      when 'map'
+        @seat = Seat.where(id_project: params[:project_id], id_map: params[:map_id])
+      end
+      if request.xhr?
+        respond_to do |format|
+          format.json {
+            render json: {seat: @seat}
+          }
+        end
+      end
+    else
+      @seat = Seat.new
+    end
   end
 
   # GET /seats/1/edit

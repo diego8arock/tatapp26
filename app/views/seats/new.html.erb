@@ -14,12 +14,14 @@
   <tr>
     <td>Mapa</td>
     <td>
-      <%= form.select "cmbbxMaps", Map.where(project_id: Project.first(1)).collect { |m| [ m.name, m.seats + "|" + m.height.to_s + "|" + m.width.to_s + "|" + m.seats_total.to_s ] } %>
+      <%= form.select "cmbbxMaps", Map.where(project_id: Project.first(1)).collect { |m| [ m.name, m.seats + "|" + m.height.to_s + "|" + m.width.to_s + "|" + m.seats_total.to_s + "|" + m.id.to_s] } %>
     </td>
   </tr>
 </table>
 
 <%= form.hidden_field "hddnProjectTag"%>
+<%= form.hidden_field :project_id, id:"hddnProjectId"%>
+<%= form.hidden_field :map_id, id:"hddnMapId"%>
 <input type="hidden" id="hddnSelectedSeat">
 
 <!-- Show Model -->
@@ -60,8 +62,12 @@ div.seatCharts-seat.focused {
 <script type="text/javascript">
 // jQUery calls
 $(document).ready(function () {
-  var project_tag = $('#cmbbxProjects').val().split("|")[1];
+  var project_tag = splitValue($('#cmbbxProjects'), 1);
+  var project_id = splitValue($('#cmbbxProjects'), 0);
+  var map_id = splitValue($('#cmbbxMaps'), 4);
   $('#hddnProjectTag').val(project_tag);
+  $('#hddnProjectId').val(project_id);
+  $('#hddnMapId').val(map_id);
   $("#txtflNumber").keydown(function (e) {
     textFieldOnlyNumbers(e);
   });
@@ -69,12 +75,16 @@ $(document).ready(function () {
 });
 
 $('#cmbbxMaps').change(function () {
+  $('#hddnMapId').val(splitValue($(this), 4));
   loadMap();
 });
 
 $('#cmbbxProjects').change(function () {
-  var project_id = $(this).val().split("|")[0];
-  $('#hddnProjectTag').val($(this).val().split("|")[1]);
+  var project_id = splitValue($(this), 0);
+  var map_id = splitValue($('#cmbbxProjects'), 4);
+  $('#hddnProjectTag').val(splitValue($(this), 1));
+  $('#hddnProjectId').val(project_id);
+  $('#hddnMapId').val(map_id);
   $.ajax({
     url: "/maps/show",
     method: "GET",
@@ -142,14 +152,53 @@ function getRawMap(number, y, x) {
         }
       },
       click: function () {
-        $('#txtfldTag').val($('#hddnProjectTag').val());
+        var tag = $('#hddnProjectTag').val();
+        $('#txtfldTag').val(tag);
         $('#hddnSelectedSeat').val(this.settings.id);
+        var number = $('#' + this.settings.id).html().replace(tag, '');
+        $('#txtflNumber').val(number);
         $('#aShowModal').trigger("click");
         return this.style();
       },
       focus: function () {
         return this.style();
       }
+    });
+
+    var project_id = $('#hddnProjectId').val();
+    var map_id = $('#hddnMapId').val();
+    var seats;
+    $.when($.ajax({
+      url: "/seats/new",
+      method: "GET",
+      dataType: "json",
+      data: {
+        actionToDo: 'map',
+        project_id: project_id,
+        map_id: map_id
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX Error: ' + status + error);
+      },
+      success: function (response) {
+        seats = response["seat"];
+      }
+    })).then(function () {
+
+      for (var i = 0; i < seats.length; i++) {
+          var html_id = seats[i]["id_html"];
+          var code = seats[i]["code"];
+          var fijo = false;
+          var html_id_jq = '#' + html_id;
+          $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+          $(html_id_jq).addClass(
+            fijo
+              ? 'unavailable'
+              : 'selected'
+          );
+          //TODO FIXED
+      }
+
     });
   }
 
@@ -159,16 +208,79 @@ function getRawMap(number, y, x) {
       alert("El valor del asiento no puede ser vacío.")
       return;
     }
+
     var fijo = $('#chckbxFixed').prop('checked');
-    var seat_id = '#' + $('#hddnSelectedSeat').val();
+    var html_id = $('#hddnSelectedSeat').val();
     var tag = $('#txtfldTag').val();
-    var seat_name = tag + number;
-    $(seat_id).html(seat_name).css("width", "50px").removeClass('available');
-    if (fijo) {
-      $(seat_id).addClass('unavailable');
-    } else {
-      $(seat_id).addClass('selected');
-    }
+    var code = tag + number;
+    var project_id = $('#hddnProjectId').val();
+    var map_id = $('#hddnMapId').val();
+
+    var actionToDo = 'search';
+    var seat;
+    $.when($.ajax({
+      url: "/seats/new",
+      method: "GET",
+      dataType: "json",
+      data: {
+        actionToDo: actionToDo,
+        project_id: project_id,
+        map_id: map_id,
+        html_id: html_id,
+        code: code
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX Error: ' + status + error);
+      },
+      success: function (response) {
+        seat = response["seat"];
+      }
+    })).then(function () {
+      console.log(seat);
+
+      if (typeof seat == "string") {
+        alert(seat);
+        return;
+      }
+
+      var html_id_jq = '#' + html_id;
+      $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+      $(html_id_jq).addClass(
+        fijo
+          ? 'unavailable'
+          : 'selected'
+      );
+
+      actionToDo = seat == null
+        ? 'insert'
+        : 'update';
+
+      var id = seat == null
+        ? -1
+        : seat["id"];
+
+      console.log(actionToDo);
+      $.ajax({
+        url: "/seats/new",
+        method: "GET",
+        dataType: "json",
+        data: {
+          actionToDo: actionToDo,
+          project_id: project_id,
+          map_id: map_id,
+          html_id: html_id,
+          code: code,
+          id: id
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error: ' + status + error);
+        },
+        success: function (response) {
+          console.log(response);
+        }
+      });
+    });
+
     $('#txtflNumber').val("");
     $('#aCloseModal').trigger("click");
   });

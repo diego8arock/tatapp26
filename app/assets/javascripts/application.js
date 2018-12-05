@@ -37,3 +37,7 @@ function randomNumberGenerator() {
     var randomnumber = Math.floor(Math.random() * (maxNumber + 1) + minNumber); // Generates random number
     return randomnumber;
 }
+
+function splitValue(combobox,position){
+  return combobox.val().split("|")[position];
+}

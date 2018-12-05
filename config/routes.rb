@@ -5,9 +5,8 @@ Rails.application.routes.draw do
   resources :users
   resources :maps
   resources :sessions, only: [:show, :edit, :new, :create, :destroy]
-  resources :projects do
-    resources :seats
-  end
+  resources :projects
+  resources :seats
   resources :admin
   resources :assignments
   resources :employees
