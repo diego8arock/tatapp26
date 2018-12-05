@@ -1,6 +1,5 @@
 <%= stylesheet_link_tag "jquery.seat-charts" %>
 <%= stylesheet_link_tag "style" %>
-<%= stylesheet_link_tag "jquery.modal.min" %>
 
 <h1>Marcar Asientos</h1>
 <%= link_to 'Volver', admin_index_path %>
@@ -24,29 +23,36 @@
 <%= form.hidden_field :map_id, id:"hddnMapId"%>
 <input type="hidden" id="hddnSelectedSeat">
 
-<!-- Show Model -->
-<div id="ex1" class="modal">
-
-  <table>
-    <tr>
-      <th>Acrónimo</th>
-      <th>Número</th>
-    </tr>
-    <tr>
-      <td><input type="text" id="txtfldTag" disabled="disabled"></td>
-      <td><input type="text" id="txtflNumber"></td>
-      <td>
-        <label for="chckbxFixed">Fijo</label><input type="checkbox" id="chckbxFixed" title="Fijo"></td>
-    </tr>
-    <tr>
-      <td><input type="button" id="bttnAcceptModal" value="Aceptar"></td>
-      <td><input type="button" id="bttnCancelModal" value="Cancelar"></td>
-    </tr>
-  </table>
-
-  <a style="display: none;" id="aCloseModal" href="#ex1" rel="modal:close"></a>
+<div id="seatModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Crear Puesto</h4>
+      </div>
+      <div class="modal-body">
+        <table>
+          <tr>
+            <th>Acrónimo</th>
+            <th>Número</th>
+          </tr>
+          <tr>
+            <td><input type="text" id="txtfldTag" disabled="disabled"></td>
+            <td><input type="text" id="txtflNumber"></td>
+            <td>
+              <label for="chckbxFixed">Fijo</label><input type="checkbox" id="chckbxFixed" title="Fijo"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="bttnAcceptModal">Aceptar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>
-<a style="display: none;" id="aShowModal" href="#ex1" rel="modal:open"></a>
+
+<button type="button" style="display: none;" data-toggle="modal" data-target="#seatModal" id="bttnShowModal">EMTY</button>
 
 <div id="wrapper">
   <div id="seat-map"></div>
@@ -157,7 +163,7 @@ function getRawMap(number, y, x) {
         $('#hddnSelectedSeat').val(this.settings.id);
         var number = $('#' + this.settings.id).html().replace(tag, '');
         $('#txtflNumber').val(number);
-        $('#aShowModal').trigger("click");
+        $('#bttnShowModal').trigger("click");
         return this.style();
       },
       focus: function () {
@@ -186,17 +192,17 @@ function getRawMap(number, y, x) {
     })).then(function () {
 
       for (var i = 0; i < seats.length; i++) {
-          var html_id = seats[i]["id_html"];
-          var code = seats[i]["code"];
-          var fijo = false;
-          var html_id_jq = '#' + html_id;
-          $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
-          $(html_id_jq).addClass(
-            fijo
-              ? 'unavailable'
-              : 'selected'
-          );
-          //TODO FIXED
+        var html_id = seats[i]["id_html"];
+        var code = seats[i]["code"];
+        var fijo = false;
+        var html_id_jq = '#' + html_id;
+        $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+        $(html_id_jq).addClass(
+          fijo
+            ? 'unavailable'
+            : 'available'
+        );
+        //TODO FIXED
       }
 
     });
@@ -248,7 +254,7 @@ function getRawMap(number, y, x) {
       $(html_id_jq).addClass(
         fijo
           ? 'unavailable'
-          : 'selected'
+          : 'available'
       );
 
       actionToDo = seat == null
@@ -282,10 +288,6 @@ function getRawMap(number, y, x) {
     });
 
     $('#txtflNumber').val("");
-    $('#aCloseModal').trigger("click");
-  });
-
-  $('#bttnCancelModal').click(function () {
-    $('#aCloseModal').trigger("click");
+    $('#seatModal').modal('toggle');
   });
 </script>
