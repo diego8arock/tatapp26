@@ -62,5 +62,8 @@ en:
     continue: "Continue"
     cancel: "Cancel"
     exit: "Leave"
+    map_modal: "General map"
+    close: "Close"
+    see_map: "See map"
   errors:
     cancel: "Error in cancel assignment"

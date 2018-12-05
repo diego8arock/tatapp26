@@ -6,9 +6,9 @@
   <thead>
     <tr>
       <th>Id</th>
-      <th>Name</th>
+      <th>Code</th>
       <th>Status</th>
-      <th>Assignmentdate</th>
+      <th>Assignment date</th>
       <th>Project</th>
       <th colspan="3"></th>
     </tr>
@@ -18,9 +18,9 @@
     <% @seats.each do |seat| %>
       <tr>
         <td><%= seat.id %></td>
-        <td><%= seat.name %></td>
+        <td><%= seat.code %></td>
         <td><%= seat.status %></td>
-        <td><%= seat.assignmentDate %></td>
+        <td><%= seat.assignment_date %></td>
         <td><%= seat.project %></td>
         <td><%= link_to 'Show', seat %></td>
         <td><%= link_to 'Edit', edit_seat_path(seat) %></td>

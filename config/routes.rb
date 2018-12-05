@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :admin
   resources :assignments
   resources :employees
+  resources :seats
 
   # @view/home/index.html.erb
   get 'signup', to: 'users#new', as: 'signup'

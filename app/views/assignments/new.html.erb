@@ -1,13 +1,22 @@
 <% content_for :title do %>
   <%= t 'title' %>
 <% end %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "jquery.seat-charts", "style" %>
+  <%= javascript_include_tag 'jquery.seat-charts.min' %>
+<% end %>
 <h2><%= t 'assignment.title' %></h2>
+<br/>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#map_modal">
+  <%= t 'assignment.see_map' %>
+</button>
+<br/>
 
 <%= form_tag(assignments_path, :method => "post", :id => "assignment_form") do %>
   <%= hidden_field_tag 'seat_id'%>
   <% if @mobile %>
     <%= hidden_field_tag 'project_employee', @project_employee.id %>
-    <img src="/assets/plano-oficina.jpg" class="rounded mx-auto d-block" alt="Map">
+    <div id="seat-map" style="    float: none;" data-map="<%= @map.to_json %>"></div>
     <br/>
     <% if @assigned %>
       <%= hidden_field_tag 'assignment_id', @assignment.id %>
@@ -33,8 +42,6 @@
       </div>
     <% end %>
   <% else %>
-    <img src="/assets/plano-oficina.jpg" class="rounded mx-auto d-block" alt="Map">
-    <br/>
     <span><%= t 'assignment.fixed_seat', {:seat => @seat.code} %></span>
   <% end %>
 
@@ -74,6 +81,25 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><%= t 'assignment.exit' %></button>
         <button type="button" class="btn btn-primary" id="continue_btn"><%= t 'assignment.continue' %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="map_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= t 'assignment.map_modal' %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="/assets/plano-oficina.jpg" class="rounded mx-auto d-block" alt="Map">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><%= t 'assignment.close' %></button>
       </div>
     </div>
   </div>
