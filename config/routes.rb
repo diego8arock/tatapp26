@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get 'createproject', to: 'projects#new', as: 'createproject'
   get 'editproject', to: 'projects#edit', as: 'editproject'
   get 'markseats', to: 'seats#new', as: 'markseats'
+  get 'assignseats', to: 'seats#assign', as: 'assignseats'
 
   match "/assignment/:id/cancel" => "assignments#cancel", :via => :post
 

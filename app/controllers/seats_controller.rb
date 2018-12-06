@@ -51,6 +51,21 @@ class SeatsController < ApplicationController
   def edit
   end
 
+  def assign
+    logger.debug "Assign get method"
+    if params[:id_project].present?
+      @project = Project.find( params[:id_project])
+      @employess = @project.employees
+      if request.xhr?
+        respond_to do |format|
+          format.json {
+            render json: {employess: @employess}
+          }
+        end
+      end
+    end
+  end
+
   # POST /seats
   # POST /seats.json
   def create

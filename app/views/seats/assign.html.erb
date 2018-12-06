@@ -28,19 +28,23 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Crear Puesto</h4>
+        <h4 class="modal-title">Asignar Empleado</h4>
       </div>
       <div class="modal-body">
         <table>
           <tr>
-            <th>Acrónimo</th>
-            <th>Número</th>
+            <td>
+              <label for="cmbbxEmployees">Elegir Empleado</label>
+            </td>
+            <td>
+              <select id="cmbbxEmployees"></select>
+            </td>
           </tr>
           <tr>
-            <td><input type="text" id="txtfldTag" disabled="disabled"></td>
-            <td><input type="text" id="txtflNumber"></td>
             <td>
-              <label for="chckbxFixed">Fijo</label><input type="checkbox" id="chckbxFixed" title="Fijo"></td>
+              <label for="txtfldNombreEmpleado">Nombre</label>
+            </td>
+            <td><input type="text" id="txtfldNombreEmpleado" disabled="disabled"></td>
           </tr>
         </table>
       </div>
@@ -208,86 +212,40 @@ function getRawMap(number, y, x) {
     });
   }
 
-  $('#bttnAcceptModal').click(function () {
-    var number = $('#txtflNumber').val();
-    if (number === '') {
-      alert("El valor del asiento no puede ser vacío.")
-      return;
-    }
+  $('#bttnShowModal').click(function () {
+    var id_project = $('#hddnProjectId').val();
+    var id_map = $('#hddnMapId').val();
 
-    var fijo = $('#chckbxFixed').prop('checked');
-    var html_id = $('#hddnSelectedSeat').val();
-    var tag = $('#txtfldTag').val();
-    var code = tag + number;
-    var project_id = $('#hddnProjectId').val();
-    var map_id = $('#hddnMapId').val();
-
-    var actionToDo = 'search';
-    var seat;
-    $.when($.ajax({
-      url: "/seats/new",
+    $.ajax({
+      url: "/assignseats",
       method: "GET",
       dataType: "json",
       data: {
-        actionToDo: actionToDo,
-        project_id: project_id,
-        map_id: map_id,
-        html_id: html_id,
-        code: code
+        id_project: id_project,
+        id_map: id_map
       },
       error: function (xhr, status, error) {
         console.error('AJAX Error: ' + status + error);
       },
       success: function (response) {
-        seat = response["seat"];
-      }
-    })).then(function () {
-      console.log(seat);
-
-      if (typeof seat == "string") {
-        alert(seat);
-        return;
-      }
-
-      var html_id_jq = '#' + html_id;
-      $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
-      $(html_id_jq).addClass(
-        fijo
-          ? 'unavailable'
-          : 'available'
-      );
-
-      actionToDo = seat == null
-        ? 'insert'
-        : 'update';
-
-      var id = seat == null
-        ? -1
-        : seat["id"];
-
-      console.log(actionToDo);
-      $.ajax({
-        url: "/seats/new",
-        method: "GET",
-        dataType: "json",
-        data: {
-          actionToDo: actionToDo,
-          project_id: project_id,
-          map_id: map_id,
-          html_id: html_id,
-          code: code,
-          id: id
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX Error: ' + status + error);
-        },
-        success: function (response) {
-          console.log(response);
+        console.log(response);
+        var emp = response["employess"];
+        $('#cmbbxEmployees').find('option').remove().end();
+        for (var i = 0; i < emp.length; i++) {
+          $('#cmbbxEmployees').append('<option value="' + emp[i]["id"] + "|" + emp[i]["name"] + '">' + emp[i]["number"] + '</option>');
         }
-      });
+        $('#txtfldNombreEmpleado').val(emp[0]["name"]);
+      }
     });
 
-    $('#txtflNumber').val("");
+  });
+
+  $('#bttnAcceptModal').click(function () {
+
+    var employee_id = splitValue($('#cmbbxEmployees'),0);
+    var id_project = $('#hddnProjectId').val();
+
+
     $('#seatModal').modal('toggle');
   });
 </script>
