@@ -5,3 +5,21 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Role.create(name: :admin)
+Role.create(name: :employee)
+user1 = User.create(username: 'admin',
+								    password: 'password1234',
+								    password_confirmation: 'password1234')
+user1.add_role(:admin)
+user2 = User.create(username: '1',
+								    password: '19841006',
+								    password_confirmation: '19841006')
+user2.add_role(:employee)
+user3 = User.create(username: '2',
+								    password: '19841006',
+								    password_confirmation: '19841006')
+user3.add_role(:employee)
+user3 = User.create(username: '3',
+								    password: '19841006',
+								    password_confirmation: '19841006')
+user3.add_role(:employee)

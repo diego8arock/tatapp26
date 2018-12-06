@@ -1,5 +1,6 @@
 class AssignmentsController < ApplicationController
-  before_action :login_required
+  before_action :authenticate_user!
+  before_action :employee_required
   layout 'assignment'
 
   def index
@@ -7,12 +8,16 @@ class AssignmentsController < ApplicationController
 
   # GET /asignments/new
   def new
-    @seats = []
+    project_employees = ProjectEmployee.includes(:project).where(:id_employee => current_user.employee.id).where(:status => ProjectEmployee::ACTIVE)
+    @available_seats = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
+                  .where("id_project IN (?)",project_employees.map(&:id_project) )
+                  .where(:status => Seat::ACTIVE)
+    @unavailable_seats = Seat.where("(assignment_date = ? OR status <> ?)", Date.today, Seat::ACTIVE)
+                  .where("id_project IN (?)",project_employees.map(&:id_project) )
     @seat = nil
-    @mobile = current_user.assignment_type == Employee::MOBILE
+    @mobile = current_user.employee.assignment_type == Employee::MOBILE
 
     if @mobile
-      project_employees = ProjectEmployee.includes(:project).where(:id_employee => current_user.id).where(:status => ProjectEmployee::ACTIVE)
       @project_employee = project_employees[0]
       @map = Map.where(project: @project_employee.project).last
       assignments = Assignment.includes(:seat).where("id_project_employee IN (?)",project_employees.map(&:id) )
@@ -21,14 +26,13 @@ class AssignmentsController < ApplicationController
       @assigned = !assignments.empty?
       if @assigned
         @assignment = assignments[0]
+        @seat = @assignment.seat
+        #@unavailable_seats.delete_at(@unavailable_seats.index(@seat))
       else
-        @seats = Seat.where("assignment_date IS NULL OR assignment_date <> ?", Date.today)
-                      .where("id_project IN (?)",project_employees.map(&:id_project) )
-                      .where(:status => Seat::ACTIVE)
         @assignment = Assignment.new
       end
     else
-      @seat = Seat.find(current_user.id_seat)
+      @seat = Seat.find(current_user.employee.id_seat)
     end
   end
 

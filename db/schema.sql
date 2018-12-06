@@ -191,12 +191,12 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `employee_number` varchar(255) DEFAULT NULL,
-  `password_digest` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `encrypted_password` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `index_users_on_employee_number` (`employee_number`)
+  UNIQUE KEY `index_users_on_username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

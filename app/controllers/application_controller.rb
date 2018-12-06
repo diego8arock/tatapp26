@@ -1,15 +1,36 @@
 class ApplicationController < ActionController::Base
-	helper_method :current_user
-
-	def login_required
-		redirect_to root_url if current_user.blank?
+  respond_to :html, :json
+  protect_from_forgery with: :exception
+  before_action :configure_permitted_parameters, if: :devise_controller?## Exception Handling
+  class AccessDenied < StandardError
   end
 
-  def current_user
-    if session[:employee_id]
-      @current_user ||= Employee.find(session[:employee_id])
+  rescue_from AccessDenied, :with => :access_denied
+
+  def access_denied(exception)
+    flash[:notice] = I18n.t "errors.access_denied"
+    sign_out_and_redirect(current_user)
+  end
+
+  def admin_required
+    raise AccessDenied unless current_user.is_admin?
+  end
+
+  def employee_required
+    raise AccessDenied unless current_user.is_employee?
+  end
+
+  protected
+  def after_sign_in_path_for(resource)
+    if resource.is_employee?
+      confirmation_path
     else
-      @current_user = nil
+      "/admin"
     end
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :password])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :password, :current_password])
   end
 end

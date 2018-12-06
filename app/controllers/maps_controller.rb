@@ -2,6 +2,8 @@ class MapsController < ApplicationController
   before_action :set_map, only: [:edit, :update, :destroy]
   before_action :set_maps, only: [:show]
   before_action :set_maps_by_first_project, only: [:show]
+  before_action :authenticate_user!
+  before_action :admin_required
 
   def new
     @map = Map.new

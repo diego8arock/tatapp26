@@ -44,7 +44,8 @@ en:
     name: "Name"
     birthdate: "Birthdate"
   menu:
-    assignment: "Seat assignment"
+    assignments: "Assignments"
+    seat_assignment: "Seat assignment"
   confirmation:
     title: "Continue to select your seat:"
     continue: "Continue"
@@ -67,3 +68,4 @@ en:
     see_map: "See map"
   errors:
     cancel: "Error in cancel assignment"
+    access_denied: "You are not authorized to access this page"

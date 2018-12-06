@@ -1,0 +1,26 @@
+<p>
+  <%= t 'confirmation.title' %>
+</p>
+
+<p>
+  <b><%= t 'employee.name' %>:</b>
+  <%= current_user.employee.name %>
+</p>
+
+<p>
+  <b><%= t 'employee.number' %>:</b>
+  <%= current_user.employee.number %>
+</p>
+
+<p>
+  <b><%= t 'employee.date' %>:</b>
+  <%= current_user.employee.admission_date %>
+</p>
+
+<p>
+  <b><%= t 'employee.birthdate' %>:</b>
+  <%= current_user.employee.birthdate %>
+</p>
+
+<%= link_to t('confirmation.continue'), edit_session_path(current_user.employee.id) %> |
+<%= link_to t('confirmation.cancel'), destroy_user_session_path, method: :delete %>

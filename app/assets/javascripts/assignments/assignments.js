@@ -29,11 +29,11 @@ App26.AssignmentController.prototype.init = function() {
 
   //Modal confirma asignacion
   $('body').on('hidden.bs.modal', '#confirm_select_modal', function() {
-    document.location.href = '/logout';
+    document.location.href = '/users/sign_out';
   });
 
   $('body').on('hidden.bs.modal', '#confirm_cancel_modal', function() {
-    document.location.href = '/logout';
+    document.location.href = '/users/sign_out';
   });
 
   $('#confirm_cancel_modal').on('click', '#continue_btn', function() {
@@ -49,14 +49,14 @@ App26.AssignmentController.prototype.init = function() {
  * TODO: Ejecucion cuando se acaba el tiempo para seleccionar asiento
  */
 App26.AssignmentController.prototype.randomSelect = function() {
-  var $options = $('#seat').find('option');
-  var random = 0;
-  while (random == 0) {
-    random = Math.floor(Math.random() * $options.length);
+  var available_seats = $('#seat_map').data("available_seats");
+  var random = -1;
+  while (random < 0) {
+    random = Math.floor(Math.random() * available_seats.length);
   }
-
-  $options.eq(random).prop('selected', true);
-  $('#seat_id').val($('#seat').val());
+  $('#seat_id').val(available_seats[random]["id"]);
+  var selected_seats = [ available_seats[random]];
+  App26.map.setTag(selected_seats, 'selected');
   App26.assignment.createAssignment(null);
   return false;
 }

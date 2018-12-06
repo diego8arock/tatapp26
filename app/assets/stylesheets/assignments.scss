@@ -1,0 +1,41 @@
+// Place all the styles related to the Assignments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+//= require_self
+
+ @import "bootstrap_and_overrides.scss";
+ @import "variables.scss";
+
+
+  /* !General */
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: $main_font;
+    font-weight: 100;
+    background: #f8fafd;
+    padding: 0;
+  }
+
+ /* !Footer */
+
+ footer .navbar .nav > li > a {
+   font-size: 13px;
+   padding: 6px 40px 0 0;
+ }
+
+ .footer {
+   height: $footer-height - 16px;
+   padding: 10px 0 6px;
+   color: #eeeeee;
+   margin-top: 39px;
+ }
+
+ #main-container {
+  position: relative;
+  padding-top: 50px;
+  padding-bottom: 50px;
+ }

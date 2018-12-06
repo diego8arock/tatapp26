@@ -16,7 +16,11 @@
   <%= hidden_field_tag 'seat_id'%>
   <% if @mobile %>
     <%= hidden_field_tag 'project_employee', @project_employee.id %>
-    <div id="seat-map" style="    float: none;" data-map="<%= @map.to_json %>"></div>
+    <div id="seat_map" style="float: none;" data-map="<%= @map.to_json %>"
+          data-available_seats="<%= @available_seats.to_json %>"
+          data-unavailable_seats="<%= @unavailable_seats.to_json %>"
+          data-selected_seat="<%= @seat.to_json %>">
+    </div>
     <br/>
     <% if @assigned %>
       <%= hidden_field_tag 'assignment_id', @assignment.id %>
@@ -30,7 +34,7 @@
       <br/>
       <select id="seat" name="seat">
         <option value="" ><%= t 'assignment.select' %></option>
-        <% @seats.each do |seat| %>
+        <% @available_seats.each do |seat| %>
           <option value="<%= seat.id %>"><%= seat.code %></option>
         <% end %>
       </select>

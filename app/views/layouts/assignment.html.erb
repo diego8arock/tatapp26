@@ -16,29 +16,17 @@
     <%= yield(:head) %>
   </head>
   <body>
-    <div class="wrapper">
-      <header class="navbar navbar-fixed-top">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container">
-            <%= render 'layouts/navigation', :target => "_self" %>
-          </div>
-        </nav>
-      </header>
-      <div id="main" role="main">
+    <nav class="navbar navbar-inverse navbar-top navbar-fixed-top">
+      <div class="container-fluid">
         <div class="container">
-          <div class="content">
-             <div class="row-fluid">
-              <div class="span12">
-                <%= render 'layouts/messages' %>
-                <%= yield %>
-              </div>
-            </div>
-          </div>
-        </div> <!--! end of .container -->
-      </div> <!--! end of #main -->
-      <div class="push"><!--//--></div>
+          <%= render 'layouts/navigation', :target => "_self" %>
+        </div>
+      </div>
+    </nav>
+    <div id="main-container" class="container">
+      <%= render 'layouts/messages' %>
+      <%= yield %>
     </div>
-    <div id="beta"></div>
     <%= render 'layouts/footer' %>
   </body>
 </html>

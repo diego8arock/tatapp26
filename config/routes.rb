@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
 
-  root 'sessions#new'
+  root 'home#index'
 
-  resources :users
+  devise_for :users
   resources :maps
-  resources :sessions, only: [:show, :edit, :new, :create, :destroy]
+  resources :sessions, only: [:edit]
   resources :projects
   resources :seats
   resources :admin
@@ -13,9 +13,10 @@ Rails.application.routes.draw do
   resources :seats
 
   # @view/home/index.html.erb
-  get 'signup', to: 'users#new', as: 'signup'
-  get 'login', to: 'sessions#new', as: 'login'
-  get 'logout', to: 'sessions#destroy', as: 'logout'
+  # get 'signup', to: 'users#new', as: 'signup'
+  # get 'login', to: 'sessions#new', as: 'login'
+  # get 'logout', to: 'sessions#destroy', as: 'logout'
+  get 'confirmation', to: 'sessions#confirmation', as: 'confirmation'
 
   #@view/admin/index.html.erb
   get 'showmap', to: 'maps#show', as: 'showmap'
@@ -28,5 +29,6 @@ Rails.application.routes.draw do
   get 'assignseats', to: 'seats#assign', as: 'assignseats'
 
   match "/assignment/:id/cancel" => "assignments#cancel", :via => :post
+  devise_scope :user do match '/sessions/user', to: 'devise/sessions#create', via: :post end
 
 end
