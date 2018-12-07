@@ -32,12 +32,6 @@
     <% else %>
       <span><%= t 'assignment.time_to_select' %><span id="countdownSelect"></span></span>
       <br/>
-      <select id="seat" name="seat">
-        <option value="" ><%= t 'assignment.select' %></option>
-        <% @available_seats.each do |seat| %>
-          <option value="<%= seat.id %>"><%= seat.code %></option>
-        <% end %>
-      </select>
       <div class="dropdown">
         <button class="btn btn-info" type="button" id="create_assignment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <%= t 'assignment.accept' %>

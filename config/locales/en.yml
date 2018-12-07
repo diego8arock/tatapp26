@@ -61,7 +61,7 @@ en:
     assignment_canceled: "Assignment was successfully canceled. Seat : "
     assignment_created: "Assignment was successfully created. Seat : "
     continue: "Continue"
-    cancel: "Cancel"
+    cancel: "Unassign"
     exit: "Leave"
     map_modal: "General map"
     close: "Close"

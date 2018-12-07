@@ -27,7 +27,6 @@ class AssignmentsController < ApplicationController
       if @assigned
         @assignment = assignments[0]
         @seat = @assignment.seat
-        #@unavailable_seats.delete_at(@unavailable_seats.index(@seat))
       else
         @assignment = Assignment.new
       end

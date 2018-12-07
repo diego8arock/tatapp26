@@ -14,6 +14,7 @@ App26.AssignmentController= function() {
  * Funcion que inicializa los eventos del home
  */
 App26.AssignmentController.prototype.init = function() {
+  $('#error_message').addClass("hidden");
   if($("#countdownSelect").length > 0) {
     var timeleft = App26.timeToSelect;
     $("#countdownSelect").text(timeleft);
@@ -68,19 +69,26 @@ App26.AssignmentController.prototype.createAssignment = function(event) {
   if(event != null){
     event.preventDefault();
   }
-  $.ajax({
-    url: "/assignments.json",
-    data: $("#assignment_form").serialize(),
-    dataType: 'json',
-    type: 'post',
-    success: function(data) {
-      $("#selected_seat").text(data.seat.code);
-      $("#confirm_select_modal").modal('show');
-    },
-    error: function(jqXHR, textStatus, errorThrown){
-      $("#alert").text(errorThrown) ;
-    }
-  });
+
+  if($(".selected").length > 0) {
+    $('#seat_id').val($(".selected").eq(0).attr("seat_id"));
+    $.ajax({
+      url: "/assignments.json",
+      data: $("#assignment_form").serialize(),
+      dataType: 'json',
+      type: 'post',
+      success: function(data) {
+        $("#selected_seat").text(data.seat.code);
+        $("#confirm_select_modal").modal('show');
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        $("#alert").text(errorThrown) ;
+      }
+    });
+  } else {
+    $('#error_message').removeClass("hidden");
+    $('#error_message_txt').text("Please select one seat to continue");
+  }
   return false;
 }
 

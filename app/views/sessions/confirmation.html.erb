@@ -23,4 +23,4 @@
 </p>
 
 <%= link_to t('confirmation.continue'), edit_session_path(current_user.employee.id) %> |
-<%= link_to t('confirmation.cancel'), destroy_user_session_path, method: :delete %>
+<%= link_to t('confirmation.cancel'), destroy_user_session_path, method: :get %>

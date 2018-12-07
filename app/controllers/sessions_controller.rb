@@ -7,7 +7,8 @@ class SessionsController < ApplicationController
   end
 
   def edit
-    #current_user.update(password: current_user.employee.birthdate.strftime("%Y%m%d"))
+    current_user.update(password: current_user.employee.birthdate.strftime("%Y%m%d"))
+    sign_in(:user, current_user, :bypass => true)
     employee = Employee.find(params[:id])
     session[:employee_id] = employee.id
     flash[:notice] = I18n.t "messages.wellcome"
