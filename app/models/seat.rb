@@ -1,7 +1,7 @@
 class Seat < ApplicationRecord
 
-  belongs_to :project, :foreign_key => "id_project"
-  belongs_to :map, :foreign_key => "id_map"
+  belongs_to :project, :foreign_key => "project_id"
+  belongs_to :map, :foreign_key => "map_id"
   has_many :assignments
 
     ACTIVE = 1

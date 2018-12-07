@@ -20,22 +20,24 @@ class SeatsController < ApplicationController
       case params[:actionToDo]
       when 'search'
         # Buscar el asiento sin html_id
-        @vacio = Seat.where(id_project: params[:project_id], id_map: params[:map_id], code: params[:code]).empty?
+        @vacio = Seat.where(project_id: params[:project_id], map_id: params[:map_id], code: params[:code]).empty?
         if @vacio
-          @seat = Seat.where(id_project: params[:project_id], id_map: params[:map_id], id_html: params[:html_id]).first
+          @seat = Seat.where(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id]).first
         else
           @seat = "El asiento ya existe en otra posición con el mismo nombre."
         end
       when 'insert'
         # Insertar nuevo asiento
-        @seat = Seat.new(id_project: params[:project_id], id_map: params[:map_id], id_html: params[:html_id], code: params[:code])
-        @seat.save
+        @seat = Seat.new(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code])
+        if !@seat.save
+          logger.debug @seat.errors.full_messages
+        end
       when 'update'
         # Actualizar el asiento
         @seat = Seat.find(params[:id])
-        @seat.update(id_project: params[:project_id], id_map: params[:map_id], id_html: params[:html_id], code: params[:code])
+        @seat.update(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code])
       when 'map'
-        @seat = Seat.where(id_project: params[:project_id], id_map: params[:map_id])
+        @seat = Seat.where(project_id: params[:project_id], map_id: params[:map_id])
       end
       if request.xhr?
         respond_to do |format|
