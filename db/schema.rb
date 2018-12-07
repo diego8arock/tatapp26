@@ -10,61 +10,59 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_035634) do
+ActiveRecord::Schema.define(version: 2018_12_07_035344) do
 
-  create_table "assignments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=16384", force: :cascade do |t|
-    t.integer "id_project_employee", null: false
-    t.integer "id_seat", null: false
-    t.date "assignment_date", null: false
+  create_table "assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "project_employee_id", null: false
+    t.bigint "seat_id", null: false
+    t.datetime "assignment_date", null: false
+    t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", limit: 1, null: false
-    t.index ["id_project_employee"], name: "FK_assignment_project_employee"
-    t.index ["id_seat"], name: "FK_assignment_seat"
+    t.index ["project_employee_id"], name: "fk_rails_f95ea3a7da"
+    t.index ["seat_id"], name: "fk_rails_1eb99de2cc"
   end
 
-  create_table "employees", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=16384", force: :cascade do |t|
+  create_table "employees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "number", limit: 30, null: false
-    t.date "admission_date", null: false
-    t.date "birthdate", null: false
-    t.integer "status", limit: 1, default: 1, null: false
-    t.integer "assignment_type", limit: 1, default: 1, null: false, comment: "Fijo:1 o movil:2"
-    t.datetime "updated_at", null: false
+    t.datetime "admission_date", null: false
+    t.datetime "birth_date", null: false
+    t.integer "status", default: 1, null: false
+    t.integer "assignment_type", default: 1, null: false
+    t.bigint "seat_id", null: false
     t.datetime "created_at", null: false
-    t.integer "id_seat"
-    t.index ["id_seat"], name: "FK_employees_seats_id"
-    t.index ["number"], name: "id_number", unique: true
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_employees_on_number", unique: true
+    t.index ["seat_id"], name: "fk_rails_c961385dd5"
   end
 
   create_table "maps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name"
-    t.text "seats"
-    t.integer "height"
-    t.integer "width"
-    t.integer "seats_total"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "project_id", null: false
-    t.index ["project_id"], name: "fk_maps_projects_idx"
-  end
-
-  create_table "project_employees", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192", force: :cascade do |t|
-    t.integer "id_project", null: false
-    t.integer "id_employee", null: false
-    t.integer "status", limit: 1, null: false
-    t.datetime "updated_at", null: false
-    t.datetime "created_at", null: false
-    t.index ["id_employee"], name: "FK_project_employee_employee"
-    t.index ["id_project"], name: "FK_project_employee_project"
-  end
-
-  create_table "projects", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=16384", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "status", limit: 1, default: 1, null: false
+    t.text "seats"
+    t.integer "height", null: false
+    t.integer "width", null: false
+    t.integer "seats_total", null: false
+    t.bigint "project_id", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at"
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "fk_rails_a90d6cd6e2"
+  end
+
+  create_table "project_employees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "employee_id", null: false
+    t.integer "status"
+    t.index ["employee_id"], name: "fk_rails_2c35dbad4b"
+    t.index ["project_id"], name: "fk_rails_0c81f45402"
+  end
+
+  create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "status", default: 1, null: false
     t.string "tag", limit: 3, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -78,17 +76,17 @@ ActiveRecord::Schema.define(version: 2018_12_05_035634) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
-  create_table "seats", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192", force: :cascade do |t|
-    t.integer "id_project", null: false
+  create_table "seats", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "project_id", null: false
     t.string "code", limit: 10, null: false
-    t.integer "status", limit: 1, default: 1, null: false
-    t.date "assignment_date"
+    t.integer "status", default: 1, null: false
+    t.datetime "assignment_date"
+    t.bigint "map_id", null: false
+    t.string "html_id", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at"
-    t.bigint "id_map", null: false
-    t.index ["code"], name: "number", unique: true
-    t.index ["id_map"], name: "fk_seats_maps_idx"
-    t.index ["id_project"], name: "FK_seat_project"
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "fk_rails_f35d21dd46"
+    t.index ["project_id"], name: "fk_rails_93e3b7506d"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -114,12 +112,12 @@ ActiveRecord::Schema.define(version: 2018_12_05_035634) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
-  add_foreign_key "assignments", "project_employees", column: "id_project_employee", name: "FK_assignment_project_employee"
-  add_foreign_key "assignments", "seats", column: "id_seat", name: "FK_assignment_seat"
-  add_foreign_key "employees", "seats", column: "id_seat", name: "FK_employees_seats_id"
-  add_foreign_key "maps", "projects", name: "fk_maps_projects"
-  add_foreign_key "project_employees", "employees", column: "id_employee", name: "FK_project_employee_employee"
-  add_foreign_key "project_employees", "projects", column: "id_project", name: "FK_project_employee_project"
-  add_foreign_key "seats", "maps", column: "id_map", name: "fk_seats_maps"
-  add_foreign_key "seats", "projects", column: "id_project", name: "FK_seat_project"
+  add_foreign_key "assignments", "project_employees"
+  add_foreign_key "assignments", "seats"
+  add_foreign_key "employees", "seats"
+  add_foreign_key "maps", "projects"
+  add_foreign_key "project_employees", "employees"
+  add_foreign_key "project_employees", "projects"
+  add_foreign_key "seats", "maps"
+  add_foreign_key "seats", "projects"
 end
