@@ -5,6 +5,6 @@ one:
   name: MyString
   number: MyString
   admission_date: 2018-11-28
-  birthdate: 2018-11-28
+  birth_date: 2018-11-28
   status: 1
   assignment_type: 1

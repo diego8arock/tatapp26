@@ -66,7 +66,7 @@ CREATE TABLE `employees`(
   `name` VARCHAR(255) NOT NULL,
   `number` VARCHAR(30) NOT NULL,
   `admission_date` DATE NOT NULL,
-  `birthdate` DATE NOT NULL,
+  `birth_date` DATE NOT NULL,
   `status` TINYINT(4) NOT NULL DEFAULT '1',
   `assignment_type` TINYINT(4) NOT NULL DEFAULT '1' COMMENT 'Fijo:1 o movil:2',
   `id_seat` INT(11) DEFAULT NULL,

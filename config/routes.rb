@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'showmap', to: 'maps#show', as: 'showmap'
   get 'createmap', to: 'maps#new', as: 'createmap'
   get 'editmap', to: 'maps#edit', as: 'editmap'
+  get 'showprojects', to: 'projects#index', as: 'showprojects'
   get 'showproject', to: 'projects#show', as: 'showproject'
   get 'createproject', to: 'projects#new', as: 'createproject'
   get 'editproject', to: 'projects#edit', as: 'editproject'

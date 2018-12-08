@@ -34,6 +34,7 @@ en:
   title: "Tatapp26 :: Select your seat"
   login: "Login"
   logout: "Log out"
+  profile: "Profile"
   messages:
     wellcome: "Welcome to the App26!"
     logged_out: "Logged out!"
@@ -42,10 +43,24 @@ en:
     number: "Employeee number"
     date: "Join date"
     name: "Name"
-    birthdate: "Birthdate"
+    birth_date: "Birthdate"
   menu:
+    admin: "Administrator"
     assignments: "Assignments"
     seat_assignment: "Seat assignment"
+    project:
+      title: "Projects"
+      index: "See projects"
+      new: "New project"
+    seat:
+      title: "Seats"
+      check: "Check seat"
+      assign: "Asign seats"
+    map:
+      title: "Maps"
+      show: "See map"
+      new: "New map"
+      edit: "Edit map"
   confirmation:
     title: "Continue to select your seat:"
     continue: "Continue"
@@ -69,3 +84,4 @@ en:
   errors:
     cancel: "Error in cancel assignment"
     access_denied: "You are not authorized to access this page"
+    no_map: "There is no map"

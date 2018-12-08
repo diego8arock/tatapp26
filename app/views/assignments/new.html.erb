@@ -15,29 +15,31 @@
 <%= form_tag(assignments_path, :method => "post", :id => "assignment_form") do %>
   <%= hidden_field_tag 'seat_id'%>
   <% if @mobile %>
-    <%= hidden_field_tag 'project_employee', @project_employee.id %>
-    <div id="seat_map" style="float: none;" data-map="<%= @map.to_json %>"
-          data-available_seats="<%= @available_seats.to_json %>"
-          data-unavailable_seats="<%= @unavailable_seats.to_json %>"
-          data-selected_seat="<%= @seat.to_json %>">
-    </div>
-    <br/>
-    <% if @assigned %>
-      <%= hidden_field_tag 'assignment_id', @assignment.id %>
-      <span><%= t 'assignment.assigned_seat', {:seat => @assignment.seat.code} %></span>
-      <br/>
-      <button class="btn btn-info" type="button" id="cancel_assignment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <%= t 'assignment.cancel' %>
-      </button>
-    <% else %>
-      <span><%= t 'assignment.time_to_select' %><span id="countdownSelect"></span></span>
-      <br/>
-      <div class="dropdown">
-        <button class="btn btn-info" type="button" id="create_assignment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <%= t 'assignment.accept' %>
-        </button>
-        <%#= submit_tag(t('assignment.accept'), :id => "btn_create", :class => "btn btn-info", :data => {:loading_text => t('assignment.accept_loading')}) %>
+    <% if !@map.nil? %>
+      <%= hidden_field_tag 'project_employee', @project_employee.id %>
+      <div id="seat_map" style="float: none;" data-map="<%= @map.to_json %>"
+            data-available_seats="<%= @available_seats.to_json %>"
+            data-unavailable_seats="<%= @unavailable_seats.to_json %>"
+            data-selected_seat="<%= @seat.to_json %>">
       </div>
+      <br/>
+      <% if @assigned %>
+        <%= hidden_field_tag 'assignment_id', @assignment.id %>
+        <span><%= t 'assignment.assigned_seat', {:seat => @assignment.seat.code} %></span>
+        <br/>
+        <button class="btn btn-info" type="button" id="cancel_assignment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= t 'assignment.cancel' %>
+        </button>
+      <% else %>
+        <span><%= t 'assignment.time_to_select' %><span id="countdownSelect"></span></span>
+        <br/>
+        <div class="dropdown">
+          <button class="btn btn-info" type="button" id="create_assignment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= t 'assignment.accept' %>
+          </button>
+          <%#= submit_tag(t('assignment.accept'), :id => "btn_create", :class => "btn btn-info", :data => {:loading_text => t('assignment.accept_loading')}) %>
+        </div>
+      <% end %>
     <% end %>
   <% else %>
     <span><%= t 'assignment.fixed_seat', {:seat => @seat.code} %></span>
@@ -94,7 +96,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <img src="/assets/plano-oficina.jpg" class="rounded mx-auto d-block" alt="Map">
+        <img src="/assets/plano-oficina.jpg" width="500px" class="rounded mx-auto d-block" alt="Map">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><%= t 'assignment.close' %></button>

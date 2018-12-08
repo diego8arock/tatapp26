@@ -86,7 +86,7 @@ App26.MapController.prototype.load_map = function(e) {
 
 App26.MapController.prototype.setTag = function (seats, classname) {
   for (var i = 0; i < seats.length; i++) {
-    var html_id = seats[i]["id_html"];
+    var html_id = seats[i]["html_id"];
     var code = seats[i]["code"];
     var seat_id = seats[i]["id"];
     var html_id_jq = '#' + html_id;

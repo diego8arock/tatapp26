@@ -57,8 +57,8 @@ class SeatsController < ApplicationController
 
   def assign
     logger.debug "Assign get method"
-    if params[:id_project].present?
-      @project = Project.find( params[:id_project])
+    if params[:project_id].present?
+      @project = Project.find( params[:project_id])
       @employess = @project.employees
       if request.xhr?
         respond_to do |format|

@@ -8,19 +8,24 @@ class AssignmentsController < ApplicationController
 
   # GET /asignments/new
   def new
-    project_employees = ProjectEmployee.includes(:project).where(:id_employee => current_user.employee.id).where(:status => ProjectEmployee::ACTIVE)
+    project_employees = ProjectEmployee.includes(:project).where(:employee_id => current_user.employee.id).where(:status => ProjectEmployee::ACTIVE)
     @available_seats = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
-                  .where("id_project IN (?)",project_employees.map(&:id_project) )
+                  .where("project_id IN (?)",project_employees.map(&:project_id) )
                   .where(:status => Seat::ACTIVE)
     @unavailable_seats = Seat.where("(assignment_date = ? OR status <> ?)", Date.today, Seat::ACTIVE)
-                  .where("id_project IN (?)",project_employees.map(&:id_project) )
+                  .where("project_id IN (?)",project_employees.map(&:project_id) )
     @seat = nil
     @mobile = current_user.employee.assignment_type == Employee::MOBILE
 
     if @mobile
       @project_employee = project_employees[0]
       @map = Map.where(project: @project_employee.project).last
-      assignments = Assignment.includes(:seat).where("id_project_employee IN (?)",project_employees.map(&:id) )
+      if !@map.nil?
+
+      else 
+        flash[:error] = I18n.t "errors.no_map"
+      end
+      assignments = Assignment.includes(:seat).where("project_employee_id IN (?)",project_employees.map(&:id) )
                                 .where(:status => Assignment::ACTIVE)
                                 .where(:assignment_date => Date.today)
       @assigned = !assignments.empty?
@@ -31,7 +36,7 @@ class AssignmentsController < ApplicationController
         @assignment = Assignment.new
       end
     else
-      @seat = Seat.find(current_user.employee.id_seat)
+      @seat = Seat.find(current_user.employee.seat_id)
     end
   end
 

@@ -3,7 +3,7 @@ class CreateAssignments < ActiveRecord::Migration[5.2]
     create_table :assignments do |t|
       t.bigint :project_employee_id, :null => false
       t.bigint :seat_id, :null => false
-      t.datetime :assignment_date, :null => false
+      t.date :assignment_date, :null => false
       t.integer :status, :limit => 4, :null => false
       t.timestamps
     end

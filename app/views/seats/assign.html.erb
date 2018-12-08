@@ -1,17 +1,17 @@
 <%= stylesheet_link_tag "jquery.seat-charts" %>
 <%= stylesheet_link_tag "style" %>
 
-<h1>Marcar Asientos</h1>
-<%= link_to 'Volver', admin_index_path %>
+<h2><%= t('menu.seat.assign') %></h2>
+<%= link_to 'Back', admin_index_path %>
 
 <%= form_with(model: @map, local: true) do |form| %>
 <table>
   <tr>
-    <td>Projecto</td>
+    <td>Project</td>
     <td><%= form.select "cmbbxProjects", Project.all.collect { |p| [ p.name, p.id.to_s + "|" + p.tag ] } %></td>
   </tr>
   <tr>
-    <td>Mapa</td>
+    <td>Map</td>
     <td>
       <%= form.select "cmbbxMaps", Map.where(project_id: Project.first(1)).collect { |m| [ m.name, m.seats + "|" + m.height.to_s + "|" + m.width.to_s + "|" + m.seats_total.to_s + "|" + m.id.to_s] } %>
     </td>
@@ -196,7 +196,7 @@ function getRawMap(number, y, x) {
     })).then(function () {
 
       for (var i = 0; i < seats.length; i++) {
-        var html_id = seats[i]["id_html"];
+        var html_id = seats[i]["html_id"];
         var code = seats[i]["code"];
         var fijo = false;
         var html_id_jq = '#' + html_id;
@@ -213,7 +213,7 @@ function getRawMap(number, y, x) {
   }
 
   $('#bttnShowModal').click(function () {
-    var id_project = $('#hddnProjectId').val();
+    var project_id = $('#hddnProjectId').val();
     var id_map = $('#hddnMapId').val();
 
     $.ajax({
@@ -221,7 +221,7 @@ function getRawMap(number, y, x) {
       method: "GET",
       dataType: "json",
       data: {
-        id_project: id_project,
+        project_id: project_id,
         id_map: id_map
       },
       error: function (xhr, status, error) {
@@ -243,7 +243,7 @@ function getRawMap(number, y, x) {
   $('#bttnAcceptModal').click(function () {
 
     var employee_id = splitValue($('#cmbbxEmployees'),0);
-    var id_project = $('#hddnProjectId').val();
+    var project_id = $('#hddnProjectId').val();
 
 
     $('#seatModal').modal('toggle');

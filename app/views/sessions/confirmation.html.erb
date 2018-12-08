@@ -14,12 +14,12 @@
 
 <p>
   <b><%= t 'employee.date' %>:</b>
-  <%= current_user.employee.admission_date %>
+  <%= current_user.employee.admission_date.strftime("%B %d, %Y %A") %>
 </p>
 
 <p>
-  <b><%= t 'employee.birthdate' %>:</b>
-  <%= current_user.employee.birthdate %>
+  <b><%= t 'employee.birth_date' %>:</b>
+  <%= current_user.employee.birth_date.strftime("%B %d, %Y %A") %>
 </p>
 
 <%= link_to t('confirmation.continue'), edit_session_path(current_user.employee.id) %> |

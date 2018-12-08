@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2018_12_07_035344) do
   create_table "assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "project_employee_id", null: false
     t.bigint "seat_id", null: false
-    t.datetime "assignment_date", null: false
+    t.date "assignment_date", null: false
     t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -26,11 +26,11 @@ ActiveRecord::Schema.define(version: 2018_12_07_035344) do
   create_table "employees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "number", limit: 30, null: false
-    t.datetime "admission_date", null: false
-    t.datetime "birth_date", null: false
+    t.date "admission_date", null: false
+    t.date "birth_date", null: false
     t.integer "status", default: 1, null: false
     t.integer "assignment_type", default: 1, null: false
-    t.bigint "seat_id", null: false
+    t.bigint "seat_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["number"], name: "index_employees_on_number", unique: true
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2018_12_07_035344) do
     t.bigint "project_id", null: false
     t.string "code", limit: 10, null: false
     t.integer "status", default: 1, null: false
-    t.datetime "assignment_date"
+    t.date "assignment_date"
     t.bigint "map_id", null: false
     t.string "html_id", null: false
     t.datetime "created_at", null: false

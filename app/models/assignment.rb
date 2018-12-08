@@ -1,8 +1,8 @@
 class Assignment < ActiveRecord::Base
-  validates :assignment_date, :id_project_employee, :id_seat, :presence => true
+  validates :assignment_date, :project_employee_id, :seat_id, :presence => true
 
-  belongs_to :seat, :class_name => "Seat", :foreign_key => "id_seat"
-  belongs_to :project_employee, :class_name => "ProjectEmployee", :foreign_key => "id_project_employee"
+  belongs_to :seat, :class_name => "Seat"
+  belongs_to :project_employee, :class_name => "ProjectEmployee"
 
 
   ACTIVE = 1

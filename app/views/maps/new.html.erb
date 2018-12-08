@@ -1,8 +1,8 @@
 <%= stylesheet_link_tag "jquery.seat-charts" %>
 <%= stylesheet_link_tag "style" %>
 
-<h1>Nuevo mapa</h1>
-<%= link_to 'Volver', admin_index_path %>
+<h2><%= t('menu.map.new')%></h2>
+<%= link_to 'Back', admin_index_path %>
 
 <%= form_with(model: @map, local: true) do |form| %>
 <% if @map.errors.any? %>
@@ -21,25 +21,25 @@
 <table>
   <tr>
     <td>
-      <label for="">Projecto</label>
+      <label for="">Project</label>
     </td>
     <td><%= form.select :project_id, Project.all.collect { |m| [ m.name, m.id ] }, {}, :id => "cmbbxProjects" %></td>
   </tr>
   <tr>
     <td>
-      <label for="txtMapName">Nombre</label>
+      <label for="txtMapName">Name</label>
     </td>
     <td><%= form.text_field :name, id:"txtfldMapName" %></td>
   </tr>
   <tr>
     <td>
-      <label for="txtMapX">Ancho</label>
+      <label for="txtMapX">Width</label>
     </td>
     <td><input type="text" id="txtMapX" value="2"></td>
   </tr>
   <tr>
     <td>
-      <label for="txtMapY">Alto</label>
+      <label for="txtMapY">Height</label>
     </td>
     <td><input type="text" id="txtMapY" value="2"></td>
   </tr>
@@ -53,7 +53,7 @@
 <div id="wrapper">
   <div id="seat-map">
     <h3 style="visibility: hidden" id="hdrCounter">
-      Cantidad de asientos (<span id="counter">0</span>):</h3>
+      Number of seats (<span id="counter">0</span>):</h3>
   </div>
 </div>
 

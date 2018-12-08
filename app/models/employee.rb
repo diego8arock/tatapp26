@@ -1,6 +1,5 @@
 class Employee < ApplicationRecord
-  validates :number, presence: true, uniqueness: true
-  belongs_to :seat, :foreign_key => "id_seat"
+  belongs_to :seat, optional: true
   has_many :project_employees
   has_many :projects, :through => :project_employees
 

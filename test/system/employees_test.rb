@@ -16,7 +16,7 @@ class EmployeesTest < ApplicationSystemTestCase
 
     fill_in "admissiondate", with: @employee.admissionDate
     fill_in "Assignmenttype", with: @employee.assignmentType
-    fill_in "Birthdate", with: @employee.birthdate
+    fill_in "Birthdate", with: @employee.birth_date
     fill_in "Id", with: @employee.id
     fill_in "Idnumber", with: @employee.idNumber
     fill_in "Name", with: @employee.name
@@ -33,7 +33,7 @@ class EmployeesTest < ApplicationSystemTestCase
 
     fill_in "admissiondate", with: @employee.admissionDate
     fill_in "Assignmenttype", with: @employee.assignmentType
-    fill_in "Birthdate", with: @employee.birthdate
+    fill_in "Birthdate", with: @employee.birth_date
     fill_in "Id", with: @employee.id
     fill_in "Idnumber", with: @employee.idNumber
     fill_in "Name", with: @employee.name
