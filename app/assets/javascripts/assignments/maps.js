@@ -72,19 +72,30 @@ App26.MapController.prototype.load_map = function(e) {
       } else {
         return this.style();
       }
+    },
+    focus: function () {
+      if (this.style() == 'unavailable') {
+        this.status('unavailable');
+      }
+
+      if (this.status() == 'available') {
+        return 'focused';
+      } else  {
+        return this.style();
+      }
     }
   });
   var available_seats = $('#seat_map').data("available_seats");
   var unavailable_seats = $('#seat_map').data("unavailable_seats");
 
-  App26.map.setTag(available_seats, 'available');
-  App26.map.setTag(unavailable_seats, 'unavailable');
+  App26.map.setTag(available_seats, 'available', sc);
+  App26.map.setTag(unavailable_seats, 'unavailable', sc);
   if(selected_seat != null) {
-    App26.map.setTag([selected_seat], 'selected');
+    App26.map.setTag([selected_seat], 'selected', sc);
   }
 }
 
-App26.MapController.prototype.setTag = function (seats, classname) {
+App26.MapController.prototype.setTag = function (seats, classname, sc) {
   for (var i = 0; i < seats.length; i++) {
     var html_id = seats[i]["html_id"];
     var code = seats[i]["code"];
@@ -93,10 +104,7 @@ App26.MapController.prototype.setTag = function (seats, classname) {
     $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available').removeClass('unavailable');
     $(html_id_jq).attr("seat_id", seat_id);
     $(html_id_jq).addClass(classname);
-    if(classname == "selected") {
-      $(html_id_jq).click();
-      $(html_id_jq).attr("aria-checked", true);
-    }
+    sc.get(html_id).status(classname)
     //TODO FIXED
   }
 }

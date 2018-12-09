@@ -4,6 +4,7 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "jquery.seat-charts", "style" %>
   <%= javascript_include_tag 'jquery.seat-charts.min' %>
+  <%= javascript_include_tag 'jquery.elevateZoom-3.0.8.min' %>
 <% end %>
 <h2><%= t 'assignment.title' %></h2>
 <br/>
@@ -96,7 +97,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <img src="/assets/plano-oficina.jpg" width="500px" class="rounded mx-auto d-block" alt="Map">
+        <img id="office" src="/assets/plano-oficina.jpg" width="500px" class="rounded mx-auto d-block" alt="Map" data-zoom-image="/assets/large/plano-oficina.jpg">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><%= t 'assignment.close' %></button>
