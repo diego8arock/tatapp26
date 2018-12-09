@@ -20,22 +20,27 @@ class SeatsController < ApplicationController
       case params[:actionToDo]
       when 'search'
         # Buscar el asiento sin html_id
-        @vacio = Seat.where(project_id: params[:project_id], map_id: params[:map_id], code: params[:code]).empty?
-        if @vacio
+        @seats = Seat.where(project_id: params[:project_id], map_id: params[:map_id], code: params[:code])
+        @codigoNuevo = @seats.empty?
+        if @codigoNuevo
+          # Retorna vacio en caso que no exista
           @seat = Seat.where(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id]).first
         else
-          @seat = "El asiento ya existe en otra posición con el mismo nombre."
+          @seat = @seats.first
+          if params[:fixed] == @seat.fixed.to_s
+            @seat = "El asiento ya existe en otra posición con el mismo nombre."
+          end
         end
       when 'insert'
         # Insertar nuevo asiento
-        @seat = Seat.new(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code])
+        @seat = Seat.new(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code], fixed: params[:fixed])
         if !@seat.save
           logger.debug @seat.errors.full_messages
         end
       when 'update'
         # Actualizar el asiento
         @seat = Seat.find(params[:id])
-        @seat.update(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code])
+        @seat.update(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code], fixed: params[:fixed])
       when 'map'
         @seat = Seat.where(project_id: params[:project_id], map_id: params[:map_id])
       end
@@ -57,14 +62,28 @@ class SeatsController < ApplicationController
 
   def assign
     logger.debug "Assign get method"
-    if params[:project_id].present?
-      @project = Project.find( params[:project_id])
-      @employess = @project.employees
-      if request.xhr?
-        respond_to do |format|
-          format.json {
-            render json: {employess: @employess}
-          }
+    if params[:actionToDo].present?
+      case params[:actionToDo]
+      when 'employees'
+        @project = Project.find( params[:project_id])
+        @employess = @project.employees
+        if request.xhr?
+          respond_to do |format|
+            format.json {
+              render json: {employess: @employess}
+            }
+          end
+        end
+      when 'assign'
+        @seat = Seat.where(:project_id => params[:project_id], :map_id => params[:map_id], :html_id => params[:html_id]).first
+        @projectEmployee = ProjectEmployee.where(:project_id => params[:project_id], :employee_id => params[:employee_id]).first
+        @assignment = Assignment.new
+        @assignment.project_employee = @projectEmployee
+        @assignment.seat = @seat
+        @assignment.assignment_date = Date.today
+        @assignment.status = Assignment::ACTIVE
+        if !@assignment.save
+          logger.debug @assignment.errors.full_messages
         end
       end
     end

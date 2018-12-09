@@ -7,6 +7,7 @@ class CreateSeats < ActiveRecord::Migration[5.2]
       t.date :assignment_date
       t.bigint :map_id, :limit => 20, :null => false
       t.string :html_id, :null => false
+      t.boolean :fixed, :null => false, :default => false
       t.timestamps
     end
     add_foreign_key :seats, :projects

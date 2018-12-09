@@ -136,6 +136,7 @@ function getRawMap(number, y, x) {
   }
 
   var firstSeatLabel = 1;
+  var array_fixed = new Array();
 
   function loadMap() {
     firstSeatLabel = 1;
@@ -194,7 +195,7 @@ function getRawMap(number, y, x) {
       for (var i = 0; i < seats.length; i++) {
         var html_id = seats[i]["html_id"];
         var code = seats[i]["code"];
-        var fijo = false;
+        var fijo = seats[i]["fixed"];;
         var html_id_jq = '#' + html_id;
         $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
         $(html_id_jq).addClass(
@@ -202,7 +203,15 @@ function getRawMap(number, y, x) {
             ? 'unavailable'
             : 'available'
         );
-        //TODO FIXED
+        if (fijo) {
+          array_fixed.push(html_id);
+        }
+
+        $(html_id_jq).click(function () {
+          var fixjo = array_fixed.includes(this.id);
+          console.log(fixjo);
+          $('#chckbxFixed').prop('checked', fixjo);
+        });
       }
 
     });
@@ -233,7 +242,8 @@ function getRawMap(number, y, x) {
         project_id: project_id,
         map_id: map_id,
         html_id: html_id,
-        code: code
+        code: code,
+        fixed: fijo
       },
       error: function (xhr, status, error) {
         console.error('AJAX Error: ' + status + error);
@@ -276,7 +286,8 @@ function getRawMap(number, y, x) {
           map_id: map_id,
           html_id: html_id,
           code: code,
-          id: id
+          id: id,
+          fixed: fijo
         },
         error: function (xhr, status, error) {
           console.error('AJAX Error: ' + status + error);

@@ -20,7 +20,6 @@ div.seatCharts-seat {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	cursor: default;
 }
 div.seatCharts-seat:focus {
 	border: none;
@@ -56,7 +55,6 @@ div.seatCharts-seat.available {
 
 div.seatCharts-seat.unavailable {
 	background-color: red;
-	cursor: not-allowed;
 }
 
 ul.seatCharts-legendList {

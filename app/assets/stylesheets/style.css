@@ -47,7 +47,7 @@ div.seatCharts-cell {
 }
 div.seatCharts-seat {
 	color: #FFFFFF;
-	cursor: pointer;
+	cursor: none;
 }
 div.seatCharts-row {
 	height: 35px;

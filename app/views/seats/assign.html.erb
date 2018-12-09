@@ -21,7 +21,7 @@
 <%= form.hidden_field "hddnProjectTag"%>
 <%= form.hidden_field :project_id, id:"hddnProjectId"%>
 <%= form.hidden_field :map_id, id:"hddnMapId"%>
-<input type="hidden" id="hddnSelectedSeat">
+<%= form.hidden_field :html_id, id:"hddnSelectedSeat"%>
 
 <div id="seatModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -67,6 +67,9 @@
 div.seatCharts-seat.focused {
   background-color: #E6CAC4 !important;
 }
+div.seatCharts-seat.unavailable {
+	cursor: pointer;
+}
 </style>
 
 <script type="text/javascript">
@@ -78,9 +81,6 @@ $(document).ready(function () {
   $('#hddnProjectTag').val(project_tag);
   $('#hddnProjectId').val(project_id);
   $('#hddnMapId').val(map_id);
-  $("#txtflNumber").keydown(function (e) {
-    textFieldOnlyNumbers(e);
-  });
   loadMap();
 });
 
@@ -165,8 +165,6 @@ function getRawMap(number, y, x) {
         var tag = $('#hddnProjectTag').val();
         $('#txtfldTag').val(tag);
         $('#hddnSelectedSeat').val(this.settings.id);
-        var number = $('#' + this.settings.id).html().replace(tag, '');
-        $('#txtflNumber').val(number);
         $('#bttnShowModal').trigger("click");
         return this.style();
       },
@@ -198,7 +196,7 @@ function getRawMap(number, y, x) {
       for (var i = 0; i < seats.length; i++) {
         var html_id = seats[i]["html_id"];
         var code = seats[i]["code"];
-        var fijo = false;
+        var fijo = seats[i]["fixed"];;
         var html_id_jq = '#' + html_id;
         $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
         $(html_id_jq).addClass(
@@ -206,7 +204,7 @@ function getRawMap(number, y, x) {
             ? 'unavailable'
             : 'available'
         );
-        //TODO FIXED
+        if (!fijo) $(html_id_jq).unbind("click");
       }
 
     });
@@ -214,15 +212,14 @@ function getRawMap(number, y, x) {
 
   $('#bttnShowModal').click(function () {
     var project_id = $('#hddnProjectId').val();
-    var id_map = $('#hddnMapId').val();
 
     $.ajax({
       url: "/assignseats",
       method: "GET",
       dataType: "json",
       data: {
-        project_id: project_id,
-        id_map: id_map
+        actionToDo: 'employees',
+        project_id: project_id
       },
       error: function (xhr, status, error) {
         console.error('AJAX Error: ' + status + error);
@@ -244,7 +241,27 @@ function getRawMap(number, y, x) {
 
     var employee_id = splitValue($('#cmbbxEmployees'),0);
     var project_id = $('#hddnProjectId').val();
+    var map_id = $('#hddnMapId').val();
+    var html_id = $('#hddnSelectedSeat').val();
 
+    $.ajax({
+      url: "/assignseats",
+      method: "GET",
+      dataType: "json",
+      data: {
+        actionToDo: 'assign',
+        project_id: project_id,
+        employee_id: employee_id,
+        map_id: map_id,
+        html_id: html_id
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX Error: ' + status + error);
+      },
+      success: function (response) {
+        console.log(response);
+      }
+    });
 
     $('#seatModal').modal('toggle');
   });

@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2018_12_07_035344) do
     t.date "assignment_date"
     t.bigint "map_id", null: false
     t.string "html_id", null: false
+    t.boolean "fixed", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["map_id"], name: "fk_rails_f35d21dd46"
