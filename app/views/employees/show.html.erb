@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Id:</strong>
   <%= @employee.id %>
@@ -11,28 +9,28 @@
 </p>
 
 <p>
-  <strong>Idnumber:</strong>
+  <strong>Number:</strong>
   <%= @employee.number %>
 </p>
 
 <p>
-  <strong>admissiondate:</strong>
-  <%= @employee.admission_date %>
+  <strong>Join date:</strong>
+  <%= @employee.admission_date.strftime("%B %d, %Y %A") %>
 </p>
 
 <p>
-  <strong>Birthdate:</strong>
-  <%= @employee.birth_date %>
+  <strong>Birth date:</strong>
+  <%= @employee.birth_date.strftime("%B %d, %Y %A") %>
 </p>
 
 <p>
   <strong>Status:</strong>
-  <%= @employee.status %>
+  <%= @employee.get_status %>
 </p>
 
 <p>
-  <strong>Assignmenttype:</strong>
-  <%= @employee.assignment_type %>
+  <strong>Assignment type:</strong>
+  <%= @employee.get_assignment_type %>
 </p>
 
 <%= link_to 'Edit', edit_employee_path(@employee) %> |

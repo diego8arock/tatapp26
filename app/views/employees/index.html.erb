@@ -1,35 +1,33 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Employees</h1>
-
-<table>
+<h2><%= t('menu.employee.title') %></h2>
+<table class="table table-striped table-bordered table-hover">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Number</th>
-      <th>admissiondate</th>
-      <th>Birthdate</th>
-      <th>Status</th>
-      <th>Assignmenttype</th>
-      <th colspan="3"></th>
+      <th class="col-md-2">Id</th>
+      <th class="col-md-2"><%= t 'employee.name' %></th>
+      <th class="col-md-2"><%= t 'employee.number' %></th>
+      <th class="col-md-2"><%= t 'employee.date' %></th>
+      <th class="col-md-2"><%= t 'status' %></th>
+      <th class="col-md-2"><%= t 'employee.birth_date' %></th>
+      <th class="col-md-2">Assignment type</th>
+      <th class="col-md-4">Options</th>
     </tr>
   </thead>
-
   <tbody>
     <% @employees.each do |employee| %>
       <tr>
-        <td><%= employee.id %></td>
-        <td><%= employee.name %></td>
-        <td><%= employee.number %></td>
-        <td><%= employee.admission_date %></td>
-        <td><%= employee.birth_date %></td>
-        <td><%= employee.status %></td>
-        <td><%= employee.assignment_type %></td>
-        <td><%= link_to 'Show', employee %></td>
-        <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
-        <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+        <td class="col-md-2"><%= employee.id %></td>
+        <td class="col-md-2"><%= employee.name %></td>
+        <td class="col-md-2"><%= employee.number %></td>
+        <td class="col-md-2"><%= employee.admission_date.strftime("%B %d, %Y %A") %></td>
+        <td class="col-md-2"><%= employee.birth_date.strftime("%B %d, %Y %A") %></td>
+        <td class="col-md-2"><%= employee.get_status %></td>
+        <td class="col-md-2"><%= employee.get_assignment_type %></td>
+        <td class="col-md-4">
+          <%= link_to 'Show', employee_path(employee), class: "btn btn-info" %>
+          <%= link_to 'Edit', edit_employee_path(employee), class: "btn  btn-warning" %>
+          <%= link_to 'Destroy', employee_path(employee), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+        </td>
+    </tr>
     <% end %>
   </tbody>
 </table>

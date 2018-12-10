@@ -1,52 +1,72 @@
 <%= form_with(model: employee, local: true) do |form| %>
   <% if employee.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+    <div class="row">
+      <div id="error_explanation">
+        <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
 
-      <ul>
-      <% employee.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+        <ul>
+        <% employee.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :id %>
-    <%= form.text_field :id %>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <%= form.label :number %>
+      <%= form.text_field :number, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :number %>
-    <%= form.text_field :number %>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <%= form.label :join_date %>
+      <%= form.date_field :admission_date, as: :date, value: form.object.try(:strftime,"%Y-%m-%d"), class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :admission_date %>
-    <%= form.text_field :admission_date %>
+  <div class="row">
+      <div class="form-group col-md-4">
+      <%= form.label :birth_date %>
+      <%= form.date_field :birth_date, as: :date, value: form.object.try(:strftime,"%Y-%m-%d"), class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :birth_date %>
-    <%= form.text_field :birth_date %>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <%= form.label :status %>
+      <%= form.select :status, [['Active', '1'], ['Inactive', '2']], {}, { :class => 'form-control' }%>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.text_field :status %>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <%= form.label :assignment_type %>
+      <%= form.select :assignment_type, [['Mobile', '1'], ['Fixed', '2']], {}, { :class => 'form-control' }%>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :assignment_type %>
-    <%= form.text_field :assignment_type %>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <%= form.label :project %>
+      <%=collection_select(:project, :id, Project.all,
+                  :id, :name,
+                 {}, { :class => 'form-control' })%>
+
+      <%#= form.collection_select (:project, :project, Project.all, :id, :name, {:prompt=>true}) %>
+    </div>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-lg btn-primary" %>
   </div>
 <% end %>

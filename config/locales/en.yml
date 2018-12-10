@@ -35,12 +35,14 @@ en:
   login: "Login"
   logout: "Log out"
   profile: "Profile"
+  edit_profile: "Edit Profile"
+  status: "Status"
   messages:
     wellcome: "Welcome to the App26!"
     logged_out: "Logged out!"
     doesnt_exist: "Employee number doesn't exists"
   employee:
-    number: "Employeee number"
+    number: "Number"
     date: "Join date"
     name: "Name"
     birth_date: "Birthdate"
@@ -52,6 +54,11 @@ en:
       title: "Projects"
       index: "See projects"
       new: "New project"
+    employee:
+      title: "Employee"
+      index: "See employees"
+      new: "New employee"
+      load: "Load employees"
     seat:
       title: "Seats"
       check: "Check seat"

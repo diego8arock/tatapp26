@@ -32,4 +32,7 @@ Rails.application.routes.draw do
   match "/assignment/:id/cancel" => "assignments#cancel", :via => :post
   devise_scope :user do match '/sessions/user', to: 'devise/sessions#create', via: :post end
 
+  get 'loademployees', to: 'employees#load', as: 'loademployees'
+  post 'save_loademployees', to: 'employees#save_load', as: 'save_loademployees'
+
 end
