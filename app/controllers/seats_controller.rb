@@ -76,9 +76,9 @@ class SeatsController < ApplicationController
         end
       when 'assign'
         @seat = Seat.where(:project_id => params[:project_id], :map_id => params[:map_id], :html_id => params[:html_id]).first
-        @projectEmployee = ProjectEmployee.where(:project_id => params[:project_id], :employee_id => params[:employee_id]).first
+        @project = Project.find(params[:project_id])
         @assignment = Assignment.new
-        @assignment.project_employee = @projectEmployee
+        @assignment.project = @project
         @assignment.seat = @seat
         @assignment.assignment_date = Date.today
         @assignment.status = Assignment::ACTIVE

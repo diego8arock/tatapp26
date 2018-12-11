@@ -3,8 +3,7 @@ class Employee < ApplicationRecord
   validates :number, numericality: { only_integer: true }
   validates :number, length: { minimum: 6 }
   belongs_to :seat, optional: true
-  has_many :project_employees
-  has_many :projects, :through => :project_employees
+  belongs_to :project
 
   MOBILE = 1
   FIXED = 2

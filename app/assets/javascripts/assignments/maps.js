@@ -4,6 +4,7 @@
  */
 App26.MapController= function() {
   this.firstSeatLabel = 1;
+  this.sc = null;
 };
 
 
@@ -44,7 +45,7 @@ App26.MapController.prototype.load_map = function(e) {
   var selected_seat = $('#seat_map').data("selected_seat");
   var map = $('#seat_map').data("map");
   var rawMap = App26.map.getRawMap(map.seats, parseInt(map.height, 10), parseInt(map.width, 10));
-  var sc = $('#seat_map').seatCharts({
+  App26.map.sc = $('#seat_map').seatCharts({
     map: rawMap,
     seats: {
       f: {
@@ -59,7 +60,7 @@ App26.MapController.prototype.load_map = function(e) {
     },
     click: function () {
       if (this.status() == 'available') {
-        return  sc.find('selected').length == 1 ? 'available' : 'selected';
+        return  App26.map.sc.find('selected').length == 1 ? 'available' : 'selected';
         return 'available';
       } else if (this.status() == 'selected') {
         if(selected_seat != null) {
@@ -88,14 +89,14 @@ App26.MapController.prototype.load_map = function(e) {
   var available_seats = $('#seat_map').data("available_seats");
   var unavailable_seats = $('#seat_map').data("unavailable_seats");
 
-  App26.map.setTag(available_seats, 'available', sc);
-  App26.map.setTag(unavailable_seats, 'unavailable', sc);
+  App26.map.setTag(available_seats, 'available');
+  App26.map.setTag(unavailable_seats, 'unavailable');
   if(selected_seat != null) {
-    App26.map.setTag([selected_seat], 'selected', sc);
+    App26.map.setTag([selected_seat], 'selected');
   }
 }
 
-App26.MapController.prototype.setTag = function (seats, classname, sc) {
+App26.MapController.prototype.setTag = function (seats, classname) {
   for (var i = 0; i < seats.length; i++) {
     var html_id = seats[i]["html_id"];
     var code = seats[i]["code"];
@@ -104,7 +105,7 @@ App26.MapController.prototype.setTag = function (seats, classname, sc) {
     $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available').removeClass('unavailable');
     $(html_id_jq).attr("seat_id", seat_id);
     $(html_id_jq).addClass(classname);
-    sc.get(html_id).status(classname)
+    App26.map.sc.get(html_id).status(classname)
     //TODO FIXED
   }
 }

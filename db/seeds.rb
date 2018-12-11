@@ -33,77 +33,58 @@ case Rails.env
 when 'development'
 
 	#User employees
-	user2 = User.create(username: '1',
+	user2 = User.create(username: '1111111',
 					    password: '123456',
 					    password_confirmation: '123456')
 	user2.add_role(:employee)
 
-	user3 = User.create(username: '2',
+	user3 = User.create(username: '2222222',
 					    password: '123456',
 					    password_confirmation: '123456')
 	user3.add_role(:employee)
 
-	user3 = User.create(username: '3',
-					    password: '123456',
-					    password_confirmation: '123456')
-	user3.add_role(:employee)
-
-	user4 = User.create(username: '4',
+	user4 = User.create(username: '3333333',
 					    password: '123456',
 					    password_confirmation: '123456')
 	user4.add_role(:employee)
 
+	user5 = User.create(username: '4444444',
+					    password: '123456',
+					    password_confirmation: '123456')
+	user5.add_role(:employee)
+
 	#Employees
 
-	employee1 = Employee.create(number: '1',
+	employee1 = Employee.create(number: user2.username,
 		name: 'Julio Pinzon',
 		birth_date: '1984-10-06',
 		admission_date: '2017-05-22',
 		status: 1,
-		assignment_type: 1)
+		assignment_type: 1,
+		project: project1)
 
-	employee2 = Employee.create(number: '2',
+	employee2 = Employee.create(number: user3.username,
 		name: 'Diego Ochoa',
 		birth_date: '1989-12-11',
 		admission_date: '2017-05-22',
 		status: 1,
-		assignment_type: 1)
+		assignment_type: 1,
+		project: project1)
 
-	employee3 = Employee.create(number: '3',
+	employee3 = Employee.create(number: user4.username,
 		name: 'Paola Bernal',
 		birth_date: '1989-12-11',
 		admission_date: '2017-05-22',
 		status: 1,
-		assignment_type: 1)
+		assignment_type: 1,
+		project: project2)
 
-	employee4 = Employee.create(number: '4',
+	employee4 = Employee.create(number: user5.username,
 		name: 'Paola Cardenas',
 		birth_date: '1989-12-11',
 		admission_date: '2017-05-22',
 		status: 1,
-		assignment_type: 1)
-
-	#Project employee
-	ProjectEmployee.create(
-		employee: employee1,
-		project: project1,
-		status: 1
-		)
-	ProjectEmployee.create(
-		employee: employee2,
-		project: project1,
-		status: 1
-		)
-	ProjectEmployee.create(
-		employee: employee3,
-		project: project2,
-		status: 1
-		)
-	ProjectEmployee.create(
-		employee: employee4,
-		project: project2,
-		status: 1
-		)
-	
+		assignment_type: 1,
+		project: project2)
 end
 end

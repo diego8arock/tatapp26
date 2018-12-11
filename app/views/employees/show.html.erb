@@ -3,34 +3,46 @@
   <%= @employee.id %>
 </p>
 
+      <th class="col-md-2"><%= t 'employee.name' %></th>
+      <th class="col-md-2"><%= t 'employee.number' %></th>
+      <th class="col-md-2"><%= t 'employee.date' %></th>
+      <th class="col-md-2"><%= t 'status' %></th>
+      <th class="col-md-2"><%= t 'employee.birth_date' %></th>
+      <th class="col-md-2"><%= t 'employee.assignment_type' %></th>
+      <th class="col-md-2"><%= t 'project' %></th>
 <p>
-  <strong>Name:</strong>
+  <strong><%= t 'employee.name' %>:</strong>
   <%= @employee.name %>
 </p>
 
 <p>
-  <strong>Number:</strong>
+  <strong><%= t 'employee.number' %>:</strong>
   <%= @employee.number %>
 </p>
 
 <p>
-  <strong>Join date:</strong>
+  <strong><%= t 'employee.date' %>:</strong>
   <%= @employee.admission_date.strftime("%B %d, %Y %A") %>
 </p>
 
 <p>
-  <strong>Birth date:</strong>
+  <strong><%= t 'employee.birth_date' %>:</strong>
   <%= @employee.birth_date.strftime("%B %d, %Y %A") %>
 </p>
 
 <p>
-  <strong>Status:</strong>
+  <strong><%= t 'status' %>:</strong>
   <%= @employee.get_status %>
 </p>
 
 <p>
-  <strong>Assignment type:</strong>
+  <strong><%= t 'employee.assignment_type' %>:</strong>
   <%= @employee.get_assignment_type %>
+</p>
+
+<p>
+  <strong><%= t 'project' %>:</strong>
+  <%= @employee.project.name %>
 </p>
 
 <%= link_to 'Edit', edit_employee_path(@employee) %> |

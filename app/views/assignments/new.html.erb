@@ -17,7 +17,6 @@
   <%= hidden_field_tag 'seat_id'%>
   <% if @mobile %>
     <% if !@map.nil? %>
-      <%= hidden_field_tag 'project_employee', @project_employee.id %>
       <div id="seat_map" style="float: none;" data-map="<%= @map.to_json %>"
             data-available_seats="<%= @available_seats.to_json %>"
             data-unavailable_seats="<%= @unavailable_seats.to_json %>"

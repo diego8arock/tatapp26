@@ -37,6 +37,8 @@ en:
   profile: "Profile"
   edit_profile: "Edit Profile"
   status: "Status"
+  project: "Project"
+  password_help: "If you have already entered an assignment for the first time, your password is now your date of birth in 'yyyymmdd' format"
   messages:
     wellcome: "Welcome to the App26!"
     logged_out: "Logged out!"
@@ -45,7 +47,9 @@ en:
     number: "Number"
     date: "Join date"
     name: "Name"
-    birth_date: "Birthdate"
+    birth_date: "Birth date"
+    assignment_date: "Assignment date"
+    assignment_type: "Assignment type"
   menu:
     admin: "Administrator"
     assignments: "Assignments"

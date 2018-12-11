@@ -43,20 +43,20 @@ class EmployeesController < ApplicationController
           next if total == 1
           fields = line.split(";")
 
-          number = fields[0]
-          name = fields[1]
-          joindate = fields[2]
-          birthdate = fields[3]
-          assignment = fields[4] == "Fijo" ? Employee::FIXED : Employee::MOBILE
-          project_tag = fields[5]
-          seat_code = fields[6]
-
-          if number.blank? || name.blank? || joindate.blank? ||
-            birthdate.blank? || assignment.blank? || project_tag.blank?
+          if fields[0].blank? || fields[1].blank? || fields[2].blank? ||
+            fields[3].blank? || fields[4].blank? || fields[5].blank?
               error_number += 1
               logger.warn "Any field can be empty: #{line}"
               next
           end
+
+          number = fields[0].strip
+          name = fields[1].strip
+          joindate = fields[2].strip
+          birthdate = fields[3].strip
+          assignment = fields[4].strip.downcase == "fijo" ? Employee::FIXED : Employee::MOBILE
+          project_tag = fields[5].strip
+          seat_code = fields[6].strip
 
           project = Project.find_by_tag(project_tag)
           if project.nil?
@@ -79,14 +79,8 @@ class EmployeesController < ApplicationController
               birth_date: birthdate.to_date,
               admission_date: joindate.to_date,
               status: Employee::ACTIVE,
-              assignment_type: assignment)
-
-          	#Project employee
-          	ProjectEmployee.create(
-          		employee: employee,
-          		project: project,
-          		status: ProjectEmployee::ACTIVE
-          	)
+              assignment_type: assignment,
+              project: project)
           else
             if !user.is_employee?
               error_number += 1
@@ -101,22 +95,8 @@ class EmployeesController < ApplicationController
               birth_date: birthdate.to_date,
               admission_date: joindate.to_date,
               status: Employee::ACTIVE,
-              assignment_type: assignment)
-
-          	#Project employee
-            project_employee = ProjectEmployee.find_by employee: employee, project: project
-
-            if project_employee.nil?
-            	ProjectEmployee.create(
-            		employee: employee,
-            		project: project,
-            		status: ProjectEmployee::ACTIVE
-            	)
-            else
-            	project_employee.update(
-            		status: ProjectEmployee::ACTIVE
-            	)
-            end
+              assignment_type: assignment,
+              project: project)
           end
 
           if !seat_code.blank?
@@ -155,7 +135,6 @@ class EmployeesController < ApplicationController
   # POST /employees.json
   def create
     @employee = Employee.new(employee_params)
-    project = Project.find(params[:project][:id])
 
     respond_to do |format|
       if @employee.save
@@ -163,11 +142,6 @@ class EmployeesController < ApplicationController
     					    password: @employee.number,
     					    password_confirmation: @employee.number)
         user.add_role(:employee)
-        ProjectEmployee.create(
-          employee: @employee,
-          project: project,
-          status: ProjectEmployee::ACTIVE
-        )
         format.html { redirect_to @employee, notice: 'Employee was successfully created.' }
         format.json { render :show, status: :created, location: @employee }
       else
@@ -180,23 +154,8 @@ class EmployeesController < ApplicationController
   # PATCH/PUT /employees/1
   # PATCH/PUT /employees/1.json
   def update
-    project = Project.find(params[:project][:id])
-    project_employee = ProjectEmployee.find_by employee: @employee, project: project
-
     respond_to do |format|
-      if @employee.update(employee_params)
-        ProjectEmployee.find_by_employee(employee).update_all(status: ProjectEmployee::INACTIVE)
-        if project_employee.nil?
-          ProjectEmployee.create(
-            employee: @employee,
-            project: project,
-            status: ProjectEmployee::ACTIVE
-          )
-        else
-          project_employee.update(
-            status: ProjectEmployee::ACTIVE
-          )
-        end
+      if @employee.update(employee_params)        
         format.html { redirect_to @employee, notice: 'Employee was successfully updated.' }
         format.json { render :show, status: :ok, location: @employee }
       else
@@ -224,6 +183,6 @@ class EmployeesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
-      params.require(:employee).permit(:id, :name, :number, :admission_date, :birth_date, :status, :assignment_type, :seat_id)
+      params.require(:employee).permit(:id, :name, :number, :admission_date, :birth_date, :status, :assignment_type, :seat_id, :project_id)
     end
 end

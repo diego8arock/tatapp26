@@ -11,6 +11,7 @@ class SessionsController < ApplicationController
     sign_in(:user, current_user, :bypass => true)
     employee = Employee.find(params[:id])
     session[:employee_id] = employee.id
+    session[:project_id] = employee.project.id
     flash[:notice] = I18n.t "messages.wellcome"
     redirect_to new_assignment_path
   end
