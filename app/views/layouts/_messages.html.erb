@@ -1,9 +1,9 @@
 <%= flash_messages %>
-<div id="error_message" class="alert alert-danger fade in hidden">
+<div id="error_message" class="alert alert-danger fade in hidden" style="z-index: 1000;">
   <button id="close-button" class="close" type="button" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">×</span>
   </button>
-  <span id="error_message_txt">Welcome to the App26!</span>
+  <span id="error_message_txt"></span>
 </div>
 <% flash.each do |name, msg| %>
   <!--<div class="alert alert-<%= name == :notice ? "success" : "error" %> flash">

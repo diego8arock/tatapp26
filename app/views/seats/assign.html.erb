@@ -28,13 +28,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Asignar Empleado</h4>
+        <h4 class="modal-title">Asign employee</h4>
       </div>
       <div class="modal-body">
         <table>
           <tr>
             <td>
-              <label for="cmbbxEmployees">Elegir Empleado</label>
+              <label for="cmbbxEmployees">Select employee</label>
             </td>
             <td>
               <select id="cmbbxEmployees"></select>
@@ -49,8 +49,8 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" id="bttnAcceptModal">Aceptar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-default" id="bttnAcceptModal">Acept</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -58,7 +58,7 @@
 
 <button type="button" style="display: none;" data-toggle="modal" data-target="#seatModal" id="bttnShowModal">EMTY</button>
 
-<div id="wrapper">
+<div id="map-container">
   <div id="seat-map"></div>
 </div>
 <% end %>
@@ -119,34 +119,14 @@ $('#cmbbxProjects').change(function () {
 //JS functions and variables
 var total = 0;
 
-function getRawMap(number, y, x) {
-  var number_arr = number.split(",");
-  var map = [y]
-    var i,
-      j;
-    var row = "";
-    var cell;
-    for (i = 0; i < y; i++) {
-      for (j = 0; j < x; j++) {
-        cell = i + "_" + j;
-        row += number_arr.indexOf(cell) == -1
-          ? "_"
-          : "f";
-      }
-      map[i] = row;
-      row = "";
-    }
-    return map;
-  }
-
   var firstSeatLabel = 1;
 
   function loadMap() {
     firstSeatLabel = 1;
-    $('#wrapper').html('<div id="seat-map"></div>');
+    $('#map-container').html('<div id="seat-map"></div>');
     var $map = $('#cmbbxMaps');
     var values = $map.val().split("|");
-    var rawMap = getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
+    var rawMap = App26.map.getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
     var sc = $('#seat-map').seatCharts({
       showLabel: false,
       map: rawMap,
@@ -172,6 +152,8 @@ function getRawMap(number, y, x) {
         return this.style();
       }
     });
+    
+    App26.map.set_width_row(values[2]);
 
     var project_id = $('#hddnProjectId').val();
     var map_id = $('#hddnMapId').val();

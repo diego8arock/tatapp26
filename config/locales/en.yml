@@ -39,6 +39,7 @@ en:
   edit_profile: "Edit Profile"
   status: "Status"
   project: "Project"
+  file_help: "The file must be csv type, fields separate by ';'"
   password_help: "If you have already entered an assignment for the first time, your password is now your date of birth in 'yyyymmdd' format"
   messages:
     wellcome: "Welcome to the App26!"

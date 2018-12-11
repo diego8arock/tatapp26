@@ -13,14 +13,21 @@ a {
 	padding: 3px;
 	border-radius: 5px;
 }
-.wrapper {
+/*.wrapper {
 	width: 100%;
 	text-align: center;
 }
-.container {
+/*.container {
 	margin: 0 auto;
-	/*width: 500px;*/
+	width: 500px;
 	text-align: left;
+}*/
+#map-container {
+	width: 100%;
+	text-align: center;
+	overflow-x: auto;
+	overflow-y: auto;
+	max-height: 500px;
 }
 .booking-details {
 	float: left;

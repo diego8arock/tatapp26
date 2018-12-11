@@ -17,10 +17,12 @@
   <%= hidden_field_tag 'seat_id'%>
   <% if @mobile %>
     <% if !@map.nil? %>
-      <div id="seat_map" style="float: none;" data-map="<%= @map.to_json %>"
-            data-available_seats="<%= @available_seats.to_json %>"
-            data-unavailable_seats="<%= @unavailable_seats.to_json %>"
-            data-selected_seat="<%= @seat.to_json %>">
+      <div id="map-container">
+        <div id="seat_map" style="float: none;" data-map="<%= @map.to_json %>"
+              data-available_seats="<%= @available_seats.to_json %>"
+              data-unavailable_seats="<%= @unavailable_seats.to_json %>"
+              data-selected_seat="<%= @seat.to_json %>">
+      </div>
       </div>
       <br/>
       <% if @assigned %>

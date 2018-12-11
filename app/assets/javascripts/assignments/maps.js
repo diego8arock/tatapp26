@@ -5,6 +5,7 @@
 App26.MapController= function() {
   this.firstSeatLabel = 1;
   this.sc = null;
+  this.width_by_row = 32;
 };
 
 
@@ -20,19 +21,20 @@ App26.MapController.prototype.init = function() {
 
 App26.MapController.prototype.getRawMap = function (number, y, x) {
   var number_arr = number.split(",");
-  var map = [y]
+  var map = []
     var i,
-      j;
+      j,
+      q;
     var row = "";
     var cell;
-    for (i = 0; i < y; i++) {
-      for (j = 0; j < x; j++) {
+    for (i = 1, q = 0; i <= y, q < y; i++, q++) {
+      for (j = 1; j <= x; j++) {
         cell = i + "_" + j;
         row += number_arr.indexOf(cell) == -1
           ? "_"
           : "f";
       }
-      map[i] = row;
+      map[q] = row;
       row = "";
     }
     return map;
@@ -86,6 +88,9 @@ App26.MapController.prototype.load_map = function(e) {
       }
     }
   });
+    
+  App26.map.set_width_row(map.width);
+
   var available_seats = $('#seat_map').data("available_seats");
   var unavailable_seats = $('#seat_map').data("unavailable_seats");
 
@@ -108,6 +113,11 @@ App26.MapController.prototype.setTag = function (seats, classname) {
     App26.map.sc.get(html_id).status(classname)
     //TODO FIXED
   }
+}
+
+App26.MapController.prototype.set_width_row = function (columns) {    
+  var map_width = (parseInt(columns, 10) + 1) * App26.map.width_by_row;
+  $(".seatCharts-row").css("width", map_width + "px");
 }
 
 

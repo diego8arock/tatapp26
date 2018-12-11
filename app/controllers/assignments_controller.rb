@@ -25,6 +25,7 @@ class AssignmentsController < ApplicationController
         flash[:error] = I18n.t "errors.no_map"
       end
       assignments = Assignment.includes(:seat).where(:project => project)
+                                .where(:employee => current_user.employee)
                                 .where(:status => Assignment::ACTIVE)
                                 .where(:assignment_date => Date.today)
       @assigned = !assignments.empty?

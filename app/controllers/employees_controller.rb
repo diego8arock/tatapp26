@@ -100,14 +100,15 @@ class EmployeesController < ApplicationController
               project: project)
           end
 
-          if !seat_code.blank?
+          if !seat_code.blank?            
+            seat_code = project_tag + seat_code
             seat = Seat.find_by code: seat_code, project: project
             if seat.nil?
               error_number += 1
               logger.warn "Seat with code #{seat_code} and project #{project_tag} doesn't exist"
               next
             else
-              seat.update(status: Seat::UNAVAILABLE, date_assignment: Date.today )
+              seat.update(status: Seat::UNAVAILABLE, assignment_date: Date.today )
               employee.update(seat: seat)
             end
           end
@@ -124,8 +125,9 @@ class EmployeesController < ApplicationController
         flash[:error] = "#{ok_number} Employees without errors!...
                         #{error_number} Employees with errors!...
                         Please load the file again"
+        raise ActiveRecord::Rollback, "Call tech support!"
       else
-        flash[:success] = "<strong>#{ok_number} Employees Imported!</strong>>"
+        flash[:success] = "#{ok_number} Employees Imported!"
       end
     end
 

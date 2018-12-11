@@ -33,4 +33,12 @@ class User < ApplicationRecord
       return nil
     end
   end
+
+  def name
+    if self.is_employee?
+      return self.username + "-" + self.employee.name
+    else
+      return self.username
+    end
+  end
 end

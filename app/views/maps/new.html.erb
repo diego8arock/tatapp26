@@ -44,13 +44,13 @@
     <td><input type="text" id="txtMapY" value="2"></td>
   </tr>
   <tr>
-    <td><input type="button" id="bttnCreateMap" value="Generar Mapa"></td>
-    <td><input type="button" id="bttnResetMap" value="Borrar Mapa"></td>
-    <td><%= form.submit "Guardar Mapa", id:"bttnSaveMap" %></td>
+    <td><input type="button" id="bttnCreateMap" value="Generate map"></td>
+    <td><input type="button" id="bttnResetMap" value="Reset map"></td>
+    <td><%= form.submit "Save map", id:"bttnSaveMap" %></td>
   </tr>
 </table>
 <br/>
-<div id="wrapper">
+<div id="map-container">
   <div id="seat-map">
     <h3 style="visibility: hidden" id="hdrCounter">
       Number of seats (<span id="counter">0</span>):</h3>
@@ -96,11 +96,12 @@ $(document).ready(function () {
 
 $('#bttnResetMap').click(function () {
 
+  $(".seatCharts-row").css("width", "");
   $('#bttnCreateMap').prop('disabled', false);
   $('#bttnResetMap').prop('disabled', true);
   $('#bttnSaveMap').prop('disabled', true);
-  $('#wrapper').empty();
-  $('#wrapper').html('<div id="seat-map"><h3 style="visibility: hidden" id="hdrCounter"> Cantidad de asientos (<span id="counter">0</span>):</h3></div>');
+  $('#map-container').empty();
+  $('#map-container').html('<div id="seat-map"><h3 style="visibility: hidden" id="hdrCounter"> Cantidad de asientos (<span id="counter">0</span>):</h3></div>');
   $('#counter').val(0);
   $('#hddnCounter').val(0);
   firstSeatLabel = 1;
@@ -178,6 +179,8 @@ $('#bttnCreateMap').click(function () {
         return return_style;
       }
     });
+
+    App26.map.set_width_row(x);
 
   }
 
