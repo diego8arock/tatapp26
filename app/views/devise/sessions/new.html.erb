@@ -1,38 +1,64 @@
-
-<header>
-  <h2><%= t 'login' %></h2>
-</header>
-
-<%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
-  <div class="devise-container">
-    <div class="row">
-      <div class="form-group col-md-4">
-      <%= f.label :username %><br />
-      <%= f.text_field :username, autofocus: true, autocomplete: "employee", class: "form-control" %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-4">
-      <%= f.label :password %><br />
-      <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
-        <small class="text-muted"><%= t 'password_help' %></small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group actions col-md-4">
-    <% if devise_mapping.rememberable? -%>
-        <div class="field pull-left">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
-        </div>
-    <% end -%>
-        <div class="pull-right">
-          <%#= render "devise/shared/links" %>
-        </div>
-      </div>
-    </div>
-    <div class="actions">
-      <%= f.submit t 'login', class: "btn btn-lg btn-primary" %>
-    </div>
-  </div>
+<% content_for :title do %>
+  <%= t 'title' %>
 <% end %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "login", "mdbpro/mdb.min" %>
+<% end %>
+
+<div style="top: -20px;" class="login-page loginBG white paddingtop0 paddingleft paddingright">
+  <div class="row justify-content-md-center">
+    <div class="col-md-4">
+      <!-- Card -->
+      <div class="row">
+        <div class="col-1"></div>
+        <div style="background-color: rgba(0, 0, 0, 0.865);" class="col-10 card cardElevate">
+          <!-- Card content -->
+          <div class="card-body cardElevate paddingtop p8">
+            <span
+            style="font-size: 40px; color: white !important;"
+            class="tcsFontTempo cardElevate"><%= t 'login_title' %></span>
+          </div>
+        </div>
+        <div class="col-1"></div>
+      </div>
+
+      <!-- Card -->
+      <div class="col-12 card paddingall p0"
+      style="background-color: rgba(255, 255, 255, 0.762);">
+
+
+      <!-- Card content -->
+      <div class="card-body" style="margin-right: 16px; margin-top: 40px;">
+
+        <%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
+
+          <div class="md-form inputMdForm margintop p24">
+            <span>Username</span>
+            <%= f.text_field :username, autofocus: true, autocomplete: "employee", class: "inputLine" %>
+          </div>
+
+          <div class="md-form inputMdForm margintop p24">
+            <span>Password</span>
+            <%= f.password_field :password, autocomplete: "current-password", class: "inputLine" %>
+          </div>
+
+          <div class="md-form inputMdForm margintop p24">
+            <span><small class="text-muted"><%= t 'password_help' %></small></span>
+          </div>
+
+          <div class="actions margintop p24">
+            <%= f.submit t('login'), :class => "btn btn-sm btn-elegant tcsFontTitle", :style => "font-size: 18px;" %>
+          </div>
+          <div class= "row margintop p8">
+            <div class="col"><img src="/assets/logo-eps.png" width="20%"/></div>
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+    <!-- Card -->
+  </div>
+</div>
+</div>

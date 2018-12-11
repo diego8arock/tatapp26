@@ -32,6 +32,7 @@
 en:
   hello: "Hello world"
   title: "Tatapp26 :: Select your seat"
+  login_title: "Login Calle 26"
   login: "Login"
   logout: "Log out"
   profile: "Profile"
@@ -73,7 +74,7 @@ en:
       new: "New map"
       edit: "Edit map"
   confirmation:
-    title: "Continue to select your seat:"
+    title: "If your information is correct. Please continue to select your seat:"
     continue: "Continue"
     cancel: "Cancel"
   assignment:

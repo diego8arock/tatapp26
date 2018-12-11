@@ -2,6 +2,7 @@ class SeatsController < ApplicationController
   before_action :set_seat, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :admin_required
+  layout 'admin'
 
   # GET /seats
   # GET /seats.json

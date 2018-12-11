@@ -7,8 +7,8 @@
     <title><%= content_for?(:title) ? yield(:title) + " :: " : "" %>Tatapp26</title>
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="/assets/images/favicon.ico" />
-    <link rel="icon" href="/assets/images/TCS_Default_icon.png" />
+    <link rel="icon" href="/assets/favicon.ico" />
+    <link rel="icon" href="/assets/TCS_Default_icon.png" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -18,17 +18,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-inverse navbar-top navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="container">
-          <%= render 'layouts/navigation', :target => "_self" %>
-        </div>
-      </div>
-    </nav>
-    <div id="main-container" class="container">
-      <%= render 'layouts/messages' %>
-      <%= yield %>
-    </div>
-    <%= render 'layouts/footer' %>
+    <%= render 'layouts/messages' %>
+    <%= yield %>
   </body>
 </html>

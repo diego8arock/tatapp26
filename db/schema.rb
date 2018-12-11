@@ -10,16 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_07_035344) do
+ActiveRecord::Schema.define(version: 2018_12_07_010454) do
 
   create_table "assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "project_employee_id", null: false
+    t.bigint "project_id", null: false
+    t.bigint "employee_id", null: false
     t.bigint "seat_id", null: false
     t.date "assignment_date", null: false
     t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["project_employee_id"], name: "fk_rails_f95ea3a7da"
+    t.index ["employee_id"], name: "fk_rails_d0980e430f"
+    t.index ["project_id"], name: "fk_rails_4d3d2c839c"
     t.index ["seat_id"], name: "fk_rails_1eb99de2cc"
   end
 
@@ -31,9 +33,11 @@ ActiveRecord::Schema.define(version: 2018_12_07_035344) do
     t.integer "status", default: 1, null: false
     t.integer "assignment_type", default: 1, null: false
     t.bigint "seat_id"
+    t.bigint "project_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["number"], name: "index_employees_on_number", unique: true
+    t.index ["project_id"], name: "fk_rails_f3055ce412"
     t.index ["seat_id"], name: "fk_rails_c961385dd5"
   end
 
@@ -47,14 +51,6 @@ ActiveRecord::Schema.define(version: 2018_12_07_035344) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "fk_rails_a90d6cd6e2"
-  end
-
-  create_table "project_employees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "project_id", null: false
-    t.bigint "employee_id", null: false
-    t.integer "status"
-    t.index ["employee_id"], name: "fk_rails_2c35dbad4b"
-    t.index ["project_id"], name: "fk_rails_0c81f45402"
   end
 
   create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -113,12 +109,12 @@ ActiveRecord::Schema.define(version: 2018_12_07_035344) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
-  add_foreign_key "assignments", "project_employees"
+  add_foreign_key "assignments", "employees"
+  add_foreign_key "assignments", "projects"
   add_foreign_key "assignments", "seats"
+  add_foreign_key "employees", "projects"
   add_foreign_key "employees", "seats"
   add_foreign_key "maps", "projects"
-  add_foreign_key "project_employees", "employees"
-  add_foreign_key "project_employees", "projects"
   add_foreign_key "seats", "maps"
   add_foreign_key "seats", "projects"
 end

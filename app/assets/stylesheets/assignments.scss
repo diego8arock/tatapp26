@@ -14,10 +14,8 @@
   }
 
   body {
-    font-family: $main_font;
-    font-weight: 100;
-    background: #f8fafd;
-    padding: 0;
+    font-family: Roboto, sans-serif;
+    font-weight: 300;
   }
 
  /* !Footer */
@@ -28,10 +26,22 @@
  }
 
  .footer {
-   height: $footer-height - 16px;
-   padding: 10px 0 6px;
-   color: #eeeeee;
-   margin-top: 39px;
+   bottom: 0;
+   color: #fff;
+   padding-top: 1.5rem!important;
+   font-size: .9rem;
+   background-color: #101010!important;
+ }
+
+ .footer-copyright {
+   overflow: hidden;
+   background-color: rgba(0, 0, 0, .2);
+   color: rgba(255, 255, 255, .6);
+   padding-bottom: 1rem!important;
+   padding-top: 1rem!important;
+   a {
+     color: #fff;
+   }
  }
 
  #main-container {
