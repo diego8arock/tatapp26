@@ -1,5 +1,7 @@
-<%= stylesheet_link_tag "jquery.seat-charts" %>
-<%= stylesheet_link_tag "style" %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "jquery.seat-charts", "style" %>
+  <%= javascript_include_tag 'jquery.seat-charts.min' %>
+<% end %>
 
 <h2><%= t('menu.seat.check') %></h2>
 <%= link_to 'Back', admin_index_path %>
@@ -28,13 +30,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Crear Puesto</h4>
+        <h4 class="modal-title">Create seat</h4>
       </div>
       <div class="modal-body">
         <table>
           <tr>
-            <th>Acrónimo</th>
-            <th>Número</th>
+            <th>Acronym</th>
+            <th>Number</th>
           </tr>
           <tr>
             <td><input type="text" id="txtfldTag" disabled="disabled"></td>
@@ -45,8 +47,8 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" id="bttnAcceptModal">Aceptar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-default" id="bttnAcceptModal">Acept</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -105,7 +107,7 @@ $('#cmbbxProjects').change(function () {
       var maps = response["maps"];
       $('#cmbbxMaps').find('option').remove().end();
       for (var i = 0; i < maps.length; i++) {
-        $('#cmbbxMaps').append('<option value="' + maps[i]["seats"] + "|" + maps[i]["height"] + "|" + maps[i]["width"] + "|" + maps[i]["seats_total"] + '">' + maps[i]["name"] + '</option>');
+        $('#cmbbxMaps').append('<option value="' + maps[i]["seats"] + "|" + maps[i]["height"] + "|" + maps[i]["width"] + "|" + maps[i]["seats_total"] + "|" + maps[i]["id"] + '">' + maps[i]["name"] + '</option>');
       }
       loadMap();
     }
@@ -123,87 +125,87 @@ var total = 0;
     firstSeatLabel = 1;
     $('#map-container').html('<div id="seat-map"></div>');
     var $map = $('#cmbbxMaps');
-    var values = $map.val().split("|");
-    var rawMap = App26.map.getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
-    var sc = $('#seat-map').seatCharts({
-      showLabel: false,
-      map: rawMap,
-      seats: {
-        f: {
-          classes: 'first-class'
+    if($map.val() != null) {
+      var values = $map.val().split("|");
+      var rawMap = App26.map.getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
+      var sc = $('#seat-map').seatCharts({
+        showLabel: false,
+        map: rawMap,
+        seats: {
+          f: {
+            classes: 'first-class'
+          }
+        },
+        naming: {
+          top: false,
+          getLabel: function (character, row, column) {
+            return firstSeatLabel++;
+          }
+        },
+        click: function () {
+          var tag = $('#hddnProjectTag').val();
+          $('#txtfldTag').val(tag);
+          $('#hddnSelectedSeat').val(this.settings.id);
+          var number = $('#' + this.settings.id).html().replace(tag, '');
+          $('#txtflNumber').val(number);
+          $('#bttnShowModal').trigger("click");
+          return this.style();
+        },
+        focus: function () {
+          return this.style();
         }
-      },
-      naming: {
-        top: false,
-        getLabel: function (character, row, column) {
-          return firstSeatLabel++;
+      });
+
+      var project_id = $('#hddnProjectId').val();
+      var map_id = $('#hddnMapId').val();
+      var seats;
+      $.when($.ajax({
+        url: "/seats/new",
+        method: "GET",
+        dataType: "json",
+        data: {
+          actionToDo: 'map',
+          project_id: project_id,
+          map_id: map_id
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error: ' + status + error);
+        },
+        success: function (response) {
+          seats = response["seat"];
         }
-      },
-      click: function () {
-        var tag = $('#hddnProjectTag').val();
-        $('#txtfldTag').val(tag);
-        $('#hddnSelectedSeat').val(this.settings.id);
-        var number = $('#' + this.settings.id).html().replace(tag, '');
-        $('#txtflNumber').val(number);
-        $('#bttnShowModal').trigger("click");
-        return this.style();
-      },
-      focus: function () {
-        return this.style();
-      }
-    });
-    
-    App26.map.set_width_row(values[2]);
+      })).then(function () {
 
-    var project_id = $('#hddnProjectId').val();
-    var map_id = $('#hddnMapId').val();
-    var seats;
-    $.when($.ajax({
-      url: "/seats/new",
-      method: "GET",
-      dataType: "json",
-      data: {
-        actionToDo: 'map',
-        project_id: project_id,
-        map_id: map_id
-      },
-      error: function (xhr, status, error) {
-        console.error('AJAX Error: ' + status + error);
-      },
-      success: function (response) {
-        seats = response["seat"];
-      }
-    })).then(function () {
+        for (var i = 0; i < seats.length; i++) {
+          var html_id = seats[i]["html_id"];
+          var code = seats[i]["code"];
+          var fijo = seats[i]["fixed"];;
+          var html_id_jq = '#' + html_id;
+          $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+          $(html_id_jq).addClass(
+            fijo
+              ? 'unavailable'
+              : 'available'
+          );
+          if (fijo) {
+            array_fixed.push(html_id);
+          }
 
-      for (var i = 0; i < seats.length; i++) {
-        var html_id = seats[i]["html_id"];
-        var code = seats[i]["code"];
-        var fijo = seats[i]["fixed"];;
-        var html_id_jq = '#' + html_id;
-        $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
-        $(html_id_jq).addClass(
-          fijo
-            ? 'unavailable'
-            : 'available'
-        );
-        if (fijo) {
-          array_fixed.push(html_id);
+          $(html_id_jq).click(function () {
+            var fixjo = array_fixed.includes(this.id);
+            console.log(fixjo);
+            $('#chckbxFixed').prop('checked', fixjo);
+          });
         }
 
-        $(html_id_jq).click(function () {
-          var fixjo = array_fixed.includes(this.id);
-          console.log(fixjo);
-          $('#chckbxFixed').prop('checked', fixjo);
-        });
-      }
-
-    });
+      });
+    }
   }
 
   $('#bttnAcceptModal').click(function () {
     var number = $('#txtflNumber').val();
     if (number === '') {
-      alert("El valor del asiento no puede ser vacío.")
+      alert("The value of the seat can not be empty")
       return;
     }
 
@@ -284,4 +286,100 @@ var total = 0;
     $('#txtflNumber').val("");
     $('#seatModal').modal('toggle');
   });
+
+
+  function randomMark() {    
+    var tag = splitValue($('#cmbbxProjects'), 1);
+    var project_id = splitValue($('#cmbbxProjects'), 0);
+    var map_id = splitValue($('#cmbbxMaps'), 4);
+    var fijo = false;
+
+    var $map = $('#cmbbxMaps');
+    var values = $map.val().split("|");
+    var map_data = values[0];
+    var x = parseInt(values[2], 10);
+    var y = parseInt(values[1], 10);
+
+    //Variable to assign like tag to the seat
+    var number = 1;
+    var number_arr = map_data.split(",");
+    number_arr.sort();
+    number_arr.forEach(function(html_id) {
+      var zeros = "";
+      if((number + "").length == 1 ) {
+        zeros = "00";
+      } else if((number + "").length == 2 ) {
+        zeros = "0";
+      }
+      var code = tag + zeros + number;
+
+      var actionToDo = 'search';
+      var seat;
+      $.when($.ajax({
+        url: "/seats/new",
+        method: "GET",
+        dataType: "json",
+        data: {
+          actionToDo: actionToDo,
+          project_id: project_id,
+          map_id: map_id,
+          html_id: html_id,
+          code: code,
+          fixed: fijo
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error: ' + status + error);
+        },
+        success: function (response) {
+          seat = response["seat"];
+        }
+      })).then(function () {
+        console.log(seat);
+
+        if (typeof seat == "string") {
+          alert(seat);
+          return;
+        }
+
+        var html_id_jq = '#' + html_id;
+        $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+        $(html_id_jq).addClass(
+          fijo
+            ? 'unavailable'
+            : 'available'
+        );
+
+        actionToDo = seat == null
+          ? 'insert'
+          : 'update';
+
+        var id = seat == null
+          ? -1
+          : seat["id"];
+
+        console.log(actionToDo);
+        $.ajax({
+          url: "/seats/new",
+          method: "GET",
+          dataType: "json",
+          data: {
+            actionToDo: actionToDo,
+            project_id: project_id,
+            map_id: map_id,
+            html_id: html_id,
+            code: code,
+            id: id,
+            fixed: fijo
+          },
+          error: function (xhr, status, error) {
+            console.error('AJAX Error: ' + status + error);
+          },
+          success: function (response) {
+            console.log(response);
+          }
+        });
+      });
+      number++;
+    });
+  }
 </script>

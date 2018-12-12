@@ -14,7 +14,8 @@
 //= require turbolinks
 //= require jquery3
 //= require jquery_ujs
-//= require_tree .
+//= require app26
+//= require assignments/assignments
 
 function textFieldOnlyNumbers(e) {
   if (!(
@@ -39,5 +40,9 @@ function randomNumberGenerator() {
 }
 
 function splitValue(combobox,position){
-  return combobox.val().split("|")[position];
+  if(combobox.val() != null) {    
+    return combobox.val().split("|")[position];
+  } else {    
+    return "";
+  }
 }

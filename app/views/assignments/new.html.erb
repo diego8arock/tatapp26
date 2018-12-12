@@ -15,16 +15,16 @@
 
 <%= form_tag(assignments_path, :method => "post", :id => "assignment_form") do %>
   <%= hidden_field_tag 'seat_id'%>
-  <% if @mobile %>
-    <% if !@map.nil? %>
-      <div id="map-container">
-        <div id="seat_map" style="float: none;" data-map="<%= @map.to_json %>"
-              data-available_seats="<%= @available_seats.to_json %>"
-              data-unavailable_seats="<%= @unavailable_seats.to_json %>"
-              data-selected_seat="<%= @seat.to_json %>">
+  <% if !@map.nil? %>
+    <div id="map-container">
+      <div id="seat_map" data-map="<%= @map.to_json %>"
+            data-available_seats="<%= @available_seats.to_json %>"
+            data-unavailable_seats="<%= @unavailable_seats.to_json %>"
+            data-selected_seat="<%= @seat.to_json %>">
       </div>
-      </div>
-      <br/>
+    </div>
+    <br/>
+    <% if @mobile %>
       <% if @assigned %>
         <%= hidden_field_tag 'assignment_id', @assignment.id %>
         <span><%= t 'assignment.assigned_seat', {:seat => @assignment.seat.code} %></span>
@@ -42,9 +42,9 @@
           <%#= submit_tag(t('assignment.accept'), :id => "btn_create", :class => "btn btn-info", :data => {:loading_text => t('assignment.accept_loading')}) %>
         </div>
       <% end %>
+    <% else %>
+      <span><%= t 'assignment.fixed_seat', {:seat => @seat.code} %></span>
     <% end %>
-  <% else %>
-    <span><%= t 'assignment.fixed_seat', {:seat => @seat.code} %></span>
   <% end %>
 
 <% end %>

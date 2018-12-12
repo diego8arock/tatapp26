@@ -1,5 +1,7 @@
-<%= stylesheet_link_tag "jquery.seat-charts" %>
-<%= stylesheet_link_tag "style" %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "jquery.seat-charts", "style" %>
+  <%= javascript_include_tag 'jquery.seat-charts.min' %>
+<% end %>
 
 <h2><%= t('menu.map.new')%></h2>
 <%= link_to 'Back', admin_index_path %>
@@ -179,8 +181,6 @@ $('#bttnCreateMap').click(function () {
         return return_style;
       }
     });
-
-    App26.map.set_width_row(x);
 
   }
 

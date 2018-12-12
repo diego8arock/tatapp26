@@ -1,5 +1,7 @@
-<%= stylesheet_link_tag "jquery.seat-charts" %>
-<%= stylesheet_link_tag "style" %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "jquery.seat-charts", "style" %>
+  <%= javascript_include_tag 'jquery.seat-charts.min' %>
+<% end %>
 
 <h2><%= t('menu.map.title') %></h2>
 <%= link_to 'Back', admin_index_path %>
@@ -71,35 +73,35 @@ var total = 0;
     firstSeatLabel = 1;
     $('#map-container').html('<div id="seat-map"></div>');
     var $map = $('#cmbbxMaps');
-    var values = $map.val().split("|");
-    var rawMap = App26.map.getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
-    var sc = $('#seat-map').seatCharts({
-      map: rawMap,
-      seats: {
-        f: {
-          classes: 'first-class'
+    if($map.val() != null) {
+      var values = $map.val().split("|");
+      var rawMap = App26.map.getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
+      var sc = $('#seat-map').seatCharts({
+        map: rawMap,
+        seats: {
+          f: {
+            classes: 'first-class'
+          }
+        },
+        naming: {
+          top: false,
+          getLabel: function (character, row, column) {
+            return firstSeatLabel++;
+          }
+        },
+        click: function () {
+          if (this.status() == 'available') {
+            // return  sc.find('selected').length == 1 ? 'available' : 'selected';
+            return 'available';
+          } else if (this.status() == 'selected') {
+            return 'available';
+          } else if (this.status() == 'unavailable') {
+            return 'unavailable';
+          } else {
+            return this.style();
+          }
         }
-      },
-      naming: {
-        top: false,
-        getLabel: function (character, row, column) {
-          return firstSeatLabel++;
-        }
-      },
-      click: function () {
-        if (this.status() == 'available') {
-          // return  sc.find('selected').length == 1 ? 'available' : 'selected';
-          return 'available';
-        } else if (this.status() == 'selected') {
-          return 'available';
-        } else if (this.status() == 'unavailable') {
-          return 'unavailable';
-        } else {
-          return this.style();
-        }
-      }
-    });
-    
-    App26.map.set_width_row(values[2]);
+      });
+    }
   }
 </script>

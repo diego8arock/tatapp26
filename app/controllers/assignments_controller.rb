@@ -8,35 +8,36 @@ class AssignmentsController < ApplicationController
 
   # GET /asignments/new
   def new
-    project = Project.find(session[:project_id])
-    @available_seats = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
-                  .where(:project => project)
-                  .where(:status => Seat::ACTIVE)
-    @unavailable_seats = Seat.where("(assignment_date = ? OR status <> ?)", Date.today, Seat::ACTIVE)
-                  .where(:project => project)
-    @seat = nil
-    @mobile = current_user.employee.assignment_type == Employee::MOBILE
+    @map = Map.where(:project_id => session[:project_id]).last
+    if !@map.nil?
+      project = Project.find(session[:project_id])
+      @available_seats = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
+                    .where(:project => project)
+                    .where(:status => Seat::ACTIVE)
+                    .where(:map => @map)
+      @unavailable_seats = Seat.where("(assignment_date = ? OR status <> ?)", Date.today, Seat::ACTIVE)
+                    .where(:project => project)
+                    .where(:map => @map)
+      @seat = nil
+      @mobile = current_user.employee.assignment_type == Employee::MOBILE
 
-    if @mobile
-      @map = Map.where(:project_id => project.id).last
-      if !@map.nil?
-
-      else 
-        flash[:error] = I18n.t "errors.no_map"
-      end
-      assignments = Assignment.includes(:seat).where(:project => project)
-                                .where(:employee => current_user.employee)
-                                .where(:status => Assignment::ACTIVE)
-                                .where(:assignment_date => Date.today)
-      @assigned = !assignments.empty?
-      if @assigned
-        @assignment = assignments[0]
-        @seat = @assignment.seat
+      if @mobile
+        assignments = Assignment.includes(:seat).where(:project => project)
+                                  .where(:employee => current_user.employee)
+                                  .where(:status => Assignment::ACTIVE)
+                                  .where(:assignment_date => Date.today)
+        @assigned = !assignments.empty?
+        if @assigned
+          @assignment = assignments[0]
+          @seat = @assignment.seat
+        else
+          @assignment = Assignment.new
+        end
       else
-        @assignment = Assignment.new
+        @seat = Seat.find(current_user.employee.seat_id)
       end
-    else
-      @seat = Seat.find(current_user.employee.seat_id)
+    else 
+      flash[:error] = I18n.t "errors.no_map"
     end
   end
 

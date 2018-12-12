@@ -1,3 +1,6 @@
+<% content_for :title do %>
+  <%= t 'title' %>
+<% end %>
 <h2>Confirmation</h2>
 
 <p>
@@ -22,6 +25,11 @@
 <p>
   <b><%= t 'employee.birth_date' %>:</b>
   <%= current_user.employee.birth_date.strftime("%B %d, %Y %A") %>
+</p>
+
+<p>
+  <b><%= t 'project' %>:</b>
+  <%= current_user.employee.project.name %>
 </p>
 
 <%= link_to t('confirmation.continue'), edit_session_path(current_user.employee.id) %> |

@@ -1,6 +1,7 @@
 //= require jquery3
 //= require jquery_ujs
 //= require bootstrap
+//= jquery.seat-charts.min
 //= require app26
 //= require assignments/maps
 /**
@@ -44,9 +45,11 @@ App26.AssignmentController.prototype.init = function() {
   $('body').on('click', '#create_assignment', App26.assignment.createAssignment);
   $('body').on('click', '#cancel_assignment', App26.assignment.cancelAssignment);
 
-  $("#office").elevateZoom({
-            zoomWindowWidth:700,
-            zoomWindowHeight:700});
+  if($("#office").length > 0) {
+    $("#office").elevateZoom({
+              zoomWindowWidth:700,
+              zoomWindowHeight:700});
+  }
 }
 
 /**

@@ -17,8 +17,8 @@
     <%= yield(:head) %>
   </head>
 
-  <body>
-    <%= render 'layouts/messages' %>
+  <body>    
+    <%= flash_messagesMdb %>
     <%= yield %>
   </body>
 </html>

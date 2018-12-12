@@ -1,5 +1,7 @@
-<%= stylesheet_link_tag "jquery.seat-charts" %>
-<%= stylesheet_link_tag "style" %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "jquery.seat-charts", "style" %>
+  <%= javascript_include_tag 'jquery.seat-charts.min' %>
+<% end %>
 
 <h2><%= t('menu.seat.assign') %></h2>
 <%= link_to 'Back', admin_index_path %>
@@ -125,71 +127,71 @@ var total = 0;
     firstSeatLabel = 1;
     $('#map-container').html('<div id="seat-map"></div>');
     var $map = $('#cmbbxMaps');
-    var values = $map.val().split("|");
-    var rawMap = App26.map.getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
-    var sc = $('#seat-map').seatCharts({
-      showLabel: false,
-      map: rawMap,
-      seats: {
-        f: {
-          classes: 'first-class'
+    if($map.val() != null) {
+      var values = $map.val().split("|");
+      var rawMap = App26.map.getRawMap(values[0], parseInt(values[1], 10), parseInt(values[2], 10));
+      var sc = $('#seat-map').seatCharts({
+        showLabel: false,
+        map: rawMap,
+        seats: {
+          f: {
+            classes: 'first-class'
+          }
+        },
+        naming: {
+          top: false,
+          getLabel: function (character, row, column) {
+            return firstSeatLabel++;
+          }
+        },
+        click: function () {
+          var tag = $('#hddnProjectTag').val();
+          $('#txtfldTag').val(tag);
+          $('#hddnSelectedSeat').val(this.settings.id);
+          $('#bttnShowModal').trigger("click");
+          return this.style();
+        },
+        focus: function () {
+          return this.style();
         }
-      },
-      naming: {
-        top: false,
-        getLabel: function (character, row, column) {
-          return firstSeatLabel++;
+      });
+
+      var project_id = $('#hddnProjectId').val();
+      var map_id = $('#hddnMapId').val();
+      var seats;
+      $.when($.ajax({
+        url: "/seats/new",
+        method: "GET",
+        dataType: "json",
+        data: {
+          actionToDo: 'map',
+          project_id: project_id,
+          map_id: map_id
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error: ' + status + error);
+        },
+        success: function (response) {
+          seats = response["seat"];
         }
-      },
-      click: function () {
-        var tag = $('#hddnProjectTag').val();
-        $('#txtfldTag').val(tag);
-        $('#hddnSelectedSeat').val(this.settings.id);
-        $('#bttnShowModal').trigger("click");
-        return this.style();
-      },
-      focus: function () {
-        return this.style();
-      }
-    });
-    
-    App26.map.set_width_row(values[2]);
+      })).then(function () {
 
-    var project_id = $('#hddnProjectId').val();
-    var map_id = $('#hddnMapId').val();
-    var seats;
-    $.when($.ajax({
-      url: "/seats/new",
-      method: "GET",
-      dataType: "json",
-      data: {
-        actionToDo: 'map',
-        project_id: project_id,
-        map_id: map_id
-      },
-      error: function (xhr, status, error) {
-        console.error('AJAX Error: ' + status + error);
-      },
-      success: function (response) {
-        seats = response["seat"];
-      }
-    })).then(function () {
+        for (var i = 0; i < seats.length; i++) {
+          var html_id = seats[i]["html_id"];
+          var code = seats[i]["code"];
+          var fijo = seats[i]["fixed"];;
+          var html_id_jq = '#' + html_id;
+          $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+          $(html_id_jq).addClass(
+            fijo
+              ? 'unavailable'
+              : 'available'
+          );
+          if (!fijo) $(html_id_jq).unbind("click");
+        }
 
-      for (var i = 0; i < seats.length; i++) {
-        var html_id = seats[i]["html_id"];
-        var code = seats[i]["code"];
-        var fijo = seats[i]["fixed"];;
-        var html_id_jq = '#' + html_id;
-        $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
-        $(html_id_jq).addClass(
-          fijo
-            ? 'unavailable'
-            : 'available'
-        );
-        if (!fijo) $(html_id_jq).unbind("click");
-      }
-
-    });
+      });
+    }
   }
 
   $('#bttnShowModal').click(function () {

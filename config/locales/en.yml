@@ -94,6 +94,8 @@ en:
     map_modal: "General map"
     close: "Close"
     see_map: "See map"
+  seat:
+    busy: "El asiento ya existe en otra posición con el mismo nombre"
   errors:
     cancel: "Error in cancel assignment"
     access_denied: "You are not authorized to access this page"

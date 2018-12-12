@@ -116,8 +116,8 @@ App26.MapController.prototype.setTag = function (seats, classname) {
 }
 
 App26.MapController.prototype.set_width_row = function (columns) {    
-  var map_width = (parseInt(columns, 10) + 1) * App26.map.width_by_row;
-  $(".seatCharts-row").css("width", map_width + "px");
+  //var map_width = (parseInt(columns, 10) + 1) * App26.map.width_by_row;
+  //$(".seatCharts-row").css("width", map_width + "px");
 }
 
 
