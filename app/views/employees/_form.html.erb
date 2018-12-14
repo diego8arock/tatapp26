@@ -2,7 +2,7 @@
   <% if employee.errors.any? %>
     <div class="row">
       <div id="error_explanation">
-        <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+        <h2><%= pluralize(employee.errors.count, "error") %><%= t('employee.error') %></h2>
 
         <ul>
         <% employee.errors.full_messages.each do |message| %>
@@ -15,54 +15,54 @@
 
   <div class="row">
     <div class="form-group col-md-4">
-      <%= form.label :name %>
+      <%= form.label t('employee.name') %>
       <%= form.text_field :name, class: 'form-control' %>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-4">
-      <%= form.label :number %>
+      <%= form.label t('employee.number') %>
       <%= form.text_field :number, class: 'form-control' %>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-4">
-      <%= form.label :join_date %>
+      <%= form.label t('employee.date') %>
       <%= form.date_field :admission_date, as: :date, value: form.object.try(:strftime,"%Y-%m-%d"), class: 'form-control' %>
     </div>
   </div>
 
   <div class="row">
       <div class="form-group col-md-4">
-      <%= form.label :birth_date %>
+      <%= form.label t('employee.birth_date') %>
       <%= form.date_field :birth_date, as: :date, value: form.object.try(:strftime,"%Y-%m-%d"), class: 'form-control' %>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-4">
-      <%= form.label :status %>
-      <%= form.select :status, [['Active', '1'], ['Inactive', '2']], {}, { :class => 'form-control' }%>
+      <%= form.label t('employee.status') %>
+      <%= form.select :status, [[t('employees.active'), Employee::ACTIVE], [t('employees.inactive'), Employee::INACTIVE]], {}, { :class => 'form-control',  }%>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-4">
-      <%= form.label :assignment_type %>
-      <%= form.select :assignment_type, [['Mobile', '1'], ['Fixed', '2']], {}, { :class => 'form-control' }%>
+      <%= form.label t('employee.assignment_type') %>
+      <%= form.select :assignment_type, [[t('float'), Employee::MOBILE], [t('fixed'), Employee::FIXED]], {}, { :class => 'form-control'}%>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-4">
-      <%= form.label :project %>
+      <%= form.label t('project') %>
       <%= form.collection_select(:project_id, Project.all, :id, :name, {:selected => @employee.project_id }, { class: 'form-control' }) %>
     </div>
   </div>
 
   <div class="actions">
-    <%= form.submit class: "btn btn-lg btn-primary" %>
+    <%= form.submit t('save'), class: "btn btn-lg btn-primary" %>
   </div>
 <% end %>

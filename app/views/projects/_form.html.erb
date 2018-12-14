@@ -2,7 +2,7 @@
   <% if project.errors.any? %>
     <div class="row">
       <div id="error_explanation">
-        <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+        <h2><%= pluralize(project.errors.count, "error") %><%= form.label t('projects.error') %></h2>
 
         <ul>
         <% project.errors.full_messages.each do |message| %>
@@ -15,13 +15,13 @@
 
 <div class="row">
   <div class="form-group col-md-4">
-    <%= form.label "Name" %>
+    <%= form.label t('projects.name') %>
     <%= form.text_field :name, class: "form-control" %>
   </div>
 </div>
 <div class="row">
   <div class="form-group col-md-4">
-    <%= form.label "Acronym" %>
+    <%= form.label t('projects.acronym') %>
     <%= form.text_field :tag, class: "form-control" %>
   </div>
 </div>
@@ -29,6 +29,6 @@
   <%= form.hidden_field :status, :value=>"1"%>
 
   <div class="actions">
-    <%= form.submit "Save", class: "btn btn-lg btn-primary"  %>
+    <%= form.submit t('save'), class: "btn btn-lg btn-primary"  %>
   </div>
 <% end %>

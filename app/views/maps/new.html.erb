@@ -1,16 +1,16 @@
 <% content_for :head do %>
-  <%= stylesheet_link_tag "jquery.seat-charts", "style" %>
-  <%= javascript_include_tag 'jquery.seat-charts.min' %>
+  <%= stylesheet_link_tag "lib/jquery.seat-charts", "style" %>
+  <%= javascript_include_tag 'lib/jquery.seat-charts.min' %>
 <% end %>
 
 <h2><%= t('menu.map.new')%></h2>
-<%= link_to 'Back', admin_index_path %>
+<%= link_to t('back'), admin_index_path %>
 
 <%= form_with(model: @map, local: true) do |form| %>
 <% if @map.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(@map.errors.count, "error") %>
-      prohibited this user from being saved:</h2>
+      <%= t('maps.error') %></h2>
 
     <ul>
       <% @map.errors.full_messages.each do |message| %>
@@ -23,39 +23,39 @@
 <table>
   <tr>
     <td>
-      <label for="">Project</label>
+      <label for=""><%= t('project') %></label>
     </td>
     <td><%= form.select :project_id, Project.all.collect { |m| [ m.name, m.id ] }, {}, :id => "cmbbxProjects" %></td>
   </tr>
   <tr>
     <td>
-      <label for="txtMapName">Name</label>
+      <label for="txtMapName"><%= t('maps.name') %></label>
     </td>
     <td><%= form.text_field :name, id:"txtfldMapName" %></td>
   </tr>
   <tr>
     <td>
-      <label for="txtMapX">Width</label>
+      <label for="txtMapX"><%= t('maps.width') %></label>
     </td>
     <td><input type="text" id="txtMapX" value="2"></td>
   </tr>
   <tr>
     <td>
-      <label for="txtMapY">Height</label>
+      <label for="txtMapY"><%= t('maps.height') %></label>
     </td>
     <td><input type="text" id="txtMapY" value="2"></td>
   </tr>
   <tr>
     <td><input type="button" id="bttnCreateMap" value="Generate map"></td>
     <td><input type="button" id="bttnResetMap" value="Reset map"></td>
-    <td><%= form.submit "Save map", id:"bttnSaveMap" %></td>
+    <td><%= form.submit t('maps.save'), id:"bttnSaveMap" %></td>
   </tr>
 </table>
 <br/>
 <div id="map-container">
   <div id="seat-map">
     <h3 style="visibility: hidden" id="hdrCounter">
-      Number of seats (<span id="counter">0</span>):</h3>
+      <%= t('maps.seats') %>(<span id="counter">0</span>):</h3>
   </div>
 </div>
 

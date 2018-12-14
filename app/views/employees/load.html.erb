@@ -1,15 +1,15 @@
-<h2>Load Employee</h2>
+<h2><%= t('menu.employee.load')%></h2>
 
 <%= form_tag(save_loademployees_path, :method => "post", :id => "loademployees_form", multipart: true) do %>
 
   <div class="row">
     <div class="form-group col-md-4">
-       <%= label_tag :employees_file %>
-       <%= file_field_tag :employees_file %>
+       <%= label_tag  t('employee.file') %>
+       <%= file_field_tag :employees_file, accept: 'csv', title: t('employee.select_file') %>
        <small class="text-muted"><%= t 'file_help' %></small>
    </div>
   </div>
   <div class="actions">
-    <%= submit_tag "Submit", class: "btn btn-primary" %>
+    <%= submit_tag t('save'), class: "btn btn-primary" %>
   </div>
 <% end %>

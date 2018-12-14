@@ -1,5 +1,5 @@
-<h2>New Project</h2>
+<h2><%= t('menu.project.new') %></h2>
 
 <%= render 'form', project: @project %>
 
-<%= link_to 'Back', projects_path %>
+<%= link_to t('back'), projects_path %>
