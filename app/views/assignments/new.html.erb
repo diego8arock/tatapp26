@@ -17,10 +17,10 @@
   <%= hidden_field_tag 'seat_id'%>
   <% if !@map.nil? %>
     <div id="map-container">
-      <div id="seat_map" data-map="<%= @map.to_json %>"
-            data-available_seats="<%= @available_seats.to_json %>"
-            data-unavailable_seats="<%= @unavailable_seats.to_json %>"
-            data-selected_seat="<%= @seat.to_json %>">
+      <div id="seat_map" data-map="<%= @map.to_json(:except => [:created_at, :updated_at]) %>"
+            data-available_seats="<%= @available_seats.to_json(:except => [:created_at, :updated_at]) %>"
+            data-unavailable_seats="<%= @unavailable_seats.to_json(:except => [:created_at, :updated_at]) %>"
+            data-selected_seat="<%= @seat.to_json(:except => [:created_at, :updated_at]) %>">
       </div>
     </div>
     <br/>

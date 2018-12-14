@@ -12,18 +12,22 @@ class Employee < ApplicationRecord
   INACTIVE = 2
 
   def get_status
-    if self.status == ACTIVE
-      return "Active"
+    if self.is_active?
+      return I18n.t "active"
     else
-      return "Inactive"
+      return I18n.t "inactive"
     end
   end
 
   def get_assignment_type
     if self.assignment_type == MOBILE
-      return "Mobile"
+      return I18n.t "float"
     else
-      return "Fixed"
+      return I18n.t "fixed"
     end
+  end
+
+  def is_active?
+    self.status == ACTIVE
   end
 end

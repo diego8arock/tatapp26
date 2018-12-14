@@ -60,15 +60,15 @@ div.seatCharts-row {
 	height: 35px;
 	display: flex;
 }
-div.seatCharts-seat.available {
+/*div.seatCharts-seat.available {
 	background-color: #B9DEA0;
 
-}
+}*/
 div.seatCharts-seat.available.first-class {
 /* 	background: url(vip.png); */
 	background-color: #E6CAC4;
 }
-div.seatCharts-seat.focused {
+/*div.seatCharts-seat.focused {
 	background-color: #76B474;
 }
 div.seatCharts-seat.selected {
@@ -76,7 +76,7 @@ div.seatCharts-seat.selected {
 }
 div.seatCharts-seat.unavailable {
 	background-color: #472B34;
-}
+}*/
 div.seatCharts-container {
 	/* border-right: 1px dotted #adadad; */
 	/* width: 200px; */

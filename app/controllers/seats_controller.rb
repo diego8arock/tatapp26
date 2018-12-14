@@ -29,7 +29,7 @@ class SeatsController < ApplicationController
         else
           @seat = @seats.first
           if params[:fixed] == @seat.fixed.to_s
-            @seat = "El asiento ya existe en otra posición con el mismo nombre."
+            @seat = I18n.t "seat.busy"
           end
         end
       when 'insert'

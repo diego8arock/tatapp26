@@ -9,8 +9,10 @@ class ApplicationController < ActionController::Base
   rescue_from AccessDenied, :with => :access_denied
 
   def access_denied(exception)
-    flash[:notice] = I18n.t "errors.access_denied"
-    sign_out_and_redirect(current_user)
+    flash.delete(:notice)
+    flash[:error] = I18n.t "errors.access_denied"
+    sign_out(current_user)
+    redirect_to root_url
   end
 
   def admin_required
@@ -23,10 +25,12 @@ class ApplicationController < ActionController::Base
 
   protected
   def after_sign_in_path_for(resource)
-    if resource.is_employee?
+    if resource.is_employee? && resource.employee.is_active?
       confirmation_path
-    else
+    elsif resource.is_admin?
       "/admin"
+    else
+      raise AccessDenied
     end
   end
 
