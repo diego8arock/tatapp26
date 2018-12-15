@@ -8,6 +8,11 @@
 <% end %>
 <h2><%= t 'assignment.title' %></h2>
 <br/>
+
+<p>
+  <b><%= t 'project' %>:</b>
+  <%= current_user.employee.project.name %>
+</p>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#map_modal">
   <%= t 'assignment.see_map' %>
 </button>

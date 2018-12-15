@@ -33,17 +33,22 @@
         <%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
 
           <div class="md-form inputMdForm margintop p24">
-            <span>Username</span>
+            <span><%= t('username') %></span>
             <%= f.text_field :username, autofocus: true, autocomplete: "employee", class: "inputLine" %>
           </div>
 
           <div class="md-form inputMdForm margintop p24">
-            <span>Password</span>
+            <span><%= t('password') %></span>
             <%= f.password_field :password, autocomplete: "current-password", class: "inputLine" %>
           </div>
 
           <div class="md-form inputMdForm margintop p24">
             <span><small class="text-muted"><%= t 'password_help' %></small></span>
+          </div>
+
+          <div class="md-form inputMdForm margintop p24">
+            <span><%= t('language') %></span>
+            <%= select_tag :locale, options_for_select(@languages.collect { |obj| [obj['name'], obj['id']] }), { class: 'browser-default inputLine', style: 'display: inline-block !important;' } %>
           </div>
 
           <div class="actions margintop p24">

@@ -29,15 +29,15 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
+es:
   hello: "Hello world"
-  language: "Language"
-  password: "Password"
-  username: "Username"
+  language: "Lenguaje"
+  password: "Contrasena"
+  username: "Usuario"
   password_confirmation: "Password confirmation"
-  title_app: "Nation 26"
-  title: ":: Select your seat"
-  login_title: "Login Nation 26"
+  title_app: "Nacion 26"
+  title: ":: Selecccione su puesto"
+  login_title: "Login Nacion 26"
   login: "Login"
   logout: "Log out"
   profile: "Profile"
