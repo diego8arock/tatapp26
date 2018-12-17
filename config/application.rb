@@ -17,5 +17,7 @@ module Tatapp26
     # the framework and any gems in your application.
 
     config.i18n.default_locale = :en
+
   end
+  I18n.config.available_locales = [:es, :en]
 end
