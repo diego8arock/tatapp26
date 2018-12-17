@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get 'showproject', to: 'projects#show', as: 'showproject'
   get 'createproject', to: 'projects#new', as: 'createproject'
   get 'editproject', to: 'projects#edit', as: 'editproject'
+  get 'zoneproject', to: 'projects#zone', as: 'zoneproject'
   get 'markseats', to: 'seats#new', as: 'markseats'
   get 'assignseats', to: 'seats#assign', as: 'assignseats'
 
