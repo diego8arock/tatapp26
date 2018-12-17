@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en-US">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Language" content="en">
+
+  <META name="description" content="Javascript Draw Line, Polyline and Polygon Demo: jsDraw2D Javascript Graphics Library">
+  <TITLE>Javascript Draw Line, Polyline & Polygon Demo: jsDraw2D.</TITLE>
+  <link rel="stylesheet" type="text/css" href="../jsdraw2d.css" media="screen">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <script type="text/javascript">
+    var addthis_disable_flash = true;
+  </script>
+
+  <div class="container">
+    <div class="main">
+      <div class="content">
+        <div class="section">
+          <h2>
+            jsDraw2D: Line, Polyline and Polygon drawing Demo&nbsp;
+
+            <br>
+            <table>
+              <tr>
+                <td valign="top">
+                  <div id="canvas" style="overflow:hidden;position:relative;width:1430px;height:882px;border:#999999 1px solid; background-image: url('dist.png')">
+
+                  </div>
+                <td valign="top" style="padding-left:10px">
+                  <table>
+                    <tr>
+                      <td><b>Pen Width:</b></td>
+                      <td><input id="penwidth" type="text" value="1" size="20" /></td>
+                    </tr>
+                    <tr>
+                      <td><b>Color:</b></td>
+                      <td><input id="color" type="text" value="#0000ff" size="20" /></td>
+                    </tr>
+                  </table>
+                  <br>
+                  <br><br>
+                  <input style="font-weight:bold" type="button" value="Draw Polygon" onclick="drawPolygon();" />
+                  <br><br>
+                  <input style="font-weight:bold" type="button" value="Fill Polygon" onclick="fillPolygon();" />
+                  <br><br>
+                  <input style="font-weight:bold" type="button" value="Clear Canvas" onclick="clearCanvas();" />
+                <td>
+                </td>
+              </tr>
+            </table>
+            <input type="button" id="bttnResetPolygon" value="Reset Polygon">
+            <input type="button" id="bttnPrintPolygon" value="Print Polygon">
+            <table id="pointsTable">
+              <tbody>
+                <tr id="header">
+                  <td> <label>#</lable>
+                  </td>
+                  <td> <label>X</lable>
+                  </td>
+                  <td> <label>Y</lable>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <a href="" id="blank"></a>
+        </div>
+      </div>
+    </div>
+    <script src="jsDraw2D.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var canvasDiv = document.getElementById("canvas");
+      var gr = new jsGraphics(canvasDiv);
+      var penWidth;
+      var col;
+      var pen;
+      var d1, d2;
+      var msdiv = document.getElementById("timems");
+      setPenColor(true);
+      var points = new Array();
+      var pointIndex = 0;
+      var font = new jsFont("arial", "bold", "12px");
+      var bluePen = new jsPen(new jsColor("red"), 1);
+
+      var ie = false;
+      if (document.all)
+        ie = true;
+
+      if (!ie) {
+        //canvasDiv.captureEvents(Event.MOUSEMOVE)
+        //canvasDiv.captureEvents(Event.CLICK)
+      }
+      canvasDiv.onmousemove = getMouseXY;
+      canvasDiv.onclick = drawPoint;
+
+      var mouseX = 0
+      var mouseY = 0
+
+      //Get mouse position
+      function getMouseXY(e) {
+        if (ie) {
+          mouseX = event.clientX + document.body.parentElement.scrollLeft;
+          mouseY = event.clientY + document.body.parentElement.scrollTop;
+        } else {
+          mouseX = e.pageX
+          mouseY = e.pageY
+        }
+
+        if (mouseX < 0) {
+          mouseX = 0
+        }
+        if (mouseY < 0) {
+          mouseY = 0
+        }
+
+        mouseX = mouseX - canvasDiv.offsetLeft;
+        mouseY = mouseY - canvasDiv.offsetTop;
+
+        return true;
+      }
+
+      function setPenColor(noAlert) {
+        if (document.getElementById("color").value != "")
+          col = new jsColor(document.getElementById("color").value);
+        else
+          col = new jsColor("blue");
+
+        if (document.getElementById("penwidth").value != "")
+          penWidth = document.getElementById("penwidth").value;
+
+        if (!isNaN(penWidth))
+          pen = new jsPen(col, penWidth);
+        else
+          pen = new jsPen(col, 1);
+
+        if (!noAlert) {
+          if (points.length == 0) {
+            alert("Please click at any location on the blank canvas at left side to plot the points!");
+            return false;
+          } else if (points.length == 1) {
+            alert("2 or more points are required to draw a line, polyline or polygon! Please plot more points by clicking at any location on the blank canvas at left side.");
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function drawPoint() {
+        pointIndex++;
+        gr.fillRectangle(new jsColor("green"), new jsPoint(mouseX - 6, mouseY - 6), 6, 6);
+        var jsPointCanvas = new jsPoint(mouseX - 3, mouseY - 3);
+        points[points.length] = jsPointCanvas;
+        gr.drawText("P" + pointIndex, jsPointCanvas, font, bluePen.color, 90);
+        addPointToTable(mouseX - 3, mouseY - 3);
+      }
+
+      function drawPolygon() {
+        if (!setPenColor())
+          return;
+        gr.drawPolygon(pen, points);
+      }
+
+      function addPointToTable(x, y) {
+        $('#pointsTable tr:last')
+          .after("<tr><td>" + pointIndex + "</td><td><input type='text' name='x' value='" + x + "'></td><td> <input type='text' name='y' value='" + y + "'></td></tr>");
+      }
+
+      $("#bttnResetPolygon").click(function() {
+
+        clearCanvas();
+        var trs = $('#pointsTable > tbody > tr');
+        trs.each(function() {
+          var pX = -1;
+          var pY = -1;
+          $(this).children('td').each(function() {
+            var data = $(this).html();
+            var $ele = $(this).children('input')[0];
+            if ($ele != null) {
+              if ($ele.name == "x") {
+                pX = parseInt($ele.value);
+              } else {
+                pY = parseInt($ele.value);
+              }
+            }
+
+          });
+          if (pY != -1 && pX != -1) {
+            reDrawPoint(pX, pY);
+          }
+
+        });
+
+        drawPolygon();
+
+      });
+
+      function reDrawPoint(pX, pY) {
+        pointIndex++;
+        gr.fillRectangle(new jsColor("green"), new jsPoint(pX - 3, pY - 3), 6, 6);
+        var jsPointCanvas = new jsPoint(pX, pY);
+        points[points.length] = jsPointCanvas
+        gr.drawText("P" + pointIndex, jsPointCanvas, font, bluePen.color, 90);
+
+      }
+
+      function clearCanvas() {
+        gr.clear();
+        pointIndex = 0;
+        points = new Array();
+        emptyTable();
+      }
+
+      function emptyTable() {
+        var trs = $('#pointsTable > tbody > tr');
+        trs.each(function() {
+          if ($(this).attr('id') != "header") {
+            $(this).remove();
+          }
+        });
+      }
+
+      function fillPolygon() {
+        if (!setPenColor())
+          return;;
+        gr.fillPolygon(col, points);
+        d2 = (new Date()).getTime();
+      }
+    </script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-350192-9");
+        pageTracker._trackPageview();
+      } catch (err) {}
+    </script>
+</body>
+
+</html>
