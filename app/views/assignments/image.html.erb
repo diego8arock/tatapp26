@@ -12,8 +12,9 @@
   <%= current_user.employee.project.name %>
 </p>
 
-<div id="tour" data-restart="true">
-</div>
+<% if current_user.tour? && !@map.nil? %>
+  <div id="tour" data-restart="true"></div>
+<% end %>
 <div id="canvas" style="overflow:hidden;border:#999999 1px solid;">
   <img id="office2" src="/assets/floor.png" class="rounded mx-auto d-block" alt="Map" style="width: 1095px;">
 </div>

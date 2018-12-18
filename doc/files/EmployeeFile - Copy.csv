@@ -1,4 +1,4 @@
-Number;Name;Joindate;Birthdate;Assignment;Project;Seat(optional)
+ï»¿Number;Name;Joindate;Birthdate;Assignment;Project;Seat(optional)
 823773;Cesar Augusto Gomez;01/01/2000;02/01/2000;Fijo;CL;001
 891541;Luz Karime Valderrama  Santibanez;01/01/2000;02/01/2000;Fijo;CL;002
 1220234;Juan Gabriel Rodriguez Fernandez;01/01/2000;02/01/2000;Fijo;CL;003
@@ -27,4 +27,3 @@ Number;Name;Joindate;Birthdate;Assignment;Project;Seat(optional)
 1263223;Alejandro Casanova Mutis;01/01/2000;02/01/2000;Flotante;AB;
 852989;Maldonado, Brickney Carim (Brickney);01/01/2000;02/01/2000;Flotante;TI;
 862448;Sanabria Romero, Alejandro Arturo;01/01/2000;02/01/2000;Fijo;TI;001
-1579254;Jessica Adriana García Polanías;01/01/2000;02/01/2000;Flotante;TI;

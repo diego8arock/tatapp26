@@ -100,8 +100,8 @@ class EmployeesController < ApplicationController
               project: project)
           end
 
-          if !seat_code.blank?            
-            seat_code = project_tag + seat_code
+          if !seat_code.blank?
+            # seat_code = project_tag + seat_code
             seat = Seat.find_by code: seat_code, project: project
             if seat.nil?
               error_number += 1

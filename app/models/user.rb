@@ -41,4 +41,8 @@ class User < ApplicationRecord
       return self.username
     end
   end
+
+  def tour?
+    self.sign_in_count <= 5
+  end
 end

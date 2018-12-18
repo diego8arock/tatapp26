@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= stylesheet_link_tag "lib/jquery.seat-charts", "style" %>
+  <%= stylesheet_link_tag "lib/jquery.seat-charts", "map" %>
   <%= javascript_include_tag 'lib/jquery.seat-charts.min' %>
 <% end %>
 
@@ -182,7 +182,7 @@ var total = 0;
           var code = seats[i]["code"];
           var fijo = seats[i]["fixed"];;
           var html_id_jq = '#' + html_id;
-          $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+          $(html_id_jq).html(code).removeClass('available');
           $(html_id_jq).addClass(
             fijo
               ? 'unavailable'
@@ -246,7 +246,7 @@ var total = 0;
       }
 
       var html_id_jq = '#' + html_id;
-      $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+      $(html_id_jq).html(code).removeClass('available');
       $(html_id_jq).addClass(
         fijo
           ? 'unavailable'
@@ -289,7 +289,7 @@ var total = 0;
   });
 
 
-  function randomMark() {    
+  function randomMark() {
     var tag = splitValue($('#cmbbxProjects'), 1);
     var project_id = splitValue($('#cmbbxProjects'), 0);
     var map_id = splitValue($('#cmbbxMaps'), 4);
@@ -312,7 +312,7 @@ var total = 0;
       } else if((number + "").length == 2 ) {
         zeros = "0";
       }
-      var code = tag + zeros + number;
+      var code = zeros + number;
 
       var actionToDo = 'search';
       var seat;
@@ -343,7 +343,7 @@ var total = 0;
         }
 
         var html_id_jq = '#' + html_id;
-        $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+        $(html_id_jq).html(code).removeClass('available');
         $(html_id_jq).addClass(
           fijo
             ? 'unavailable'

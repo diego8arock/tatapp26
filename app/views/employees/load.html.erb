@@ -4,12 +4,16 @@
 
   <div class="row">
     <div class="form-group col-md-4">
-       <%= label_tag  t('employee.file') %>
-       <%= file_field_tag :employees_file, accept: 'csv', title: t('employee.select_file') %>
-       <small class="text-muted"><%= t 'file_help' %></small>
+      <div class="custom-file <%= I18n.locale %>" id="customFile" lang="es">
+          <input type="file" class="custom-file-input" id="employees_file" name="employees_file" aria-describedby="fileHelp">
+          <label class="custom-file-label" for="employees_file">
+              <%= t('employee.select_file') %>
+          </label>
+          <small class="text-muted"><%= t 'file_help' %></small>
+      </div>
    </div>
   </div>
   <div class="actions">
-    <%= submit_tag t('save'), class: "btn btn-primary" %>
+    <%= submit_tag t('save'), class: "btn btn-primary glyphicon-save-file" %>
   </div>
 <% end %>

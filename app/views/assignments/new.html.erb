@@ -2,7 +2,7 @@
   <%= t 'title' %>
 <% end %>
 <% content_for :head do %>
-  <%= stylesheet_link_tag "lib/jquery.seat-charts", "style" %>
+  <%= stylesheet_link_tag "lib/jquery.seat-charts", "map" %>
   <%= stylesheet_link_tag "lib/bootstrap-tour-standalone.min" %>
 <% end %>
 <h2><%= t 'assignment.title' %></h2>
@@ -13,41 +13,46 @@
   <%= current_user.employee.project.name %>
 </p>
 
-<div id="tour">
-</div>
 <%= form_tag(assignments_path, :method => "post", :id => "assignment_form") do %>
   <%= hidden_field_tag 'seat_id'%>
   <% if !@map.nil? %>
+    <% if current_user.tour? %>
+      <div id="tour"></div>
+    <% end %>
     <div id="map-container">
-      <div id="seat_map" data-map="<%= @map.to_json(:except => [:created_at, :updated_at]) %>"
+      <div id="seat_map" class="maptable" data-map="<%= @map.to_json(:except => [:created_at, :updated_at]) %>"
             data-available_seats="<%= @available_seats.to_json(:except => [:created_at, :updated_at]) %>"
             data-unavailable_seats="<%= @unavailable_seats.to_json(:except => [:created_at, :updated_at]) %>"
             data-selected_seat="<%= @seat.to_json(:except => [:created_at, :updated_at]) %>">
       </div>
-    </div>
-    <div id="project_plane">
-      <canvas id="project_canvas" width="200" height="200"></canvas>
+      <div id="project_plane" class="maptable">
+        <canvas id="project_canvas" width="200" height="200"></canvas>
+      </div>
     </div>
     <% if @mobile %>
       <% if @assigned %>
         <%= hidden_field_tag 'assignment_id', @assignment.id %>
-        <span><%= t 'assignment.assigned_seat', {:seat => @assignment.seat.code} %></span>
-        <br/>
-        <button class="btn btn-info" type="button" id="cancel_assignment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <%= t 'assignment.cancel' %>
-        </button>
+        <div class="text-center panel-group">
+          <h3><%= t 'assignment.assigned_seat', {:seat => @assignment.seat.code} %></h3>
+        </div>
+        <div class="text-center panel-group">
+          <button class="btn btn-sm tcsFontTitle btn-elegant" type="button" id="cancel_assignment"style="font-size: 18px;background-color: #2e2e2e!important;
+    color: #fff!important;">
+            <%= t 'assignment.cancel' %>
+          </button>
+        </div>
       <% else %>
-        <span><%= t 'assignment.time_to_select' %><span id="countdownSelect"></span></span>
-        <br/>
-        <div class="dropdown">
-          <button class="btn btn-info" type="button" id="create_assignment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="text-center panel-group">
+          <h3><%= t 'assignment.time_to_select' %><span id="countdownSelect"></span></h3>
+        </div>
+        <div class="text-center panel-group">
+          <button class="btn btn-sm tcsFontTitle btn-elegant" type="button" id="create_assignment" style="font-size: 18px;">
             <%= t 'assignment.accept' %>
           </button>
-          <%#= submit_tag(t('assignment.accept'), :id => "btn_create", :class => "btn btn-info", :data => {:loading_text => t('assignment.accept_loading')}) %>
         </div>
       <% end %>
     <% else %>
-      <div> 
+      <div class="text-center panel-group">
         <h3 id="fixed"><%= t 'assignment.fixed_seat', {:seat => @seat.code} %></h3>
       </div>
     <% end %>

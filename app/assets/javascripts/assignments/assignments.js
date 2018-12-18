@@ -4,6 +4,8 @@
 //= require lib/jquery.seat-charts.min
 //= require lib/bootstrap-tour-standalone.min
 //= require lib/jquery.elevateZoom-3.0.8.min
+//= require i18n
+//= require i18n/translations
 //= require app26
 //= require assignments/maps
 /**
@@ -17,6 +19,11 @@ App26.AssignmentController= function() {
  * Funcion que inicializa los eventos del home
  */
 App26.AssignmentController.prototype.init = function() {
+  if($("#countdownSelect").length > 0) {
+    var timeleft = App26.timeToSelect;
+    $("#countdownSelect").text(timeleft);
+  }
+
   $('#error_message').addClass("hidden");
 
   //Modal confirma asignacion
@@ -41,14 +48,15 @@ App26.AssignmentController.prototype.init = function() {
               zoomWindowHeight:700});
   }*/
 
+  //Must do tour
   if($("#tour").length > 0) {
     var steps = [
       {
         path: "/generalmap",
         placement: "top",
         element: "#office2",
-        title: "Wellcome to Nation 26",
-        content: "This is our office plane",
+        title: I18n.t('tour.steps.first.title'),
+        content: I18n.t('tour.steps.first.content'),
         backdrop: true,
         backdropPadding: 5
       },
@@ -56,75 +64,86 @@ App26.AssignmentController.prototype.init = function() {
         path: "/assignments/new",
         placement: "top",
         element: "#project_plane",
-        title: "Your project section",
-        content: "Identify your project section",
+        title: I18n.t('tour.steps.second.title'),
+        content: I18n.t('tour.steps.second.content'),
         backdrop: true,
         backdropPadding: 5
       }
     ];
     if($("#countdownSelect").length > 0) {
-      steps[2] = 
+      steps[2] =
         {
           path: "/assignments/new",
           placement: "top",
-          element: "#map-container",
-          title: "Select your seat",
-          content: "Now you can select your seat",
+          element: "#seat_map",
+          title: I18n.t('tour.steps.third.title'),
+          content: I18n.t('tour.steps.third.content'),
           backdrop: true,
           backdropPadding: 5
         }
-      steps[3] = 
+      steps[3] =
         {
           path: "/assignments/new",
           placement: "top",
           element: "#countdownSelect",
-          title: "Remember",
-          content: "You only have 30 seconds to select",
+          title: I18n.t('tour.steps.fourth.title'),
+          content: I18n.t('tour.steps.fourth.content'),
           backdrop: true,
           backdropPadding: 5
         }
     } else {
-      steps[2] = 
+      steps[2] =
         {
           path: "/assignments/new",
           placement: "top",
-          element: "#map-container",
-          title: "Verify your seat",
-          content: "Now you can verify your seat",
+          element: "#seat_map",
+          title: I18n.t('tour.steps.fifth.title'),
+          content: I18n.t('tour.steps.fifth.content'),
           backdrop: true,
           backdropPadding: 5
-        } 
-      steps[3] = 
+        }
+      steps[3] =
         {
           path: "/assignments/new",
           placement: "top",
           element: "#fixed",
-          title: "Congratulations!",
-          content: "You have a fixed seat. Than you",
+          title: I18n.t('tour.steps.sixth.title'),
+          content: I18n.t('tour.steps.sixth.content'),
           backdrop: true,
           backdropPadding: 5
-        }        
+        }
     }
 
      // Instance the tour
     var tour = new Tour({
       debug: true,
-      steps: steps
+      steps: steps,
+      onEnd: function (tour) {
+          App26.assignment.startCoundown();
+      }
     });
-
     // Initialize the tour
     tour.init();
-
 
     if($("#tour").data("restart")) {
       // Start the tour
       tour.restart();
     } else{
       // Start the tour
-      tour.start();      
+      tour.start();
     }
+    if(tour.ended()) {
+        App26.assignment.startCoundown();      
+    }
+  } else {
+      App26.assignment.startCoundown();
   }
+}
 
+/**
+ * Start the coundown
+ */
+App26.AssignmentController.prototype.startCoundown = function() {
   if($("#countdownSelect").length > 0) {
     var timeleft = App26.timeToSelect;
     $("#countdownSelect").text(timeleft);
@@ -180,7 +199,7 @@ App26.AssignmentController.prototype.createAssignment = function(event) {
     });
   } else {
     $('#error_message').removeClass("hidden");
-    $('#error_message_txt').text("Please select one seat to continue");
+    $('#error_message_txt').text(I18n.t('errors.no_seat'));
   }
   return false;
 }
@@ -213,4 +232,3 @@ $(function() {
     App26.assignment = new App26.AssignmentController();
     App26.assignment.init();
 });
-

@@ -1,164 +1,28 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
   hello: "Hello world"
-  language: "Language"
-  password: "Password"
-  username: "Username"
-  password_confirmation: "Password confirmation"
-  title_app: "Nation 26"
-  title: ":: Select your seat"
-  login_title: "Login Nation 26"
-  login: "Login"
-  logout: "Log out"
-  profile: "Profile"
-  sign_up: "Sign up"
-  sign_in: "Sign in"
-  edit_profile: "Edit Profile"
-  status: "Status"
-  project: "Project"
-  accept: "Accept"
-  cancel: "Cancel"
-  active: "Active"
-  inactive: "Inactive"
-  fixed: "Fixed"
-  float: "Float"
-  edit: "Edit"
-  update: "Update"
-  save: "Save"
-  back: "Back"
-  show: "Show"
-  destroy: "Destroy"
-  options: "Options"
-  map: "Map"
-  file_help: "The file must be csv type, fields separate by ';'"
-  password_help: "If you have already entered an assignment for the first time, your password is now your date of birth in 'yyyymmdd' format"
-  projects:
-    name: "Name"
-    acronym: "Acronym"
-    error: " prohibited this project from being saved:"
-    sure: "Are you sure?"
-    status: "Status"
-    edit: "Editing project"
-  maps:
-    name: "Name"
-    width: "Width"
-    height: "Height"
-    save: "Save map"
-    seats: "Number of seats "
-    error: "prohibited this map from being saved:"
-    assign: "Assign employee"
-    select: "Select employee"
-    empty: "Las medidas de la tabla nodeben ser vacias"
-    positive: "Las medidas de la tabla deben ser mayor a 0"
-  seats:
-    create: "Create seat"
-    number: "Number"
-    fixed: "Fixed"
-    empty: "The value of the seat can not be empty"
-  messages:
-    wellcome: "Welcome to the Nation 26!"
-    logged_out: "Logged out!"
-    doesnt_exist: "Employee number doesn't exists"
-  employee:
-    number: "Number"
-    date: "Join date"
-    name: "Name"
-    birth_date: "Birth date"
-    status: "Status"
-    assignment_date: "Assignment date"
-    assignment_type: "Assignment type"
-    error: " prohibited this employee from being saved:"
-    file: "Employees file"
-    select_file: "Select the file"
-    edit: "Editing employee"
-    sure: "Are you sure?"
-  menu:
-    admin: "Administrator"
-    assignments: "Assignments"
-    seat_assignment: "Seat assignment"
-    project:
-      title: "Projects"
-      index: "See projects"
-      new: "New project"
-    employee:
-      title: "Employee"
-      index: "See employees"
-      new: "New employee"
-      load: "Load employees"
-    seat:
-      title: "Seats"
-      check: "Check seat"
-      assign: "Asign seats"
-    map:
-      title: "Maps"
-      show: "See map"
-      new: "New map"
-      edit: "Edit map"
-  confirmation:
-    title: "Confirmation"
-    text: "If your information is correct. Please continue to select your seat:"
-    continue: "Continue"
-    cancel: "Cancel"
-  assignment:
-    title: "Select your seat"
-    cancel: "Cancel assignment"
-    select: "Please select your seat"
-    assigned_seat: "You have the seat %{seat} assigned"
-    fixed_seat: "You have a fixed seat %{seat} assigned"
-    time_to_select: "Seconds to select seat: "
-    confirm_modal: "Confirmation"
-    assignment_canceled: "Assignment was successfully canceled. Seat : "
-    assignment_created: "Assignment was successfully created. Seat : "
-    continue: "Continue"
-    cancel: "Unassign"
-    exit: "Leave"
-    map_modal: "General map"
-    close: "Close"
-    see_map: "See map"
-  seat:
-    busy: "The seat already exists in another position with the same name"
-  errors:
-    cancel: "Error in cancel assignment"
-    access_denied: "You are not authorized to access this page"
-    no_map: "There is no map"
-  registration:
-    cancel_account: "Cancel my account"
-    unhappy: "Unhappy?"
-    sure: "Are you sure?"
-    waiting: "Currently waiting confirmation for: "
-    ignore: "(leave blank if you don't want to change it)"
-    confirm_pass: "(we need your current password to confirm your changes)"
-    minimum: " characters minimum)"
-  languages:
-    english: "English"
-    spanish: "Spanish"
+  and: "and"
+  date:    
+    formats:
+      default: ! '%d/%m/%Y'
+      long: ! '%A, %B %d, %Y'
+      short: ! '%B %d'
+  time:
+    am: am
+    formats:
+      default: ! '%a, %d, %b, %Y at %H:%M:%S %Z'
+      long: ! '%A, %B %d, %Y at %I:%M %p'
+      short: ! ' %b %d at %H:%M hrs'
+    pm: pm 
+  distance:
+    centi:
+      one: "cm"
+      other: "cms" 
+    unit:
+      one: "mt"
+      other: "mts"
+    thousand:
+      one: "km"
+      other: "kms"

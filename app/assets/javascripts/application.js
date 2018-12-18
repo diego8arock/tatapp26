@@ -14,6 +14,8 @@
 //= require turbolinks
 //= require jquery3
 //= require jquery_ujs
+//= require i18n
+//= require i18n/translations
 //= require app26
 //= require assignments/assignments
 
@@ -40,9 +42,9 @@ function randomNumberGenerator() {
 }
 
 function splitValue(combobox,position){
-  if(combobox.val() != null) {    
+  if(combobox.val() != null) {
     return combobox.val().split("|")[position];
-  } else {    
+  } else {
     return "";
   }
 }

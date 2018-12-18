@@ -13,5 +13,5 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
-Rails.application.config.assets.precompile += %w( style.css lib/* assignments/* assignments.css login.css mdbpro/*)
+Rails.application.config.assets.precompile += %w( lib/* assignments/* map.css assignments.css login.css mdbpro/*)
 #Rails.application.config.assets.precompile = ['*.js', '*.css', '*.scss']

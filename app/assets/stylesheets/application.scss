@@ -29,7 +29,6 @@
 
    body {
      font-family: Roboto, sans-serif;
-     font-weight: 300;
    }
 
   /* !Footer */
@@ -63,6 +62,75 @@
    padding-top: 50px;
    padding-bottom: 50px;
   }
+
+// File
+//
+// Custom file input.
+.custom-file {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  margin-bottom: 0;
+}
+
+.custom-file-input {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  margin: 0;
+  opacity: 0;
+
+  &:focus ~ .custom-file-control {
+    border-color: #ced4da;
+    box-shadow:  5px 10px #ced4da;
+
+    &::before {
+      border-color: #ced4da;
+    }
+  }
+}
+
+.custom-file-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: calc(2.25rem + 2px);
+  padding: .375rem .75rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: calc(calc(2.25rem + 2px) - 1px * 2);
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    content: "Browse";
+    background-color: #e9ecef;
+    border-left: 1px solid #ced4da;
+    border-radius: 0 .25rem .25rem 0;
+  }
+}
+
+.custom-file-input.en.custom-file-label::after {
+    content: "Browse";
+}
+
+.custom-file-input.es.custom-file-label::after {
+    content: "Buscar";
+}
 
   /* You can add global styles to this file, and also import other style files */
   @media print {
