@@ -14,41 +14,37 @@
   <% if user_signed_in? %>
     <ul class="nav navbar-nav">
         <% if current_user.is_employee? %>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= t('menu.assignments') %> <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><%= link_to link_to t('menu.assignment'), new_assignment_path %></li>
-            </ul>
-          </li>
+          <li><%= link_to t('menu.assignment'), new_assignment_path %></li>
+          <li><%= link_to t('assignment.map'), generalmap_path %></li>
         <% end %>
         <% if current_user.is_admin? %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= t('menu.project.title') %> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><%= link_to link_to t('menu.project.index'), showprojects_path %></li>
-              <li><%= link_to link_to t('menu.project.new'), createproject_path %></li>
+              <li><%= link_to t('menu.project.index'), showprojects_path %></li>
+              <li><%= link_to t('menu.project.new'), createproject_path %></li>
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= t('menu.map.title') %> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><%= link_to link_to t('menu.map.show'), showmap_path %></li>
-              <li><%= link_to link_to t('menu.map.new'), createmap_path %></li>
+              <li><%= link_to t('menu.map.show'), showmap_path %></li>
+              <li><%= link_to t('menu.map.new'), createmap_path %></li>
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= t('menu.seat.title') %> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><%= link_to link_to t('menu.seat.check'), markseats_path %></li>
-              <li><%= link_to link_to t('menu.seat.assign'), assignseats_path %></li>
+              <li><%= link_to t('menu.seat.check'), markseats_path %></li>
+              <li><%= link_to t('menu.seat.assign'), assignseats_path %></li>
             </ul>
           </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= t('menu.employee.title') %> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><%= link_to link_to t('menu.employee.index'), employees_path %></li>
-                <li><%= link_to link_to t('menu.employee.new'), new_employee_path %></li>
-                <li><%= link_to link_to t('menu.employee.load'), loademployees_path %></li>
+                <li><%= link_to t('menu.employee.index'), employees_path %></li>
+                <li><%= link_to t('menu.employee.new'), new_employee_path %></li>
+                <li><%= link_to t('menu.employee.load'), loademployees_path %></li>
               </ul>
             </li>
         <% end %>
