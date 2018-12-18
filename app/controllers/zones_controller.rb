@@ -36,7 +36,7 @@ class ZonesController < ApplicationController
 
     respond_to do |format|
       if @zone.save
-        format.html { redirect_to @zone, notice: 'Zone was successfully created.' }
+        format.html { redirect_to edit_zone_path(@zone), notice: 'Zone was successfully created.' }
         format.json { render :show, status: :created, location: @zone }
       else
         format.html { render :new }
@@ -50,7 +50,7 @@ class ZonesController < ApplicationController
   def update
     respond_to do |format|
       if @zone.update(zone_params)
-        format.html { redirect_to @zone, notice: 'Zone was successfully updated.' }
+        format.html { redirect_to edit_zone_path(@zone), notice: 'Zone was successfully updated.' }
         format.json { render :show, status: :ok, location: @zone }
       else
         format.html { render :edit }

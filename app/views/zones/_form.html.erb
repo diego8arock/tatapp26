@@ -107,11 +107,11 @@ canvasDiv.onclick = drawPoint;
 var mouseX = 0
 var mouseY = 0
 
+var zone_id = <%= zone.id.nil? ? 0 : zone.id %>;
+
 if($("#coordinates").val() != '') {
   drawFromCoordinates();
-} else {
-  //getZones();
-}
+} 
 $("#coordinates").data("init", false);
 
 
@@ -282,7 +282,7 @@ $('#bttnClearCanvas').click(function () {
 
 $('#cmbbxProjects').change(getZones());
 
-function getZones() {
+function getZones(e) {
   var project_id = $('#cmbbxProjects').val();
   $.ajax({
     url: "/zones/" + project_id +"/search",
@@ -294,10 +294,17 @@ function getZones() {
     },
     success: function (response) {
       var zones = response["zones"];
-      for (var i = 0; i < zones.length; i++) {
-        $("#coordinates").val(zones[i]["coordinates"]);
+      if(zones.length == 0){
+        clearCanvas(true);
+      } else {
+        for (var i = 0; i < zones.length; i++) {
+          if(zone_id != zones[i]["id"]) {
+            document.location.href = "/zones/" + zones[i]["id"] + "/edit";
+            zone_id = zones[i]["id"];
+          }
+        }        
       }
-      drawFromCoordinates();
+      //drawFromCoordinates();
     }
   });
 }
