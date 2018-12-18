@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :assignments
   resources :employees
   resources :seats
+  resources :zones
 
   # @view/home/index.html.erb
   # get 'signup', to: 'users#new', as: 'signup'
@@ -26,7 +27,7 @@ Rails.application.routes.draw do
   get 'showproject', to: 'projects#show', as: 'showproject'
   get 'createproject', to: 'projects#new', as: 'createproject'
   get 'editproject', to: 'projects#edit', as: 'editproject'
-  get 'zoneproject', to: 'projects#zone', as: 'zoneproject'
+  #get 'zoneproject', to: 'projects#zone', as: 'zoneproject'
   get 'markseats', to: 'seats#new', as: 'markseats'
   get 'assignseats', to: 'seats#assign', as: 'assignseats'
 
@@ -37,4 +38,5 @@ Rails.application.routes.draw do
   get 'loademployees', to: 'employees#load', as: 'loademployees'
   post 'save_loademployees', to: 'employees#save_load', as: 'save_loademployees'
 
+  match "/zones/:project_id/search" => "zones#search", :via => :get
 end

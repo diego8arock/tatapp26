@@ -3,8 +3,8 @@
 <% end %>
 
 <h2>Seleccionar Zona</h2>
-
-<%= form_with(model: @project, local: true) do |form| %>
+<%= form_with(model: zone, local: true) do |form| %>
+  <%= form.hidden_field :coordinates, :id => "coordinates" %>
 <div style="padding-bottom: 20px; padding-top: 20px;">
   <table>
     <tr>
@@ -22,7 +22,7 @@
         <button type="button" id="bttnClearCanvas">Borrar Zona</button>
       </td>
       <td style="padding-left: 70px;">
-        <button type="button">Guardar Zona</button>
+      <%= form.submit 'Guardar Zona' %>
       </td>
     </tr>
   </table>
@@ -108,6 +108,15 @@ var mouseX = 0
 var mouseY = 0
 
 if($("#coordinates").val() != '') {
+  drawFromCoordinates();
+} else {
+  //getZones();
+}
+$("#coordinates").data("init", false);
+
+
+function drawFromCoordinates() {
+  $("#coordinates").data("init", true);
   var coordinates = $("#coordinates").val().split("-");
 
   coordinates.forEach(function (item) {
@@ -116,6 +125,7 @@ if($("#coordinates").val() != '') {
     var pY = parseInt(points[1]);
     if (pY != -1 && pX != -1) {
       reDrawPoint(pX, pY);
+      addPointToTable(pX, pY);
     }
   });
   drawPolygon();
@@ -176,12 +186,23 @@ function drawPoint() {
   coordinates[coordinates.length] = "[" + mouseXOffSet + "," + mouseYOffSet + "]";
   gr.drawText("P" + pointIndex, jsPointCanvas, font, bluePen.color, 90);
   addPointToTable(mouseXOffSet, mouseYOffSet);
+  addPointToCoordinate(mouseXOffSet, mouseYOffSet);
 }
 
 function drawPolygon() {
   if (!setPenColor())
     return;
   gr.drawPolygon(pen, points);
+}
+
+function addPointToCoordinate(x, y) {
+  if(!$("#coordinates").data("init")) {
+    if($("#coordinates").val() != '') {
+      $("#coordinates").val($("#coordinates").val() + "-" + x + "," + y);
+    } else {
+      $("#coordinates").val(x + "," + y);      
+    } 
+  }
 }
 
 function addPointToTable(x, y) {
@@ -222,9 +243,11 @@ function reDrawPoint(pX, pY) {
   points[points.length] = jsPointCanvas
   coordinates[coordinates.length] = "[" + pX + "," + pY + "]";
   gr.drawText("P" + pointIndex, jsPointCanvas, font, bluePen.color, 90);
+  addPointToCoordinate(pX, pY);
 }
 
 function clearCanvas(table) {
+  $("#coordinates").val("");
   gr.clear();
   pointIndex = 0;
   points = new Array();
@@ -256,4 +279,27 @@ $('#bttnClearCanvas').click(function () {
     clearCanvas(true);
   }
 });
+
+$('#cmbbxProjects').change(getZones());
+
+function getZones() {
+  var project_id = $('#cmbbxProjects').val();
+  $.ajax({
+    url: "/zones/" + project_id +"/search",
+    method: "GET",
+    dataType: "json",
+    data: {},
+    error: function (xhr, status, error) {
+      console.error('AJAX Esrror: ' + status + error);
+    },
+    success: function (response) {
+      var zones = response["zones"];
+      for (var i = 0; i < zones.length; i++) {
+        $("#coordinates").val(zones[i]["coordinates"]);
+      }
+      drawFromCoordinates();
+    }
+  });
+}
 </script>
+
