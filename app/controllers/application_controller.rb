@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
         session[:employee_id] = employee.id
         session[:project_id] = employee.project.id
         flash[:notice] = I18n.t "messages.wellcome"
-        new_assignment_path
+        generalmap_path
       end
     elsif resource.is_admin?
       "/admin"

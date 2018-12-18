@@ -74,6 +74,8 @@
 
 <script type="text/javascript">
 var canvasDiv = document.getElementById("canvas");
+var container = document.getElementById("main-container");
+var style = container.currentStyle || window.getComputedStyle(container);
 var gr;
 var penWidth;
 var col;
@@ -151,7 +153,7 @@ function setPenColor(noAlert) {
 
 function drawPoint() {
   pointIndex++;
-  var offset = 340;
+  var offset = style.marginLeft.replace("px", "");
   var mouseXOffSet = mouseX - offset;
   var mouseYOffSet = mouseY - 6;
   gr.fillRectangle(new jsColor("green"), new jsPoint(mouseXOffSet, mouseYOffSet), 6, 6);

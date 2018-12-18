@@ -1,0 +1,19 @@
+<% content_for :title do %>
+  <%= t 'title' %>
+<% end %>
+<% content_for :head do %>
+    <%= stylesheet_link_tag "lib/bootstrap-tour-standalone.min" %>
+<% end %>
+<h2><%= t 'assignment.map' %></h2>
+<br/>
+
+<p>
+  <b><%= t 'project' %>:</b>
+  <%= current_user.employee.project.name %>
+</p>
+
+<div id="tour" data-restart="true">
+</div>
+<div id="canvas" style="overflow:hidden;border:#999999 1px solid;">
+  <img id="office2" src="/assets/floor.png" class="rounded mx-auto d-block" alt="Map" style="width: 1095px;">
+</div>

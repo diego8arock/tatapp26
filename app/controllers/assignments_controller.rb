@@ -8,37 +8,7 @@ class AssignmentsController < ApplicationController
 
   # GET /asignments/new
   def new
-    @map = Map.where(:project_id => session[:project_id]).last
-    if !@map.nil?
-      project = Project.find(session[:project_id])
-      @available_seats = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
-                    .where(:project => project)
-                    .where(:status => Seat::ACTIVE)
-                    .where(:map => @map)
-      @unavailable_seats = Seat.where("(assignment_date = ? OR status <> ?)", Date.today, Seat::ACTIVE)
-                    .where(:project => project)
-                    .where(:map => @map)
-      @seat = nil
-      @mobile = current_user.employee.assignment_type == Employee::MOBILE
-
-      if @mobile
-        assignments = Assignment.includes(:seat).where(:project => project)
-                                  .where(:employee => current_user.employee)
-                                  .where(:status => Assignment::ACTIVE)
-                                  .where(:assignment_date => Date.today)
-        @assigned = !assignments.empty?
-        if @assigned
-          @assignment = assignments[0]
-          @seat = @assignment.seat
-        else
-          @assignment = Assignment.new
-        end
-      else
-        @seat = Seat.find(current_user.employee.seat_id)
-      end
-    else 
-      flash[:error] = I18n.t "errors.no_map"
-    end
+    get_map_info
   end
 
   def create
@@ -81,7 +51,45 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  def image
+    get_map_info
+  end
+
   private
+    def get_map_info
+      @map = Map.where(:project_id => session[:project_id]).last
+      if !@map.nil?
+        project = Project.find(session[:project_id])
+        @available_seats = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
+                      .where(:project => project)
+                      .where(:status => Seat::ACTIVE)
+                      .where(:map => @map)
+        @unavailable_seats = Seat.where("(assignment_date = ? OR status <> ?)", Date.today, Seat::ACTIVE)
+                      .where(:project => project)
+                      .where(:map => @map)
+        @seat = nil
+        @mobile = current_user.employee.assignment_type == Employee::MOBILE
+
+        if @mobile
+          assignments = Assignment.includes(:seat).where(:project => project)
+                                    .where(:employee => current_user.employee)
+                                    .where(:status => Assignment::ACTIVE)
+                                    .where(:assignment_date => Date.today)
+          @assigned = !assignments.empty?
+          if @assigned
+            @assignment = assignments[0]
+            @seat = @assignment.seat
+          else
+            @assignment = Assignment.new
+          end
+        else
+          @seat = Seat.find(current_user.employee.seat_id)
+        end
+      else 
+        flash[:error] = I18n.t "errors.no_map"
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def assignment_params
       params.require(:assignment).permit(:id, :seat, :project, :employee, :status, :assignment_date)

@@ -3,8 +3,7 @@
 <% end %>
 <% content_for :head do %>
   <%= stylesheet_link_tag "lib/jquery.seat-charts", "style" %>
-  <%= javascript_include_tag 'lib/jquery.seat-charts.min' %>
-  <%= javascript_include_tag 'lib/jquery.elevateZoom-3.0.8.min' %>
+  <%= stylesheet_link_tag "lib/bootstrap-tour-standalone.min" %>
 <% end %>
 <h2><%= t 'assignment.title' %></h2>
 <br/>
@@ -13,11 +12,9 @@
   <b><%= t 'project' %>:</b>
   <%= current_user.employee.project.name %>
 </p>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#map_modal">
-  <%= t 'assignment.see_map' %>
-</button>
-<br/>
 
+<div id="tour">
+</div>
 <%= form_tag(assignments_path, :method => "post", :id => "assignment_form") do %>
   <%= hidden_field_tag 'seat_id'%>
   <% if !@map.nil? %>
@@ -28,7 +25,9 @@
             data-selected_seat="<%= @seat.to_json(:except => [:created_at, :updated_at]) %>">
       </div>
     </div>
-    <br/>
+    <div id="project_plane">
+      <canvas id="project_canvas" width="200" height="200"></canvas>
+    </div>
     <% if @mobile %>
       <% if @assigned %>
         <%= hidden_field_tag 'assignment_id', @assignment.id %>
@@ -48,7 +47,9 @@
         </div>
       <% end %>
     <% else %>
-      <span><%= t 'assignment.fixed_seat', {:seat => @seat.code} %></span>
+      <div> 
+        <h3 id="fixed"><%= t 'assignment.fixed_seat', {:seat => @seat.code} %></h3>
+      </div>
     <% end %>
   <% end %>
 

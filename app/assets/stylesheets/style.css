@@ -23,11 +23,18 @@ a {
 	text-align: left;
 }*/
 #map-container {
-	width: 100%;
+	max-width: 100%;
 	text-align: center;
 	overflow-x: auto;
 	overflow-y: auto;
 	max-height: 500px;
+	float:left;
+}
+#project_plane {
+	width: 100%;
+	overflow: hidden;
+	max-height: 500px;
+	float:left;
 }
 .booking-details {
 	float: left;

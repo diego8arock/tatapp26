@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   get 'assignseats', to: 'seats#assign', as: 'assignseats'
 
   match "/assignment/:id/cancel" => "assignments#cancel", :via => :post
+  get 'generalmap', to: 'assignments#image', as: 'generalmap'
   devise_scope :user do match '/sessions/user', to: 'devise/sessions#create', via: :post end
 
   get 'loademployees', to: 'employees#load', as: 'loademployees'

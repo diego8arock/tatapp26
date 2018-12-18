@@ -99,6 +99,16 @@ App26.MapController.prototype.load_map = function(e) {
   if(selected_seat != null) {
     App26.map.setTag([selected_seat], 'selected');
   }
+  
+  $('div.seatCharts-cell').css("width", "25px");
+
+  var canvas = document.getElementById("project_canvas");
+  context = canvas.getContext('2d');
+  var base_image = new Image();
+  base_image.src = '/assets/plano-oficina.jpg';
+  base_image.onload = function(){
+    context.drawImage(base_image, 0, 0);
+  }
 }
 
 App26.MapController.prototype.setTag = function (seats, classname) {
@@ -107,7 +117,8 @@ App26.MapController.prototype.setTag = function (seats, classname) {
     var code = seats[i]["code"];
     var seat_id = seats[i]["id"];
     var html_id_jq = '#' + html_id;
-    $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available').removeClass('unavailable');
+    $(html_id_jq).attr("title", code);
+    //$(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available').removeClass('unavailable');
     $(html_id_jq).attr("seat_id", seat_id);
     $(html_id_jq).addClass(classname);
     App26.map.sc.get(html_id).status(classname)

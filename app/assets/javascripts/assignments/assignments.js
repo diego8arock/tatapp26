@@ -1,7 +1,9 @@
 //= require jquery3
 //= require jquery_ujs
 //= require bootstrap
-//= jquery.seat-charts.min
+//= require lib/jquery.seat-charts.min
+//= require lib/bootstrap-tour-standalone.min
+//= require lib/jquery.elevateZoom-3.0.8.min
 //= require app26
 //= require assignments/maps
 /**
@@ -16,18 +18,6 @@ App26.AssignmentController= function() {
  */
 App26.AssignmentController.prototype.init = function() {
   $('#error_message').addClass("hidden");
-  if($("#countdownSelect").length > 0) {
-    var timeleft = App26.timeToSelect;
-    $("#countdownSelect").text(timeleft);
-    var downloadTimer = setInterval(function(){
-      timeleft--;
-      $("#countdownSelect").text(timeleft);
-      if(timeleft <= 0){
-        clearInterval(downloadTimer);
-        App26.assignment.randomSelect();
-      }
-    },1000);
-  }
 
   //Modal confirma asignacion
   $('body').on('hidden.bs.modal', '#confirm_select_modal', function() {
@@ -44,11 +34,108 @@ App26.AssignmentController.prototype.init = function() {
 
   $('body').on('click', '#create_assignment', App26.assignment.createAssignment);
   $('body').on('click', '#cancel_assignment', App26.assignment.cancelAssignment);
-
+/*
   if($("#office").length > 0) {
     $("#office").elevateZoom({
               zoomWindowWidth:700,
               zoomWindowHeight:700});
+  }*/
+
+  if($("#tour").length > 0) {
+    var steps = [
+      {
+        path: "/generalmap",
+        placement: "top",
+        element: "#office2",
+        title: "Wellcome to Nation 26",
+        content: "This is our office plane",
+        backdrop: true,
+        backdropPadding: 5
+      },
+      {
+        path: "/assignments/new",
+        placement: "top",
+        element: "#project_plane",
+        title: "Your project section",
+        content: "Identify your project section",
+        backdrop: true,
+        backdropPadding: 5
+      }
+    ];
+    if($("#countdownSelect").length > 0) {
+      steps[2] = 
+        {
+          path: "/assignments/new",
+          placement: "top",
+          element: "#map-container",
+          title: "Select your seat",
+          content: "Now you can select your seat",
+          backdrop: true,
+          backdropPadding: 5
+        }
+      steps[3] = 
+        {
+          path: "/assignments/new",
+          placement: "top",
+          element: "#countdownSelect",
+          title: "Remember",
+          content: "You only have 30 seconds to select",
+          backdrop: true,
+          backdropPadding: 5
+        }
+    } else {
+      steps[2] = 
+        {
+          path: "/assignments/new",
+          placement: "top",
+          element: "#map-container",
+          title: "Verify your seat",
+          content: "Now you can verify your seat",
+          backdrop: true,
+          backdropPadding: 5
+        } 
+      steps[3] = 
+        {
+          path: "/assignments/new",
+          placement: "top",
+          element: "#fixed",
+          title: "Congratulations!",
+          content: "You have a fixed seat. Than you",
+          backdrop: true,
+          backdropPadding: 5
+        }        
+    }
+
+     // Instance the tour
+    var tour = new Tour({
+      debug: true,
+      steps: steps
+    });
+
+    // Initialize the tour
+    tour.init();
+
+
+    if($("#tour").data("restart")) {
+      // Start the tour
+      tour.restart();
+    } else{
+      // Start the tour
+      tour.start();      
+    }
+  }
+
+  if($("#countdownSelect").length > 0) {
+    var timeleft = App26.timeToSelect;
+    $("#countdownSelect").text(timeleft);
+    var downloadTimer = setInterval(function(){
+      timeleft--;
+      $("#countdownSelect").text(timeleft);
+      if(timeleft <= 0){
+        clearInterval(downloadTimer);
+        App26.assignment.randomSelect();
+      }
+    },1000);
   }
 }
 
@@ -126,3 +213,4 @@ $(function() {
     App26.assignment = new App26.AssignmentController();
     App26.assignment.init();
 });
+
