@@ -102,7 +102,7 @@ class EmployeesController < ApplicationController
 
           if !seat_code.blank?
             # seat_code = project_tag + seat_code
-            seat = Seat.find_by code: seat_code, project: project
+            seat = Seat.where(code: seat_code, project: project, status: Seat::ACTIVE).order(created_at: :desc).first
             if seat.nil?
               error_number += 1
               logger.warn "Seat with code #{seat_code} and project #{project_tag} doesn't exist"
