@@ -1,10 +1,6 @@
-<% content_for :head do %>
-  <%= javascript_include_tag 'lib/jsDraw2D.js' %>
-<% end %>
-
 <h2>Seleccionar Zona</h2>
 <%= form_with(model: zone, local: true) do |form| %>
-  <%= form.hidden_field :coordinates, :id => "coordinates" %>
+<%= form.hidden_field :coordinates, :id => "coordinates" %>
 <div style="padding-bottom: 20px; padding-top: 20px;">
   <table>
     <tr>
@@ -22,7 +18,7 @@
         <button type="button" id="bttnClearCanvas">Borrar Zona</button>
       </td>
       <td style="padding-left: 70px;">
-      <%= form.submit 'Guardar Zona' %>
+        <%= form.submit 'Guardar Zona' %>
       </td>
     </tr>
   </table>
@@ -32,13 +28,18 @@
     <tbody>
       <tr>
         <td valign="top">
-          <div id="canvas" style="overflow:hidden;position:relative;width:1430px;height:882px;border:#999999 1px solid; background-image: url('/assets/floor.png')"></div>
+          <!-- <div id="canvas" style="overflow:hidden;position:relative;width:1430px;height:882px;border:#999999 1px solid; background-image: url('/assets/floor.png')"></div> -->
+          <canvas id="floorCanvas" width="1430px" height="882px" style="position:relative;margin-left:0px;margin-top:0px;"></canvas>
+          <div id="oldposx" style="display:none;"></div>
+          <div id="oldposy" style="display:none;"></div>
+          <div id="posx" style="display:none;"></div>
+          <div id="posy" style="display:none;"></div>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-
+  <div id="myimg"></div>
 <div id="zoneModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -73,240 +74,237 @@
 <% end %>
 
 <script type="text/javascript">
-var canvasDiv = document.getElementById("canvas");
-var container = document.getElementById("main-container");
-var style = container.currentStyle || window.getComputedStyle(container);
-var gr;
-var penWidth;
-var col;
-var pen;
-var d1,
-  d2;
 
-var points = new Array();
-var coordinates = new Array();
-var pointIndex = 0;
-var font;
-var bluePen;
+$(document).ready(function () {
 
-gr = new jsGraphics(canvasDiv);
-setPenColor(true);
-font = new jsFont("arial", "bold", "12px");
-bluePen = new jsPen(new jsColor("red"), 1);
+  var condition = 1;
+  var points = []; //holds the mousedown points
+  var canvas = document.getElementById('floorCanvas');
+  this.isOldIE = (window.G_vmlCanvasManager);
+  $(function () {
 
-var ie = false;
-if (document.all)
-  ie = true;
-
-if (!ie) {
-  //canvasDiv.captureEvents(Event.MOUSEMOVE) canvasDiv.captureEvents(Event.CLICK)
-}
-canvasDiv.onmousemove = getMouseXY;
-canvasDiv.onclick = drawPoint;
-
-var mouseX = 0
-var mouseY = 0
-
-var zone_id = <%= zone.id.nil? ? 0 : zone.id %>;
-
-if($("#coordinates").val() != '') {
-  drawFromCoordinates();
-} 
-$("#coordinates").data("init", false);
-
-
-function drawFromCoordinates() {
-  $("#coordinates").data("init", true);
-  var coordinates = $("#coordinates").val().split("-");
-
-  coordinates.forEach(function (item) {
-    var points = item.split(",");
-    var pX = parseInt(points[0]);
-    var pY = parseInt(points[1]);
-    if (pY != -1 && pX != -1) {
-      reDrawPoint(pX, pY);
-      addPointToTable(pX, pY);
+    if (this.isOldIE) {
+      G_vmlCanvasManager.initElement(floorCanvas);
     }
-  });
-  drawPolygon();
-}
+    var ctx = canvas.getContext('2d');
 
-//Get mouse position
-function getMouseXY(e) {
-  if (ie) {
-    mouseX = event.clientX + document.body.parentElement.scrollLeft;
-    mouseY = event.clientY + document.body.parentElement.scrollTop;
-  } else {
-    mouseX = e.pageX
-    mouseY = e.pageY
-  }
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "#080aa2";
 
-  if (mouseX < 0) {
-    mouseX = 0
-  }
-  if (mouseY < 0) {
-    mouseY = 0
-  }
+    var imageObj = new Image();
 
-  mouseX = mouseX - canvasDiv.offsetLeft;
-  mouseY = mouseY - canvasDiv.offsetTop;
-
-  return true;
-}
-
-function setPenColor(noAlert) {
-  col = new jsColor("blue");
-  penWidth = 5;
-
-  if (!isNaN(penWidth))
-    pen = new jsPen(col, penWidth);
-  else
-    pen = new jsPen(col, 1);
-
-  if (!noAlert) {
-    if (points.length == 0) {
-      alert("Please click at any location on the blank canvas at left side to plot the points!");
-      return false;
-    } else if (points.length == 1) {
-      alert("2 or more points are required to draw a line, polyline or polygon! Please plot more points by clicking at any location on the blank canvas at left side.");
-      return false;
+    function init() {
+      canvas.addEventListener('mousedown', mouseDown, false);
+      canvas.addEventListener('mouseup', mouseUp, false);
+      canvas.addEventListener('mousemove', mouseMove, false);
     }
-  }
-  return true;
-}
 
-function drawPoint() {
-  pointIndex++;
-  var offset = style.marginLeft.replace("px", "");
-  var mouseXOffSet = mouseX - offset;
-  var mouseYOffSet = mouseY - 6;
-  gr.fillRectangle(new jsColor("green"), new jsPoint(mouseXOffSet, mouseYOffSet), 6, 6);
-  var jsPointCanvas = new jsPoint(mouseXOffSet, mouseYOffSet);
-  points[points.length] = jsPointCanvas;
-  coordinates[coordinates.length] = "[" + mouseXOffSet + "," + mouseYOffSet + "]";
-  gr.drawText("P" + pointIndex, jsPointCanvas, font, bluePen.color, 90);
-  addPointToTable(mouseXOffSet, mouseYOffSet);
-  addPointToCoordinate(mouseXOffSet, mouseYOffSet);
-}
+    // // Draw  image onto the canvas
+    imageObj.onload = function () {
+      ctx.drawImage(imageObj, 0, 0);
+    };
+    imageObj.src = '/assets/floor.png';
 
-function drawPolygon() {
-  if (!setPenColor())
-    return;
-  gr.drawPolygon(pen, points);
-}
+    // // Switch the blending mode
+    ctx.globalCompositeOperation = 'destination-over';
+    //
+    // //mousemove event
+    $('#floorCanvas').mousemove(function (e) {
+      if (condition == 1) {
 
-function addPointToCoordinate(x, y) {
-  if(!$("#coordinates").data("init")) {
-    if($("#coordinates").val() != '') {
-      $("#coordinates").val($("#coordinates").val() + "-" + x + "," + y);
-    } else {
-      $("#coordinates").val(x + "," + y);      
-    } 
-  }
-}
+        //ctx.beginPath();
 
-function addPointToTable(x, y) {
-  $('#pointsTable tr:last').after("<tr><td>" + pointIndex + "</td><td><input type='text' name='x' value='" + x + "'></td><td> <input type='text' name='y' value='" + y + "'></td></tr>");
-}
-
-$("#bttnAcceptModal").click(function () {
-  clearCanvas(false);
-  var trs = $('#pointsTable > tbody > tr');
-  trs.each(function () {
-    var pX = -1;
-    var pY = -1;
-    $(this).children('td').each(function () {
-      var data = $(this).html();
-      var $ele = $(this).children('input')[0];
-      if ($ele != null) {
-        if ($ele.name == "x") {
-          pX = parseInt($ele.value);
-        } else {
-          pY = parseInt($ele.value);
-        }
+        $('#posx').html(e.offsetX);
+        $('#posy').html(e.offsetY);
       }
+    });
+    //mousedown event
+    $('#floorCanvas').mousedown(function (e) {
+      if (condition == 1) {
+
+        if (e.which == 1) {
+          var pointer = $('<span class="spot">').css({
+            'position': 'absolute',
+            'background-color': '#089800',
+            'width': '5px',
+            'height': '5px',
+            'top': e.pageY,
+            'left': e.pageX
+
+          });
+          //store the points on mousedown
+          points.push(e.pageX, e.pageY);
+
+          //console.log(points);
+
+          ctx.globalCompositeOperation = 'source-over';
+          var oldposx = $('#oldposx').html();
+          var oldposy = $('#oldposy').html();
+          var posx = $('#posx').html();
+          var posy = $('#posy').html();
+          ctx.beginPath();
+          ctx.moveTo(oldposx, oldposy);
+          if (oldposx != '') {
+            ctx.lineTo(posx, posy);
+            ctx.stroke();
+            ctx.closePath();
+            console.log("stoke");
+          }
+          $('#oldposx').html(e.offsetX);
+          $('#oldposy').html(e.offsetY);
+        }
+        $(document.body).append(pointer);
+        $('#posx').html(e.offsetX);
+        $('#posy').html(e.offsetY);
+      } //condition
+    });
+
+    $('#bttnGenerateZone').click(function () {
+      condition = 0;
+
+      //  var pattern = ctx.createPattern(imageObj, "repeat"); ctx.fillStyle = pattern;
+      $('.spot').each(function () {
+        $(this).remove();
+
+      })
+      //clear canvas var context = canvas.getContext("2d");
+
+      ctx.clearRect(0, 0, 1430, 882);
+      ctx.beginPath();
+      ctx.width = 1430;
+      ctx.height = 882;
+      ctx.globalCompositeOperation = 'destination-over';
+      //draw the polygon
+      setTimeout(function () {
+
+        //console.log(points);
+        var offset = $('#floorCanvas').offset();
+        //console.log(offset.left,offset.top);
+        var minX = 10000;
+        var minY = 10000;
+        var maxX = -10000;
+        var maxY = -10000;
+        for (var i = 0; i < points.length; i += 2) {
+          var x = parseInt(jQuery.trim(points[i]));
+          var y = parseInt(jQuery.trim(points[i + 1]));
+
+          // if (i == 0) {
+          //   ctx.moveTo(x - offset.left, y - offset.top);
+          // } else {
+          //   ctx.lineTo(x - offset.left, y - offset.top);
+          // }
+
+          if (x < minX) {
+            minX = x;
+          }
+          if (y < minY) {
+            minY = y;
+          }
+          if (x > maxX) {
+            maxX = x;
+          }
+          if (y > maxY) {
+            maxY = y;
+          }
+          //console.log(points[i],points[i+1])
+        }
+
+        var width = maxX - minX;
+        var height = maxY - minY;
+
+        ctx.save();
+        ctx.clearRect(0, 0, 1430, 882);
+        ctx.beginPath();
+        ctx.moveTo(points[0], points[1]);
+        // for (var i = 1; i < points.length; i++) {
+        //   var p = points[i];
+        //   ctx.lineTo(points[i].x, points[i].y);
+        // }
+        for (var i = 2; i < points.length; i += 2) {
+          var x = parseInt(jQuery.trim(points[i]));
+          var y = parseInt(jQuery.trim(points[i + 1]));
+            ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(imageObj, 0, 0);
+        ctx.restore();
+
+        // create a new canvas
+        var c = document.createElement('canvas');
+        var cx = c.getContext('2d');
+
+        // resize the new canvas to the size of the clipping area
+        c.width = width;
+        c.height = height;
+
+        // draw the clipped image from the main canvas to the new canvas
+        cx.drawImage(canvas, minX, minY, width, height, 0, 0, width, height);
+
+        // create a new Image() from the new canvas
+        var clippedImage = new Image();
+        clippedImage.onload = function() {
+          // append the new image to the page
+          var img = document.getElementById('myimg');
+          img.appendChild(clippedImage);
+        }
+        clippedImage.src = c.toDataURL();
+
+
+        // clear the previous points
+        points.length = 0;
+
+        // redraw the image on the main canvas for further clipping
+        drawImage(0.25);
+
+        // if (this.isOldIE) {
+        //
+        //   ctx.fillStyle = '';
+        //   ctx.fill();
+        //   var fill = $('fill', floorCanvas).get(0);
+        //   fill.color = '';
+        //   fill.src = element.src;
+        //   fill.type = 'tile';
+        //   fill.alignShape = false;
+        // } else {
+        //   var pattern = ctx.createPattern(imageObj, "repeat");
+        //   ctx.fillStyle = pattern;
+        //   ctx.fill();
+
+          // var dataurl = canvas.toDataURL("image/png");
+          //
+          // //upload to server (if needed)
+          // var xhr = new XMLHttpRequest();
+          // //
+          // xhr.open('POST', 'upload.php', false);
+          // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          // var files = dataurl;
+          // var data = new FormData();
+          // var myprod = $("#pid").val();
+          // data = 'image=' + files;
+          // xhr.send(data);
+          // if (xhr.status === 200) {
+          //   console.log(xhr.responseText);
+          //   $('#myimg').html('<img src="upload/' + xhr.responseText + '.png"/>');
+          // }
+
+        //}
+      }, 20);
 
     });
-    if (pY != -1 && pX != -1) {
-      reDrawPoint(pX, pY);
+
+    // redraw the image at the specified opacity
+    function drawImage(alpha) {
+      ctx.clearRect(0, 0, 1430, 882);
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(imageObj, 0, 0);
+      ctx.globalAlpha = 1.00;
     }
 
+    // }
   });
-  drawPolygon();
-  $('#zoneModal').modal('toggle');
+
 });
 
-function reDrawPoint(pX, pY) {
-  pointIndex++;
-  gr.fillRectangle(new jsColor("green"), new jsPoint(pX - 3, pY - 3), 6, 6);
-  var jsPointCanvas = new jsPoint(pX, pY);
-  points[points.length] = jsPointCanvas
-  coordinates[coordinates.length] = "[" + pX + "," + pY + "]";
-  gr.drawText("P" + pointIndex, jsPointCanvas, font, bluePen.color, 90);
-  addPointToCoordinate(pX, pY);
-}
 
-function clearCanvas(table) {
-  $("#coordinates").val("");
-  gr.clear();
-  pointIndex = 0;
-  points = new Array();
-  coordinates = new Array();
-  if (table) {
-    emptyTable();
-  }
-}
-
-function emptyTable() {
-  var trs = $('#pointsTable > tbody > tr');
-  trs.each(function () {
-    if ($(this).attr('id') != "header") {
-      $(this).remove();
-    }
-  });
-}
-
-$('#bttnGenerateZone').click(function () {
-  if (points.length < 3) {
-    alert("No hay suficientes puntos para generar una zona.")
-  } else {
-    drawPolygon();
-  }
-});
-
-$('#bttnClearCanvas').click(function () {
-  if (confirm("Desea borrar todo los puntos?")) {
-    clearCanvas(true);
-  }
-});
-
-$('#cmbbxProjects').change(getZones());
-
-function getZones(e) {
-  var project_id = $('#cmbbxProjects').val();
-  $.ajax({
-    url: "/zones/" + project_id +"/search",
-    method: "GET",
-    dataType: "json",
-    data: {},
-    error: function (xhr, status, error) {
-      console.error('AJAX Esrror: ' + status + error);
-    },
-    success: function (response) {
-      var zones = response["zones"];
-      if(zones.length == 0){
-        clearCanvas(true);
-      } else {
-        for (var i = 0; i < zones.length; i++) {
-          if(zone_id != zones[i]["id"]) {
-            document.location.href = "/zones/" + zones[i]["id"] + "/edit";
-            zone_id = zones[i]["id"];
-          }
-        }        
-      }
-      //drawFromCoordinates();
-    }
-  });
-}
 </script>
-
