@@ -13,9 +13,9 @@
 <div id="navbar" class="navbar-collapse collapse">
   <% if user_signed_in? %>
     <ul class="nav navbar-nav">
-        <% if current_user.is_employee? %>
+        <% if current_user.is_employee? && current_user.employee.is_confirmed? %>
+          <li><%= link_to t('menu.full_map'), generalmap_path %></li>
           <li><%= link_to t('menu.assignment'), new_assignment_path %></li>
-          <li><%= link_to t('assignment.map'), generalmap_path %></li>
         <% end %>
         <% if current_user.is_admin? %>
           <li class="dropdown">

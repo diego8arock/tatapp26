@@ -56,7 +56,23 @@
      font-size: 1.2rem !important;
    }
  }
+
+  /* Font Face */
+  @font-face {
+    font-family: tcsFamilyTitle;
+    src: url("/assets/Nunito-Bold.ttf") format('truetype');
+  }
  .tcsFontTitle {
     font-family: tcsFamilyTitle !important;
     color: #4f4e4e !important;
+  }
+  .btn-elegant {
+    background-color: #2e2e2e!important;
+    color: #fff!important;
+    font-size: 1.5rem!important;
+  }
+
+  .center-btn {
+    text-align: center;
+    margin-bottom: 20px;
   }

@@ -75,6 +75,7 @@ es:
     admin: "Administrator"
     assignments: "Assignments"
     seat_assignment: "Seat assignment"
+    full_map: "Full map"
     project:
       title: "Projects"
       index: "See projects"
@@ -131,3 +132,26 @@ es:
   languages:
     english: "English"
     spanish: "Spanish"
+  tour:
+    prev: "« Prev"
+    next: "Next »"
+    end: "End tour"
+    steps:
+      first:
+        title: "Wellcome to Nation 26"
+        content: "This is our office map, your project section is highlighed"
+      second:
+        title: "Your project section"
+        content: "Identify your project section"
+      third:
+        title: "Select your seat"
+        content: "Now you can select your seat"
+      fourth:
+        title: "Remember"
+        content: "You only have %{seconds} seconds to select"
+      fifth:
+        title: "Verify your seat"
+        content: "Now you can verify your seat"
+      sixth:
+        title: "Congratulations!"
+        content: "You have a fixed seat. Than you"

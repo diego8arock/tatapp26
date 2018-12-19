@@ -11,6 +11,8 @@ class Employee < ApplicationRecord
   ACTIVE = 1
   INACTIVE = 2
 
+  CONFIRMED = 1
+
   def get_status
     if self.is_active?
       return I18n.t "active"
@@ -29,5 +31,9 @@ class Employee < ApplicationRecord
 
   def is_active?
     self.status == ACTIVE
+  end
+
+  def is_confirmed?
+    self.confirmed == CONFIRMED
   end
 end

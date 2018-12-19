@@ -10,9 +10,10 @@ class SessionsController < ApplicationController
     current_user.update(password: current_user.employee.birth_date.strftime("%Y%m%d"))
     sign_in(:user, current_user, :bypass => true)
     employee = Employee.find(params[:id])
+    employee.update(confirmed: Employee::CONFIRMED)
     session[:employee_id] = employee.id
     session[:project_id] = employee.project.id
     flash[:notice] = I18n.t "messages.wellcome"
-    redirect_to new_assignment_path
+    redirect_to generalmap_path
   end
 end

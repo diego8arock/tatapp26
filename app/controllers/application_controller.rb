@@ -35,14 +35,14 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     set_locale
     if resource.is_employee? && resource.employee.is_active?
-      if resource.sign_in_count == 1
-        confirmation_path
-      else
-        employee = resource.employee
+      employee = resource.employee
+      if employee.is_confirmed?
         session[:employee_id] = employee.id
         session[:project_id] = employee.project.id
         flash[:notice] = I18n.t "messages.wellcome"
         generalmap_path
+      else
+        confirmation_path
       end
     elsif resource.is_admin?
       "/admin"

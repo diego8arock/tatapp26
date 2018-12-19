@@ -32,5 +32,9 @@
   <%= current_user.employee.project.name %>
 </p>
 
-<%= link_to t('confirmation.continue'), edit_session_path(current_user.employee.id) %> |
-<%= link_to t('confirmation.cancel'), destroy_user_session_path, method: :get %>
+<div class="center-btn">
+  <div class="btn-group-sm">
+    <%= link_to t('confirmation.continue'), edit_session_path(current_user.employee.id), class: "btn btn-sm tcsFontTitle btn-elegant" %>  
+    <%= link_to t('confirmation.cancel'), destroy_user_session_path, method: :get, class: "btn btn-sm tcsFontTitle btn-elegant" %>
+  </div>
+</div>

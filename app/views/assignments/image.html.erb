@@ -4,7 +4,7 @@
 <% content_for :head do %>
     <%= stylesheet_link_tag "lib/bootstrap-tour-standalone.min" %>
 <% end %>
-<h2><%= t 'assignment.map' %></h2>
+<h2><%= t('menu.full_map') %></h2>
 <br/>
 
 <p>
@@ -16,5 +16,5 @@
   <div id="tour" data-restart="true"></div>
 <% end %>
 <div id="canvas" style="overflow:hidden;border:#999999 1px solid;">
-  <img id="office2" src="/assets/floor.png" class="rounded mx-auto d-block" alt="Map" style="width: 1095px;">
+  <img id="office2" src="/assets/projects/floor-<%= current_user.employee.project.tag.downcase %>-im-<%= I18n.locale %>.png" class="rounded mx-auto d-block" alt="Map" style="width: 1095px;">
 </div>

@@ -87,7 +87,7 @@ App26.AssignmentController.prototype.init = function() {
           placement: "top",
           element: "#countdownSelect",
           title: I18n.t('tour.steps.fourth.title'),
-          content: I18n.t('tour.steps.fourth.content'),
+          content: I18n.t('tour.steps.fourth.content', {seconds: App26.timeToSelect}),
           backdrop: true,
           backdropPadding: 5
         }
@@ -138,6 +138,10 @@ App26.AssignmentController.prototype.init = function() {
   } else {
       App26.assignment.startCoundown();
   }
+
+  $("#project_canvas").css("height",$("#seat_map").css("height"));
+  $("#project_canvas").css("width",$("#seat_map").css("width"));
+  
 }
 
 /**

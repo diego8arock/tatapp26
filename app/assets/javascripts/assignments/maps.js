@@ -101,14 +101,14 @@ App26.MapController.prototype.load_map = function(e) {
   }
 
   //$('div.seatCharts-cell').css("width", "35px");
-
+/*
   var canvas = document.getElementById("project_canvas");
   context = canvas.getContext('2d');
   var base_image = new Image();
   base_image.src = '/assets/plano-oficina.jpg';
   base_image.onload = function(){
     context.drawImage(base_image, 0, 0);
-  }
+  }*/
 }
 
 App26.MapController.prototype.setTag = function (seats, classname) {
