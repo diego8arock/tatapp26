@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :json
   protect_from_forgery with: :exception
+  before_action :set_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
   ## Exception Handling
   class AccessDenied < StandardError
@@ -33,7 +34,7 @@ class ApplicationController < ActionController::Base
 
   protected
   def after_sign_in_path_for(resource)
-    set_locale
+    set_locale_login
     if resource.is_employee? && resource.employee.is_active?
       employee = resource.employee
       if employee.is_confirmed?
@@ -56,10 +57,21 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:username, :password, :current_password])
   end
 
+  def set_locale
+    logger.debug "* Accept-Language: #{session[:locale]}"
+    if !session[:locale].blank?
+      I18n.locale = session[:locale]
+    else
+      I18n.locale = I18n.default_locale
+    end
+    @locale = I18n.locale
+    logger.debug "* Locale set to '#{I18n.locale}'"
+  end
+
   private
 
   # Cambia el idioma
-  def set_locale
+  def set_locale_login
     logger.debug "* Accept-Language: #{params[:locale]}"
     locale = params[:locale]
     if locale != "es"
@@ -67,6 +79,7 @@ class ApplicationController < ActionController::Base
     else
       I18n.locale = :es
     end
+    session[:locale] = I18n.locale
     @locale = I18n.locale
     logger.debug "* Locale set to '#{I18n.locale}'"
   end

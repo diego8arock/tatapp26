@@ -1,12 +1,16 @@
+<% content_for :head do %>
+  <%#= stylesheet_link_tag "mdbpro/mdb.min" %>
+<% end %>
+
 <h2><%= t('menu.employee.load')%></h2>
 
 <%= form_tag(save_loademployees_path, :method => "post", :id => "loademployees_form", multipart: true) do %>
 
   <div class="row">
     <div class="form-group col-md-4">
-      <div class="custom-file <%= I18n.locale %>" id="customFile" lang="es">
-          <input type="file" class="custom-file-input" id="employees_file" name="employees_file" aria-describedby="fileHelp">
-          <label class="custom-file-label" for="employees_file">
+      <div class="custom-file" id="customFile" lang="es">
+          <input type="file" class="custom-file-input" id="employees_file" name="employees_file" aria-describedby="fileHelp" accept=".csv">
+          <label class="custom-file-label <%= I18n.locale %>" for="employees_file">
               <%= t('employee.select_file') %>
           </label>
           <small class="text-muted"><%= t 'file_help' %></small>
@@ -17,3 +21,6 @@
     <%= submit_tag t('save'), class: "btn btn-primary glyphicon-save-file" %>
   </div>
 <% end %>
+
+
+<%#= javascript_include_tag "mdbpro/mdb.min" %>
