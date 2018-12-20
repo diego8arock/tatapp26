@@ -60,6 +60,7 @@ en:
   destroy: "Destroy"
   options: "Options"
   map: "Map"
+  current_position: "You are here"
   file_help: "The file must be csv type, fields separate by ';'"
   password_help: "If you have already entered an assignment for the first time, your password is now your date of birth in 'yyyymmdd' format"
   projects:

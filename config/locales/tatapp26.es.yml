@@ -29,6 +29,7 @@ es:
   destroy: "Borrar"
   options: "Opciones"
   map: "Mapa"
+  current_position: "Estas aquí"
   file_help: "Revise por favor el archivo cargado debe ser de tipo csv, los campos separados por ';'"
   password_help: "Si ya ingresó por primera vez, su contraseña es ahora su fecha de nacimiento en formato 'yyyymmdd'"
   projects:
