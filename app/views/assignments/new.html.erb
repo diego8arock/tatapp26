@@ -4,14 +4,11 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "lib/jquery.seat-charts", "map" %>
   <%= stylesheet_link_tag "lib/bootstrap-tour-standalone.min" %>
+  <%= stylesheet_link_tag "lib/assignments" %>
 <% end %>
-<h2><%= t 'assignment.title' %></h2>
+<h2 class="assignment_title"><%= t 'assignment.title' %></h2>
 <br/>
 
-<p>
-  <b><%= t 'project' %>:</b>
-  <%= current_user.employee.project.name %>
-</p>
 
 <%= form_tag(assignments_path, :method => "post", :id => "assignment_form") do %>
   <%= hidden_field_tag 'seat_id'%>
@@ -19,7 +16,11 @@
     <% if current_user.tour? %>
       <div id="tour"></div>
     <% end %>
-    <div id="map-container">
+    <div id="map-container" class="container_assignment" >
+      <p class="project_title">
+        <b><%= t 'project' %>:</b>
+        <%= current_user.employee.project.name %>
+      </p>
       <div id="seat_map" class="maptable" data-map="<%= @map.to_json(:except => [:created_at, :updated_at]) %>"
             data-available_seats="<%= @available_seats.to_json(:except => [:created_at, :updated_at]) %>"
             data-unavailable_seats="<%= @unavailable_seats.to_json(:except => [:created_at, :updated_at]) %>"
@@ -116,3 +117,4 @@
     </div>
   </div>
 </div>
+

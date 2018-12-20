@@ -1,0 +1,108 @@
+body {
+  background-image: url("/assets/bg-main.jpeg");
+  background-repeat: no-repeat;
+}
+
+.container_assignment{
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+
+.assignment_title{
+  font-size: 40px;
+  color: #222;
+  float: right;
+}
+.project_title{
+  font-size: 15px;
+  float: right;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+
+:host {
+    display: block;
+  }
+  .assignments-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background: #222;
+    text-align: center;
+    color: #4f4e4e;
+    padding: 3em;
+  }
+  .assignments-page .col-lg-4 {
+    padding: 0;
+  }
+  .assignments-page .input-lg {
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33333;
+    border-radius: 0;
+  }
+  .assignments-page .input-underline {
+    background: 0 0;
+    border: none;
+    box-shadow: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+    border-radius: 0;
+  }
+  .assignments-page .input-underline:focus {
+    border-bottom: 2px solid #fff;
+    box-shadow: none;
+  }
+  .assignments-page .rounded-btn {
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    color: rgba(255, 255, 255, 0.8);
+    background: #222;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    font-size: 18px;
+    line-height: 40px;
+    padding: 0 25px;
+  }
+  .assignments-page .rounded-btn:hover, .assignments-page .rounded-btn:focus, .assignments-page .rounded-btn:active, .assignments-page .rounded-btn:visited {
+    color: rgba(255, 255, 255, 1);
+    border: 2px solid rgba(255, 255, 255, 1);
+    outline: none;
+  }
+  .assignments-page h1 {
+    font-weight: 300;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 36px;
+  }
+  .assignments-page h1 small {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .assignments-page .form-group {
+    padding: 8px 0;
+  }
+  .assignments-page .form-group input::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  .assignments-page .form-group input:-moz-placeholder {
+    /* Firefox 18- */
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  .assignments-page .form-group input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  .assignments-page .form-group input:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  .assignments-page .form-content {
+    padding: 40px 0;
+  }
+  .assignments-page .user-avatar {
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
