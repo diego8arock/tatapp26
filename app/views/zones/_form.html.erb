@@ -40,6 +40,7 @@
   </table>
 </div>
   <div id="myimg"></div>
+  <div id="primg"></div>
 <div id="zoneModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -255,9 +256,105 @@ $(document).ready(function () {
 
         // clear the previous points
         points.length = 0;
+        
+        //draw project image mofified
+        ctx.clearRect(0, 0, 1430, 882);
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = 'green';
+        ctx.fill();
 
+        ctx.beginPath();
+        ctx.globalAlpha = 0.9;
+        ctx.arc(370, 440, 6, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'black';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.globalAlpha = 0.8;
+        ctx.arc(370, 440, 15, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+
+        ctx.globalAlpha = 1;
+
+        var locale = I18n.locale;
+        I18n.locale = "en";
+        //text
+        ctx.beginPath();
+        ctx.font = 'italic 30pt Calibri';
+        ctx.fillText(I18n.t('current_position'), 600, 310);
+
+        //line
+        ctx.beginPath();
+        ctx.moveTo(385, 430);
+        ctx.lineTo(595, 315);
+        ctx.lineWidth = 4;
+
+        // set line color
+        ctx.strokeStyle = '#ff0000';
+        ctx.stroke();
+        ctx.closePath();
+
+        //Draw image with changes
+        ctx.drawImage(imageObj, 0, 0);
+        ctx.globalAlpha = 1.00;
+
+        // create a new Image() from the new canvas
+        var projectImage = new Image();
+        projectImage.onload = function() {
+          // append the new image to the page
+          var img = document.getElementById('primg');
+          img.appendChild(projectImage);
+        }
+        projectImage.id = "projectImage";
+        projectImage.src = canvas.toDataURL();
+        sendImageToSave(canvas.toDataURL(), I18n.locale);
+
+        //Draw image spanish
+        ctx.clearRect(600, 250, 700, 310);
+        //text
+        ctx.beginPath();
+        I18n.locale = "es";
+        ctx.fillStyle = 'blue';
+        ctx.fillText(I18n.t('current_position'), 600, 310);
+        ctx.closePath();
+
+        //Draw image with changes
+        ctx.drawImage(imageObj, 0, 0);
+        ctx.globalAlpha = 1.00;
+
+        // create a new Image() from the new canvas
+        var projectImageEs = new Image();
+        projectImageEs.onload = function() {
+          // append the new image to the page
+          var img = document.getElementById('primg');
+          img.appendChild(projectImageEs);
+        }
+        projectImageEs.id = "projectImageEs";
+        projectImageEs.src = canvas.toDataURL();
+
+        sendImageToSave(canvas.toDataURL(), I18n.locale);
+        
+        //Restore locale value
+        I18n.locale = locale;
         // redraw the image on the main canvas for further clipping
         drawImage(0.25);
+
+  /*var img = document.getElementById("theImg");
+  var cnvs = document.getElementById("myCanvas");
+  
+  cnvs.style.position = "absolute";
+  cnvs.style.left = img.offsetLeft + "px";
+  cnvs.style.top = img.offsetTop + "px";
+  
+  var ctx = cnvs.getContext("2d");*/
+  /*ctx.beginPath();
+  ctx.arc(250, 210, 200, 0, 2 * Math.PI, false);
+      ctx.fillStyle = 'green';
+      ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = '#00ff00';
+  ctx.stroke();*/
 
         // if (this.isOldIE) {
         //
@@ -303,6 +400,44 @@ $(document).ready(function () {
       ctx.globalAlpha = 1.00;
     }
 
+
+    function sendImageToSave(dataURL, locale) {
+      // Get our file
+      var file= dataURLtoBlob(dataURL);
+      // Create new form data
+      var fd = new FormData();
+      // Append our Canvas image file to the form data
+      fd.append("image", file);
+      fd.append("project_id", $("#cmbbxProjects").val());
+      fd.append("locale_name", locale);
+      // And send it
+      $.ajax({
+        url: "/projects/"+ $("#cmbbxProjects").val() + "/image",
+        type: "post",
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          alert("Image saved successfull");
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          alert(errorThrown);
+        }
+      });
+    }
+
+    // Convert dataURL to Blob object
+    function dataURLtoBlob(dataURL) {
+      // Decode the dataURL
+      var binary = atob(dataURL.split(',')[1]);
+      // Create 8-bit unsigned array
+      var array = [];
+      for(var i = 0; i < binary.length; i++) {
+          array.push(binary.charCodeAt(i));
+      }
+      // Return our Blob object
+      return new Blob([new Uint8Array(array)], {type: 'image/png'});
+    }
     // }
   });
 

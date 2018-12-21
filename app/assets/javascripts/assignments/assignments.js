@@ -47,7 +47,6 @@ App26.AssignmentController.prototype.init = function() {
               zoomWindowWidth:700,
               zoomWindowHeight:700});
   }*/
-  //App26.assignment.setProjectImage();
 
   //Must do tour
   if($("#tour").length > 0) {
@@ -143,78 +142,6 @@ App26.AssignmentController.prototype.init = function() {
   $("#project_canvas").css("height",$("#seat_map").css("height"));
   $("#project_canvas").css("width",$("#seat_map").css("width"));
   
-}
-
-/**
- * Start the coundown
- */
-App26.AssignmentController.prototype.setProjectImage = function() {
-
-  // create a new canvas
-  var image = $('#office2');
-  var canvas = document.createElement('canvas');
-  canvas.style = "position:relative;margin-left:0px;margin-top:0px;";
-  canvas.width = image.css("width");
-  canvas.height = image.css("height");
-
-          var canvastag = document.getElementById('canvas');
-          canvastag.appendChild(canvas);
-  var ctx = canvas.getContext('2d');
-
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = "#080aa2";
-
-  var imageObj = new Image();
-
-  // Draw  image onto the canvas
-  imageObj.onload = function () {
-    ctx.drawImage(imageObj, 0, 0);
-  };
-  imageObj.src = image.attr("src");
-
-  ctx.beginPath();
-  ctx.width = image.css("width");
-  ctx.height = image.css("height");
-  ctx.globalCompositeOperation = 'destination-over';
-
-  //draw project image mofified
-  /*ctx.clearRect(0, 0, 1430, 882);
-  ctx.globalAlpha = 0.5;
-  ctx.fillStyle = 'green';
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.globalAlpha = 0.9;
-  ctx.arc(370, 440, 6, 0, 2 * Math.PI, false);
-  ctx.fillStyle = 'black';
-  ctx.fill();*/
-
-  ctx.beginPath();
-  ctx.globalAlpha = 0.8;
-  ctx.arc(370, 440, 15, 0, 2 * Math.PI, false);
-  ctx.fillStyle = 'blue';
-  ctx.fill();
-
-  ctx.globalAlpha = 1;
-
-  //text
-  ctx.font = 'italic 30pt Calibri';
-  ctx.fillText(I18n.t('current_position'), 500, 310);
-
-  //line
-  ctx.beginPath();
-  ctx.moveTo(385, 425);
-  ctx.lineTo(495, 315);
-  ctx.lineWidth = 4;
-
-  // set line color
-  ctx.strokeStyle = '#ff0000';
-  ctx.stroke();
-
-  //Draw image with changes
-  ctx.drawImage(imageObj, 0, 0);
-  ctx.globalAlpha = 1.00;
-
 }
 
 /**

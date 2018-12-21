@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   devise_for :users
   resources :maps
   resources :sessions, only: [:edit]
-  resources :projects
+  resources :projects do
+    post 'image', :on => :member
+  end
+
   resources :seats
   resources :admin
   resources :assignments
