@@ -6,21 +6,22 @@
     <%= stylesheet_link_tag "lib/fullmap" %>
 <% end %>
 
-<h2><%= t('menu.full_map') %></h2>
+<h2 class="fullmap_title"><%= t('menu.full_map') %></h2>
 <br/>
 
-
-<p>
-  <b><%= t 'project' %>:</b>
-  <%= current_user.employee.project.name %>
-</p>
 
 <% if current_user.tour? && !@map.nil? %>
   <div id="tour" data-restart="true"></div>
 <% end %>
 
-<div class="container_fullmap" id="canvas">
-  <img id="office2" src="/assets/projects/floor-<%= current_user.employee.project.tag.downcase %>-im-<%= I18n.locale %>.png" class="rounded mx-auto d-block" alt="Map" style="width: 1095px;">
+<div class="container_card" id="canvas">
+  <p class="project_title">
+    <b><%= t 'project' %>:</b>
+    <%= current_user.employee.project.name %>
+  </p>
+  <div class="container_fullmap">
+    <img id="office2" src="/assets/projects/floor-<%= current_user.employee.project.tag.downcase %>-im-<%= I18n.locale %>.png" class="rounded mx-auto d-block" alt="Map" style="width: 1095px;">
+  </div>
 </div>
 
 
