@@ -16,9 +16,30 @@
           <small class="text-muted"><%= t 'file_help' %></small>
       </div>
    </div>
+    <div class="form-group col-md-4">
+      <%= link_to t('download_csv'), download_csv_path %>
+   </div>
   </div>
   <div class="actions">
     <%= submit_tag t('save'), class: "btn btn-primary glyphicon-save-file" %>
+  </div>
+<% end %>
+
+<% if !session[:text_errors].nil? && !session[:text_errors].empty?  %>
+  <div class="row" style="margin-top: 2rem">
+    <div class="form-group col-md-12 alert alert-danger">
+        <table id="errors_table">
+          <tbody>
+            <% session[:text_errors].each do |line|  %>
+              <tr>
+                <td>
+                  <%= line %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
   </div>
 <% end %>
 

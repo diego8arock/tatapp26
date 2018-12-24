@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :sessions, only: [:edit]
   resources :projects do
     post 'image', :on => :member
+    post 'zoneimage', :on => :member
   end
 
   resources :seats
@@ -30,7 +31,7 @@ Rails.application.routes.draw do
   get 'showproject', to: 'projects#show', as: 'showproject'
   get 'createproject', to: 'projects#new', as: 'createproject'
   get 'editproject', to: 'projects#edit', as: 'editproject'
-  #get 'zoneproject', to: 'projects#zone', as: 'zoneproject'
+  get 'zoneproject', to: 'projects#zone', as: 'zoneproject'
   get 'markseats', to: 'seats#new', as: 'markseats'
   get 'assignseats', to: 'seats#assign', as: 'assignseats'
 
@@ -42,4 +43,7 @@ Rails.application.routes.draw do
   post 'save_loademployees', to: 'employees#save_load', as: 'save_loademployees'
 
   match "/zones/:project_id/search" => "zones#search", :via => :get
+
+# Download template csv
+  get 'download_csv', to: 'employees#download_csv', as: 'download_csv'
 end

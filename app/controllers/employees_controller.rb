@@ -2,7 +2,7 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :admin_required
-  layout 'admin2'
+  layout 'admin'
 
   # GET /employees
   # GET /employees.json
@@ -36,16 +36,23 @@ class EmployeesController < ApplicationController
       ok_number = 0
       error_number = 0
       total = 0
+      session[:text_errors] = []
       import_file = params[:employees_file]
       File.foreach( import_file.path ).with_index do |line, index|
         begin
           # number|name|joindate|birthdate|assignment|project|seat(optional)
           total += 1
-          next if total == 1
+          #Ommits header 
+          if total == 1
+            session[:text_errors][0] = line
+            next
+          end
+
           fields = line.split(";")
 
           if fields[0].blank? || fields[1].blank? || fields[2].blank? ||
             fields[3].blank? || fields[4].blank? || fields[5].blank?
+              session[:text_errors][error_number] = line + ";" + I18n.t("errors.empty_line")
               error_number += 1
               logger.warn "Any field can be empty: #{line}"
               next
@@ -59,8 +66,16 @@ class EmployeesController < ApplicationController
           project_tag = fields[5].strip
           seat_code = fields[6].strip
 
+          if assignment == Employee::FIXED && seat_code.blank?
+            session[:text_errors][error_number] = line + ";" + I18n.t("errors.seat_mandatory")
+            error_number += 1
+            logger.warn "Seat code mandatory when assgnment type is fixed"
+            next            
+          end
+
           project = Project.find_by_tag(project_tag)
           if project.nil?
+            session[:text_errors][error_number] = line + ";" + I18n.t("errors.project_not_exists")
             error_number += 1
             logger.warn "Project tag #{project_tag} doesn't exist"
             next
@@ -84,6 +99,7 @@ class EmployeesController < ApplicationController
               project: project)
           else
             if !user.is_employee?
+              session[:text_errors][error_number] = line + ";" + I18n.t("errors.isnt_employee")
               error_number += 1
               logger.warn "User #{number} isn't employee"
               next
@@ -104,6 +120,7 @@ class EmployeesController < ApplicationController
             # seat_code = project_tag + seat_code
             seat = Seat.where(code: seat_code, project: project, status: Seat::ACTIVE).order(created_at: :desc).first
             if seat.nil?
+              session[:text_errors][error_number] = line + ";" + I18n.t("errors.seat_not_exists")
               error_number += 1
               logger.warn "Seat with code #{seat_code} and project #{project_tag} doesn't exist"
               next
@@ -116,18 +133,19 @@ class EmployeesController < ApplicationController
           ok_number += 1
 
         rescue => exception
+          session[:text_errors][error_number] = line + ";" + I18n.t("errors.exception_load", {:exception => exception.message})
           error_number += 1
           logger.warn "There was a problem importing employees file.#{exception.message}"
         end
       end
 
       if error_number > 0
-        flash[:error] = "#{ok_number} Employees without errors!...
-                        #{error_number} Employees with errors!...
-                        Please load the file again"
+        session[:text_errors][error_number] = I18n.t("errors.errors_load", {:ok_number => ok_number, :error_number => error_number})
+        flash[:error] = I18n.t("errors.errors_load", {:ok_number => ok_number, :error_number => error_number})
         raise ActiveRecord::Rollback, "Call tech support!"
       else
-        flash[:success] = "#{ok_number} Employees Imported!"
+        session[:text_errors] = nil
+        flash[:success] = I18n.t("ok_load", {:ok_number => ok_number} )
       end
     end
 
@@ -178,6 +196,14 @@ class EmployeesController < ApplicationController
     end
   end
 
+  def download_csv
+    send_file(
+      "#{Rails.root}/public/employee_template.csv",
+      filename: "employee_template.csv",
+      type: "text/csv"
+    )
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_employee
@@ -187,5 +213,13 @@ class EmployeesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
       params.require(:employee).permit(:id, :name, :number, :admission_date, :birth_date, :status, :assignment_type, :seat_id, :project_id)
+    end    
+
+    def generate_csv(text_array)
+      Prawn::Document.new do
+        text_array.each do |line| 
+          text line, align: :left
+        end
+      end.render
     end
 end

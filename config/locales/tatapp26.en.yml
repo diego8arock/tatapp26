@@ -63,6 +63,7 @@ en:
   current_position: "You are here"
   file_help: "The file must be csv type, fields separate by ';'"
   password_help: "If you have already entered an assignment for the first time, your password is now your date of birth in 'yyyymmdd' format"
+  download_csv: "Download csv template"
   projects:
     name: "Name"
     acronym: "Acronym"
@@ -154,6 +155,16 @@ en:
     access_denied: "You are not authorized to access this page"
     no_map: "There is no map"
     no_seat: "Please select one seat to continue"
+    empty_line: "Any field can be empty"
+    seat_mandatory: "Seat code mandatory when assignment type is fixed"
+    project_not_exists: "Project tag doesn't exist"
+    isnt_employee: "Employee doesn't exists"
+    seat_not_exists: "Seat doesn't exist"
+    exception_load: "There was a problem importing employees file.%{exception}"
+    errors_load: "%{ok_number} Employees without errors!...
+                        %{error_number} Employees with errors!...
+                        Please fix the issues and load the file again"
+  ok_load: "%{ok_number} Employees Imported!"
   registration:
     cancel_account: "Cancel my account"
     unhappy: "Unhappy?"
@@ -162,6 +173,10 @@ en:
     ignore: "(leave blank if you don't want to change it)"
     confirm_pass: "(we need your current password to confirm your changes)"
     minimum: " characters minimum)"
+  zones: 
+    image_saved: "Image saved successfull"
+    confirm: "Confirm zone creation"
+    generate: "Generate zone"
   languages:
     english: "English"
     spanish: "Español"

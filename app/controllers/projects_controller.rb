@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :image]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :image, :zoneimage]
   before_action :authenticate_user!
   before_action :admin_required
   layout 'admin'
@@ -34,6 +34,15 @@ class ProjectsController < ApplicationController
     File.open("#{Rails.root}/app/assets/images/projects/floor-#{@project.tag.downcase}-im-#{params[:locale_name]}.png", 'wb') do |f|
       f.write(params[:image].read)
     end
+  end
+
+  # POST /projects/1/zoneimage
+  def zoneimage
+    #sudo chmod -R g+w app/assets/images/projects/
+    File.open("#{Rails.root}/app/assets/images/zones/#{@project.tag}.png", 'wb') do |f|
+      f.write(params[:image].read)
+    end
+    flash[:notice] = I18n.t("zones.image_saved")
   end
 
   # POST /projects

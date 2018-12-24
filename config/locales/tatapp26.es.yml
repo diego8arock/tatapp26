@@ -32,6 +32,7 @@ es:
   current_position: "Estas aquí"
   file_help: "Revise por favor el archivo cargado debe ser de tipo csv, los campos separados por ';'"
   password_help: "Si ya ingresó por primera vez, su contraseña es ahora su fecha de nacimiento en formato 'yyyymmdd'"
+  download_csv: "Descargar plantilla csv"
   projects:
     name: "Nombre"
     acronym: "Acronimo"
@@ -123,6 +124,16 @@ es:
     access_denied: "Usted no esta autorizado para acceder a esta pagina"
     no_map: "No existe un mapa"
     no_seat: "Por favor seleccione una silla para continuar"
+    empty_line: "Ningún campo puede estar vacío"
+    seat_mandatory: "Código de asiento obligatorio cuando el tipo de asignación es fijo"
+    project_not_exists: "La etiqueta del proyecto no existe"
+    isnt_employee: "El empleado no existe"
+    seat_not_exists: "El asiento no existe"
+    exception_load: "Hubo un problema al importar el archivo de empleados.%{exception}"
+    errors_load: "%{ok_number} Empleados cargados!...
+                        %{error_number} Empleados con errores!...
+                        Por favor corrija los errores y vuelva a cargar el archivo"
+  ok_load: "%{ok_number} Empleados cargados!"
   registration:
     cancel_account: "Cancelar mi cuenta"
     unhappy: "no esta satisfecho?"
@@ -131,6 +142,10 @@ es:
     ignore: "(Dejelo este campo en blanco si no quiere cambiarlo)"
     confirm_pass: "(Por favor digite su contraseña para confirmar los cambios.)"
     minimum: " caracteres minimos)"
+  zones: 
+    image_saved: "Zona guardada satisfactoriamente"
+    confirm: "Confirmar creacion de zona"
+    generate: "Generar zona"
   languages:
     english: "English"
     spanish: "Español"
