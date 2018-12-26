@@ -66,10 +66,7 @@ class EmployeesController < ApplicationController
           project_tag = fields[5].strip
           seat_code = fields[6].strip
 
-          if assignment == Employee::FIXED && seat_code.blank?
-            session[:text_errors][error_number] = line + ";" + I18n.t("errors.seat_mandatory")
-            error_number += 1
-            logger.warn "Seat code mandatory when assgnment type is fixed"
+          if number.downcase == 'pendiente'
             next            
           end
 
@@ -114,6 +111,23 @@ class EmployeesController < ApplicationController
               status: Employee::ACTIVE,
               assignment_type: assignment,
               project: project)
+          end
+
+          if assignment == Employee::FIXED && seat_code.blank?
+            map = Map.where(:project_id => project.id).last
+            if !map.nil?
+              seat = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
+                            .where(:project => project)
+                            .where(:status => Seat::ACTIVE)
+                            .where(:map => map).first
+              seat.update(status: Seat::UNAVAILABLE, assignment_date: Date.today )
+              employee.update(seat: seat)
+            else
+              session[:text_errors][error_number] = line + ";" + I18n.t("errors.seat_mandatory")
+              error_number += 1
+              logger.warn "Seat code mandatory when assgnment type is fixed"
+              next
+            end
           end
 
           if !seat_code.blank?
