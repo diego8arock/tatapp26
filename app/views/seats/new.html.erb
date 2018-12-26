@@ -42,7 +42,7 @@
             <td><input type="text" id="txtfldTag" disabled="disabled"></td>
             <td><input type="text" id="txtflNumber"></td>
             <td>
-              <label for="chckbxFixed"><%= t('seats.fixed') %></label><input type="checkbox" id="chckbxFixed" title="Fijo"></td>
+              <label for="chckbxFixed"><%= t('seats.fixed') %></label><input type="checkbox" id="chckbxFixed" title="<%= t('seats.fixed') %>"></td>
           </tr>
         </table>
       </div>
@@ -203,6 +203,10 @@ var total = 0;
     }
   }
 
+  $('#seatModal').on('shown.bs.modal', function() {
+    $('#txtflNumber').focus();
+  })
+
   $('#bttnAcceptModal').click(function () {
     var number = $('#txtflNumber').val();
     if (number === '') {
@@ -213,7 +217,7 @@ var total = 0;
     var fijo = $('#chckbxFixed').prop('checked');
     var html_id = $('#hddnSelectedSeat').val();
     var tag = $('#txtfldTag').val();
-    var code = tag + number;
+    var code = number;
     var project_id = $('#hddnProjectId').val();
     var map_id = $('#hddnMapId').val();
 
