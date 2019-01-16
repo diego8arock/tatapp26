@@ -42,8 +42,6 @@ Rails.application.routes.draw do
   get 'loademployees', to: 'employees#load', as: 'loademployees'
   post 'save_loademployees', to: 'employees#save_load', as: 'save_loademployees'
 
-  match "/zones/:project_id/search" => "zones#search", :via => :get
-
 # Download template csv
   get 'download_csv', to: 'employees#download_csv', as: 'download_csv'
 end

@@ -34,6 +34,10 @@ class ProjectsController < ApplicationController
     File.open("#{Rails.root}/app/assets/images/projects/floor-#{@project.tag.downcase}-im-#{params[:locale_name]}.png", 'wb') do |f|
       f.write(params[:image].read)
     end
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render(json: @project, :except => [:created_at, :updated_at] ) }
+    end
   end
 
   # POST /projects/1/zoneimage
@@ -43,6 +47,10 @@ class ProjectsController < ApplicationController
       f.write(params[:image].read)
     end
     flash[:notice] = I18n.t("zones.image_saved")
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render(json: @project, :except => [:created_at, :updated_at] ) }
+    end
   end
 
   # POST /projects
@@ -88,11 +96,7 @@ class ProjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      if params[:project_id].present?
-        @project = Project.find(params[:id])
-      else
-        @project = Project.first
-      end
+      @project = Project.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

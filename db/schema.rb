@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 2018_12_19_181228) do
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "employee_number"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "username", default: "", null: false
@@ -100,6 +102,7 @@ ActiveRecord::Schema.define(version: 2018_12_19_181228) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.index ["employee_number"], name: "index_users_on_employee_number", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -112,12 +115,6 @@ ActiveRecord::Schema.define(version: 2018_12_19_181228) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
-  create_table "zones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "project_id", null: false
-    t.string "coordinates", null: false
-    t.index ["project_id"], name: "fk_rails_469356bd73"
-  end
-
   add_foreign_key "assignments", "employees"
   add_foreign_key "assignments", "projects"
   add_foreign_key "assignments", "seats"
@@ -126,5 +123,4 @@ ActiveRecord::Schema.define(version: 2018_12_19_181228) do
   add_foreign_key "maps", "projects"
   add_foreign_key "seats", "maps"
   add_foreign_key "seats", "projects"
-  add_foreign_key "zones", "projects"
 end

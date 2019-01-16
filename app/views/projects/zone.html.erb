@@ -353,7 +353,6 @@ $(document).ready(function () {
       var fd = new FormData();
       // Append our Canvas image file to the form data
       fd.append("image", file);
-      fd.append("project_id", $("#cmbbxProjects").val());
       fd.append("locale_name", locale);
       // And send it
       $.ajax({
@@ -378,7 +377,6 @@ $(document).ready(function () {
       var fd = new FormData();
       // Append our Canvas image file to the form data
       fd.append("image", file);
-      fd.append("project_id", $("#cmbbxProjects").val());
       // And send it
       $.ajax({
         url: "/projects/"+ $("#cmbbxProjects").val() + "/zoneimage",
