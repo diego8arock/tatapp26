@@ -38,11 +38,11 @@ class EmployeesController < ApplicationController
       total = 0
       session[:text_errors] = []
       import_file = params[:employees_file]
-      File.foreach( import_file.path ).with_index do |line, index|
+      File.readlines(import_file.path, :encoding => 'UTF-8').each do |line|
         begin
           # number|name|joindate|birthdate|assignment|project|seat(optional)
           total += 1
-          #Ommits header 
+          #Ommits header
           if total == 1
             session[:text_errors][0] = line
             next
@@ -67,7 +67,7 @@ class EmployeesController < ApplicationController
           seat_code = fields[6].strip
 
           if number.downcase == 'pendiente'
-            next            
+            next
           end
 
           project = Project.find_by_tag(project_tag)
@@ -227,11 +227,11 @@ class EmployeesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
       params.require(:employee).permit(:id, :name, :number, :admission_date, :birth_date, :status, :assignment_type, :seat_id, :project_id)
-    end    
+    end
 
     def generate_csv(text_array)
       Prawn::Document.new do
-        text_array.each do |line| 
+        text_array.each do |line|
           text line, align: :left
         end
       end.render
