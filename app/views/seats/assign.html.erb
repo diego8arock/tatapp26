@@ -32,23 +32,13 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"><%= t('maps.assign') %></h4>
       </div>
-      <div class="modal-body">
-        <table>
-          <tr>
-            <td>
-              <label for="cmbbxEmployees"><%= t('maps.select') %></label>
-            </td>
-            <td>
-              <select id="cmbbxEmployees"></select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label for="txtfldNombreEmpleado"><%= t('maps.name') %></label>
-            </td>
-            <td><input type="text" id="txtfldNombreEmpleado" disabled="disabled"></td>
-          </tr>
-        </table>
+      <div class="modal-body">        
+        <div class="row">
+          <div class="form-group col-md-8">
+            <%= label_tag t('menu.employee.title') %>
+            <select id="cmbbxEmployees" class="form-control"></select>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" id="bttnAcceptModal"><%= t('accept') %></button>
@@ -182,7 +172,7 @@ var total = 0;
           var code = seats[i]["code"];
           var fijo = seats[i]["fixed"];;
           var html_id_jq = '#' + html_id;
-          $(html_id_jq).html(code).css("width", "50px").css("color", "black").css("font-weight", "bolder").removeClass('available');
+          $(html_id_jq).html(code).removeClass('available');
           $(html_id_jq).addClass(
             fijo
               ? 'unavailable'
@@ -211,12 +201,11 @@ var total = 0;
       },
       success: function (response) {
         console.log(response);
-        var emp = response["employess"];
+        var emp = response["employees"];
         $('#cmbbxEmployees').find('option').remove().end();
         for (var i = 0; i < emp.length; i++) {
-          $('#cmbbxEmployees').append('<option value="' + emp[i]["id"] + "|" + emp[i]["name"] + '">' + emp[i]["number"] + '</option>');
+          $('#cmbbxEmployees').append('<option value="' + emp[i]["id"] + '">' + emp[i]["number"] + ' - ' + emp[i]["name"] + '</option>');
         }
-        $('#txtfldNombreEmpleado').val(emp[0]["name"]);
       }
     });
 
@@ -224,7 +213,7 @@ var total = 0;
 
   $('#bttnAcceptModal').click(function () {
 
-    var employee_id = splitValue($('#cmbbxEmployees'),0);
+    var employee_id = $('#cmbbxEmployees').val();
     var project_id = $('#hddnProjectId').val();
     var map_id = $('#hddnMapId').val();
     var html_id = $('#hddnSelectedSeat').val();

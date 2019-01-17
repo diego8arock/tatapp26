@@ -139,7 +139,7 @@ class EmployeesController < ApplicationController
               logger.warn "Seat with code #{seat_code} and project #{project_tag} doesn't exist"
               next
             else
-              seat.update(status: Seat::UNAVAILABLE, assignment_date: Date.today )
+              seat.update(status: Seat::UNAVAILABLE, assignment_date: Date.today, fixed: true )
               employee.update(seat: seat)
             end
           end

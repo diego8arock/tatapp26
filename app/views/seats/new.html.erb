@@ -4,7 +4,7 @@
 <% end %>
 
 <h2><%= t('menu.seat.check') %></h2>
-<%= link_to 'Back', admin_index_path %>
+<%= link_to t('back'), admin_index_path %>
 
 <%= form_with(model: @map, local: true) do |form| %>
 <table>
@@ -122,7 +122,6 @@ var total = 0;
   var array_fixed = new Array();
 
   function loadMap() {
-    $(".seatCharts-row").css("width", "");
     firstSeatLabel = 1;
     $('#map-container').html('<div id="seat-map"></div>');
     var $map = $('#cmbbxMaps');

@@ -41,7 +41,12 @@ class SeatsController < ApplicationController
       when 'update'
         # Actualizar el asiento
         @seat = Seat.find(params[:id])
-        @seat.update(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code], fixed: params[:fixed])
+        if params[:fixed] == 'false'
+          Employee.where(:seat => @seat).update_all seat_id: nil
+          @seat.update(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code], fixed: params[:fixed], status: Seat::ACTIVE, assignment_date: nil)
+        else
+          @seat.update(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code], fixed: params[:fixed], status: Seat::UNAVAILABLE, assignment_date: nil)          
+        end
       when 'map'
         @seat = Seat.where(project_id: params[:project_id], map_id: params[:map_id])
       end
@@ -66,25 +71,25 @@ class SeatsController < ApplicationController
     if params[:actionToDo].present?
       case params[:actionToDo]
       when 'employees'
-        @project = Project.find( params[:project_id])
-        @employess = @project.employees
+        @project = Project.find(params[:project_id])
+        @employees = Employee.where(:project => @project)
+                      .where(:status => Employee::ACTIVE)
+                      .where(:assignment_type => Employee::FIXED)
         if request.xhr?
           respond_to do |format|
             format.json {
-              render json: {employess: @employess}
+              render json: {employees: @employees, :except => [:created_at, :updated_at] }
             }
           end
         end
       when 'assign'
-        @seat = Seat.where(:project_id => params[:project_id], :map_id => params[:map_id], :html_id => params[:html_id]).first
-        @project = Project.find(params[:project_id])
-        @assignment = Assignment.new
-        @assignment.project = @project
-        @assignment.seat = @seat
-        @assignment.assignment_date = Date.today
-        @assignment.status = Assignment::ACTIVE
-        if !@assignment.save
-          logger.debug @assignment.errors.full_messages
+        seat = Seat.where(:project_id => params[:project_id], :map_id => params[:map_id], :html_id => params[:html_id]).first
+        employee = Employee.find(params[:employee_id])
+        seat.update(status: Seat::UNAVAILABLE, assignment_date: Date.today )
+        employee.update(seat: seat)     
+
+        respond_to do |format|
+            format.json { render json: seat, :except => [:created_at, :updated_at] }
         end
       end
     end
