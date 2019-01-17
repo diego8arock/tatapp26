@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_17_061927) do
+ActiveRecord::Schema.define(version: 2019_01_17_071007) do
 
   create_table "assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "project_id", null: false
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2019_01_17_061927) do
     t.string "tag", limit: 3, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "colour", limit: 20
   end
 
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -124,12 +125,6 @@ ActiveRecord::Schema.define(version: 2019_01_17_061927) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
-  create_table "zones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "project_id", null: false
-    t.string "coordinates", null: false
-    t.index ["project_id"], name: "fk_rails_469356bd73"
-  end
-
   add_foreign_key "assignments", "employees"
   add_foreign_key "assignments", "projects"
   add_foreign_key "assignments", "seats"
@@ -138,5 +133,4 @@ ActiveRecord::Schema.define(version: 2019_01_17_061927) do
   add_foreign_key "maps", "projects"
   add_foreign_key "seats", "maps"
   add_foreign_key "seats", "projects"
-  add_foreign_key "zones", "projects"
 end

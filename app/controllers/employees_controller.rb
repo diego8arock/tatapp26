@@ -38,7 +38,7 @@ class EmployeesController < ApplicationController
       total = 0
       session[:text_errors] = []
       import_file = params[:employees_file]
-      File.readlines(import_file.path, :encoding => 'UTF-8').each do |line|
+      File.readlines(import_file.path, :encoding => 'ISO-8859-1').each do |line|
         begin
           # number|name|joindate|birthdate|assignment|project|seat(optional)
           total += 1
@@ -114,20 +114,20 @@ class EmployeesController < ApplicationController
           end
 
           if assignment == Employee::FIXED && seat_code.blank?
-            map = Map.where(:project_id => project.id).last
-            if !map.nil?
-              seat = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
-                            .where(:project => project)
-                            .where(:status => Seat::ACTIVE)
-                            .where(:map => map).first
-              seat.update(status: Seat::UNAVAILABLE, assignment_date: Date.today )
-              employee.update(seat: seat)
-            else
+            #map = Map.where(:project_id => project.id).last
+            #if !map.nil?
+              #seat = Seat.where("(assignment_date IS NULL OR assignment_date <> ?)", Date.today)
+              #              .where(:project => project)
+              #              .where(:status => Seat::ACTIVE)
+              #              .where(:map => map).first
+              #seat.update(status: Seat::UNAVAILABLE, assignment_date: Date.today )
+              #employee.update(seat: seat)
+            #else
               session[:text_errors][error_number] = line + ";" + I18n.t("errors.seat_mandatory")
               error_number += 1
               logger.warn "Seat code mandatory when assgnment type is fixed"
               next
-            end
+            #end
           end
 
           if !seat_code.blank?

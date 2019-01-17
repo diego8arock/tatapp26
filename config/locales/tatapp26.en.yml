@@ -71,6 +71,7 @@ en:
     sure: "Are you sure?"
     status: "Status"
     edit: "Editing project"
+    color: "Color"
   maps:
     name: "Name"
     width: "Width"

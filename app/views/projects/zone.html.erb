@@ -55,8 +55,9 @@
 
 <script type="text/javascript">
 
+var project_color = "#ffffff";
 $(document).ready(function () {
-
+  getProject()
   var condition = 1;
   var points = []; //holds the mousedown points
   var canvas = document.getElementById('floorCanvas');
@@ -251,7 +252,7 @@ $(document).ready(function () {
         //draw project image mofified
         ctx.clearRect(0, 0, 1430, 882);
         ctx.globalAlpha = 0.5;
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = project_color;
         ctx.fill();
 
         ctx.beginPath();
@@ -272,7 +273,7 @@ $(document).ready(function () {
         I18n.locale = "en";
         //text
         ctx.beginPath();
-        ctx.font = 'italic 30pt Calibri';
+        ctx.font = 'italic 26pt Calibri';
         ctx.fillStyle = 'black';
         ctx.fillText(I18n.t('current_position'), 600, 310);
 
@@ -408,6 +409,23 @@ $(document).ready(function () {
     }
     // }
   });
+
+
+  $('#cmbbxProjects').change(getProject());
+
+  function getProject() {
+    var project_id = $('#cmbbxProjects').val();
+    $.ajax({
+      url: "/projects/" + project_id + ".json",
+      method: "GET",
+      error: function (xhr, status, error) {
+        console.error('AJAX Esrror: ' + status + error);
+      },
+      success: function (response) {
+        project_color = response['colour'];
+      }
+    });    
+  }
 
 });
 

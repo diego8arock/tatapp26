@@ -40,6 +40,7 @@ es:
     sure: "Esta seguro?"
     status: "Estado"
     edit: "Editando proyecto"
+    color: "Color"
   maps:
     name: "Nombre"
     width: "Ancho"

@@ -11,17 +11,17 @@ Role.create(name: :admin)
 Role.create(name: :employee)
 
 #Projects
-project1 = Project.create(name: 'Grupo Soporte', status: '1', tag: 'GS', colour: 'c55a11')
-project2 = Project.create(name: 'Claro/Telmex', status: '1', tag: 'CL', colour: 'ffd966')
-project3 = Project.create(name: 'Davivienda', status: '1', tag: 'DA', colour: 'ffff00')
-project4 = Project.create(name: 'ABINBEV', status: '1', tag: 'AB', colour: 'ed7d31')
-project5 = Project.create(name: 'AVIANCA', status: '1', tag: 'AV', colour: '5b9bd5')
-project6 = Project.create(name: 'Retail SWON', status: '1', tag: 'RE', colour: '002060')
-project7 = Project.create(name: 'BFSI SWON', status: '1', tag: 'BF', colour: '7030a0')
-project8 = Project.create(name: 'ENTSOL', status: '1', tag: 'EN', colour: 'ffffff')
-project9 = Project.create(name: 'SWON CMI', status: '1', tag: 'SW', colour: 'ffffff')
-project10 = Project.create(name: 'Compliance SWON', status: '1', tag: 'CO', colour: 'ffffff')
-project11 = Project.create(name: 'TIGO', status: '1', tag: 'TI', colour: 'a9d18e')
+project1 = Project.create(name: 'Grupo Soporte', status: '1', tag: 'GS', colour: '#c55a11')
+project2 = Project.create(name: 'Claro/Telmex', status: '1', tag: 'CL', colour: '#ffd966')
+project3 = Project.create(name: 'Davivienda', status: '1', tag: 'DA', colour: '#ffff00')
+project4 = Project.create(name: 'ABINBEV', status: '1', tag: 'AB', colour: '#ed7d31')
+project5 = Project.create(name: 'AVIANCA', status: '1', tag: 'AV', colour: '#5b9bd5')
+project6 = Project.create(name: 'Retail SWON', status: '1', tag: 'RE', colour: '#002060')
+project7 = Project.create(name: 'BFSI SWON', status: '1', tag: 'BF', colour: '#7030a0')
+project8 = Project.create(name: 'ENTSOL', status: '1', tag: 'EN', colour: '#ffffff')
+project9 = Project.create(name: 'SWON CMI', status: '1', tag: 'SW', colour: '#ffffff')
+project10 = Project.create(name: 'Compliance SWON', status: '1', tag: 'CO', colour: '#ffffff')
+project11 = Project.create(name: 'TIGO', status: '1', tag: 'TI', colour: '#a9d18e')
 
 #User admin
 user1 = User.create(username: 'admin',
