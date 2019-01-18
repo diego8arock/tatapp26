@@ -113,6 +113,7 @@ $('#cmbbxProjects').change(function () {
 var total = 0;
 
   var firstSeatLabel = 1;
+  var employee_id = 0;
 
   function loadMap() {
     firstSeatLabel = 1;
@@ -139,6 +140,10 @@ var total = 0;
           var tag = $('#hddnProjectTag').val();
           $('#txtfldTag').val(tag);
           $('#hddnSelectedSeat').val(this.settings.id);
+          var employee = $("#" + $('#hddnSelectedSeat').val()).data("employee");
+          if(employee != undefined) {
+            employee_id = employee.id;
+          }
           $('#bttnShowModal').trigger("click");
           return this.style();
         },
@@ -170,8 +175,13 @@ var total = 0;
         for (var i = 0; i < seats.length; i++) {
           var html_id = seats[i]["html_id"];
           var code = seats[i]["code"];
-          var fijo = seats[i]["fixed"];;
+          var fijo = seats[i]["fixed"];
+          var employees = seats[i]["employees"];
           var html_id_jq = '#' + html_id;
+          if(employees != null && employees.length > 0) {
+            $(html_id_jq).attr('title', employees[0]['number'] + ' - ' + employees[0]['name'] );
+            $(html_id_jq).data('employee', employees[0]);
+          }
           $(html_id_jq).html(code).removeClass('available');
           $(html_id_jq).addClass(
             fijo
@@ -204,7 +214,11 @@ var total = 0;
         var emp = response["employees"];
         $('#cmbbxEmployees').find('option').remove().end();
         for (var i = 0; i < emp.length; i++) {
-          $('#cmbbxEmployees').append('<option value="' + emp[i]["id"] + '">' + emp[i]["number"] + ' - ' + emp[i]["name"] + '</option>');
+          var selected = "";
+          if(employee_id == emp[i]["id"]) {
+            selected = "selected";
+          }
+          $('#cmbbxEmployees').append('<option ' + selected + ' value="' + emp[i]["id"] + '">' + emp[i]["number"] + ' - ' + emp[i]["name"] + '</option>');
         }
       }
     });
@@ -234,6 +248,7 @@ var total = 0;
       },
       success: function (response) {
         console.log(response);
+        loadMap();
       }
     });
 

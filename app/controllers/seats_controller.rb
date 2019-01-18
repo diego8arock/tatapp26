@@ -48,12 +48,12 @@ class SeatsController < ApplicationController
           @seat.update(project_id: params[:project_id], map_id: params[:map_id], html_id: params[:html_id], code: params[:code], fixed: params[:fixed], status: Seat::UNAVAILABLE, assignment_date: nil)          
         end
       when 'map'
-        @seat = Seat.where(project_id: params[:project_id], map_id: params[:map_id])
+        @seat = Seat.includes(:employees).where(project_id: params[:project_id], map_id: params[:map_id])        
       end
       if request.xhr?
         respond_to do |format|
           format.json {
-            render json: {seat: @seat}
+            render json: {seat: @seat}, :include => {:employees => {:only => [:id, :number, :name]}}, :except => [:created_at, :updated_at] 
           }
         end
       end
