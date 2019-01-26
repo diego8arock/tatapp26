@@ -86,5 +86,8 @@ when 'development'
 		status: 1,
 		assignment_type: 1,
 		project: project2)
+
+	#Employee.all.update(:confirmed => 0)
+	#User.where.not(username: 'admin').each { |n| n.update(:password => n.username) }
 end
 end
