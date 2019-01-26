@@ -305,7 +305,7 @@ $(document).ready(function () {
         $('#image_en').val(canvas.toDataURL());
 
         //Draw image spanish
-        ctx.clearRect(600, 250, 700, 310);
+        ctx.clearRect(600, 250, 400, 120);
         //text
         ctx.beginPath();
         I18n.locale = "es";
@@ -357,11 +357,12 @@ $(document).ready(function () {
       fd.append("locale_name", locale);
       // And send it
       $.ajax({
-        url: "/projects/"+ $("#cmbbxProjects").val() + "/image",
+        url: "/projects/"+ $("#cmbbxProjects").val() + "/image.json",
         type: "post",
         data: fd,
         processData: false,
         contentType: false,
+        async:false,
         success: function(data) {
           console.log(I18n.t('zones.image_saved'));
         },
@@ -380,11 +381,12 @@ $(document).ready(function () {
       fd.append("image", file);
       // And send it
       $.ajax({
-        url: "/projects/"+ $("#cmbbxProjects").val() + "/zoneimage",
+        url: "/projects/"+ $("#cmbbxProjects").val() + "/zoneimage.json",
         type: "post",
         data: fd,
         processData: false,
         contentType: false,
+        async:false,
         success: function(data) {
           console.log(I18n.t('zones.image_saved'));
           alert(I18n.t('zones.image_saved'));
@@ -411,13 +413,18 @@ $(document).ready(function () {
   });
 
 
-  $('#cmbbxProjects').change(getProject());
+  $('body').on('change', '#cmbbxProjects', getProject);
+
+  //$('#cmbbxProjects').change(getProject());
+
+});
 
   function getProject() {
     var project_id = $('#cmbbxProjects').val();
     $.ajax({
       url: "/projects/" + project_id + ".json",
       method: "GET",
+      async:false,
       error: function (xhr, status, error) {
         console.error('AJAX Esrror: ' + status + error);
       },
@@ -426,8 +433,6 @@ $(document).ready(function () {
       }
     });    
   }
-
-});
 
 
 </script>
