@@ -9,4 +9,17 @@ class Assignment < ActiveRecord::Base
 
   ACTIVE = 1
   INACTIVE = 2
+
+  def self.search(from_date, to_date)
+    if from_date && to_date
+    	includes(:project).includes(:employee)
+			.includes(:seat)
+            .where(:status => ACTIVE)
+            .where(:assignment_date => from_date.beginning_of_day..to_date.end_of_day)
+      		.order('id DESC')
+    else
+      nil 
+    end
+  end
+
 end

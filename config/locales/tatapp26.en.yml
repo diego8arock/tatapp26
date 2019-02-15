@@ -128,6 +128,9 @@ en:
       show: "See map"
       new: "New map"
       edit: "Edit map"
+    reports:
+      assignment:
+        title: "Assignment report"
   confirmation:
     title: "Confirmation"
     text: "If your information is correct. Please continue to select your seat:"
@@ -204,3 +207,8 @@ en:
       sixth:
         title: "Congratulations!"
         content: "You have a fixed seat. Thank you"
+  reports:
+    from_date: "From date"
+    to_date: "To date"
+  search: "Search"
+  export: "Export"

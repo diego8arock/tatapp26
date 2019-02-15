@@ -1,0 +1,15 @@
+
+SET GLOBAL validate_password_policy=LOW;
+
+CREATE USER 'tatapp26_userp'@'localhost' IDENTIFIED BY '1019029798';
+
+GRANT ALL PRIVILEGES ON tatapp26_production.* To 'tatapp26_userp'@'localhost' IDENTIFIED BY '1019029798';
+
+CREATE USER 'tatapp26_user'@'localhost' IDENTIFIED BY '1019029798';
+
+GRANT ALL PRIVILEGES ON tatapp26_development.* To 'tatapp26_user'@'localhost' IDENTIFIED BY '1019029798';
+GRANT ALL PRIVILEGES ON tatapp26_test.* To 'tatapp26_user'@'localhost' IDENTIFIED BY '1019029798';
+
+export TATAPP26P_DATABASE_PASSWORD='1019029798'
+export TATAPP26_DATABASE_PASSWORD='1019029798'
+

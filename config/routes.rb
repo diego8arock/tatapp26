@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'reports/assignments'
   root 'home#index'
 
   devise_for :users

@@ -97,6 +97,9 @@ es:
       show: "Ver mapa"
       new: "Nuevo mapa"
       edit: "Editar mapa"
+    reports:
+      assignment:
+        title: "Reporte asignación"
   confirmation:
     title: "Confirmación"
     text: "Si la información es correcta. Por favor continue a seleccionar su silla:"
@@ -173,3 +176,8 @@ es:
       sixth:
         title: "Felicitaciones!"
         content: "Tienes un puesto de trabajo fijo. Gracias"
+  reports:
+    from_date: "Desde"
+    to_date: "Hasta"
+  search: "Buscar"
+  export: "Exportar"
