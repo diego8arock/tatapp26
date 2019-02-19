@@ -26,7 +26,7 @@ class ReportsController < ApplicationController
 	respond_to do |format|
 	  format.html
 	  #format.csv { send_data @products.to_csv }
-	  format.xls {render :layout => false}
+	  format.xlsx {render :layout => false, xlsx: 'assignments',filename: "assigments_report.xlsx"}
 	end
   end
 end

@@ -55,6 +55,7 @@ es:
   seats:
     create: "Crear silla"
     number: "Número"
+    code: "Numero de silla"
     fixed: "Fijado"
     empty: "El valor de la silla no puede estar vacio"
   messages:
@@ -98,6 +99,7 @@ es:
       new: "Nuevo mapa"
       edit: "Editar mapa"
     reports:
+      title: "Reportes"
       assignment:
         title: "Reporte asignación"
   confirmation:

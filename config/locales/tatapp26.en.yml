@@ -86,6 +86,7 @@ en:
   seats:
     create: "Create seat"
     number: "Number"
+    code: "Seat number"
     fixed: "Fixed"
     empty: "The value of the seat can not be empty"
   messages:
@@ -129,6 +130,7 @@ en:
       new: "New map"
       edit: "Edit map"
     reports:
+      title: "Reports"
       assignment:
         title: "Assignment report"
   confirmation:

@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Assigments_report") do |sheet|
+    sheet.add_row [I18n.t('employee.name'), I18n.t('employee.number'), I18n.t('project'), I18n.t('employee.assignment_date'), I18n.t('seats.code')]
+    @assignments.each do |assignment|
+        sheet.add_row [assignment.employee.name, assignment.employee.number, assignment.project.name, assignment.assignment_date.strftime("%Y-%m-%d"), assignment.seat.code]
+    end
+end

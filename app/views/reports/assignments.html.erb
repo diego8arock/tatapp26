@@ -24,7 +24,7 @@
 <br/>    
 <% if !@assignments.nil? %>
   <div>
-  <%= form_with url: reports_assignments_path(format: :xls), method: :get, local: true  do |form| %>
+  <%= form_with url: reports_assignments_path(format: :xlsx), method: :get, local: true  do |form| %>
     <div class="actions">
         <%= form.hidden_field :from_date, value: @from_date.strftime("%Y-%m-%d") %>
         <%= form.hidden_field :to_date,  value: @to_date.strftime("%Y-%m-%d") %>
@@ -40,8 +40,8 @@
           <th class="col-md-2"><%= t 'employee.name' %></th>
           <th class="col-md-2"><%= t 'employee.number' %></th>
           <th class="col-md-2"><%= t 'project'  %></th>
-          <th class="col-md-2"><%= t 'assignment.date' %></th>
-          <th class="col-md-2"><%= t 'seats.number' %></th>
+          <th class="col-md-2"><%= t 'employee.assignment_date' %></th>
+          <th class="col-md-2"><%= t 'seats.code' %></th>
         </tr>
       </thead>
       <tbody>
